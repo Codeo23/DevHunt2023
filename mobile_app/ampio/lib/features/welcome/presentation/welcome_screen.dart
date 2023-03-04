@@ -1,10 +1,10 @@
-import 'package:ampio/features/welcome/presentation/widget/blurred_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/presentation/widgets/gradient_button.dart';
+import '../../../core/presentation/widgets/blurred_container.dart';
 import '../../../core/utils/colors/app_colors.dart';
 import '../../../core/utils/constants/route_path.dart';
 

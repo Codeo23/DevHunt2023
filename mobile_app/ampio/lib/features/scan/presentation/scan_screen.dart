@@ -49,11 +49,10 @@ class _ScanScreen extends State<ScanScreen>
             ),
           ),
           Expanded(
-            flex: 1,
             child: Center(
               child: (result != null)
                   ? TextButton(
-                      onPressed: () {},
+                      onPressed: () => context.go(RoutePath.homePath),
                       child: Text(
                         'Continuer en tant que Mialy Rak',
                         style: GoogleFonts.poppins(

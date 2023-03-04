@@ -5,6 +5,7 @@ import '../../../features/welcome/presentation/welcome_screen.dart';
 import '../../features/home/presentation/home.dart';
 import '../../../features/login/presentation/login_screen.dart';
 import '../../../features/scan/presentation/scan_screen.dart';
+import '../../../features/response/presentation/response_screen.dart';
 
 abstract class AppRouter {
   static GoRouter configurations = GoRouter(
@@ -26,6 +27,10 @@ abstract class AppRouter {
         path: RoutePath.scanPath,
         builder: (context, state) => const ScanScreen(),
       ),
+      GoRoute(
+        path: RoutePath.responsePath,
+        builder: (context,state) => const ResponseScreen()
+      )
     ],
   );
 }

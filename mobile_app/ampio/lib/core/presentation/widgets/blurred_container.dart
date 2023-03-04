@@ -3,17 +3,21 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/utils/colors/app_colors.dart';
+import '../../utils/colors/app_colors.dart';
 
 class BlurredContainer extends StatelessWidget {
 
   final double? width;
   final double? height;
+  final Color? firstColor;
+  final Color? secondColor;
 
   const BlurredContainer({
     super.key,
     this.width,
-    this.height
+    this.height,
+    this.firstColor,
+    this.secondColor
   });
 
   @override
@@ -28,8 +32,8 @@ class BlurredContainer extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-             AppColors.greenAccentPrimary,
-             AppColors.greenAccentSecondary
+             firstColor ?? AppColors.greenAccentPrimary,
+             secondColor ?? AppColors.greenAccentSecondary
           ]
         )
       ),

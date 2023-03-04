@@ -5,14 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/colors/app_colors.dart';
 import '../../../../features/profile/presentation/widget/questions.dart';
 import '../../../../features/profile/presentation/widget/responses.dart';
+import '../../../../features/profile/presentation/widget/shares.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
+    return Container(
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
@@ -23,10 +23,44 @@ class ProfileScreen extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            const Icon(Icons.menu),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size(25.w, 25.h),
+                        padding: const EdgeInsets.all(7.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0.r),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.chevron_left,
+                        size: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size(25.w, 25.h),
+                        padding: const EdgeInsets.all(7.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0.r),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.menu,
+                        size: 20.0,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
@@ -37,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Text(
                   'Mialy Rak.',
@@ -50,11 +84,11 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Expanded(
               child: DefaultTabController(
-                length: 2,
+                length: 3,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 5,
@@ -80,10 +114,19 @@ class ProfileScreen extends StatelessWidget {
                           Tab(
                             text: 'Mes réponses',
                           ),
+                          Tab(
+                            text: 'Mes partages',
+                          ),
                         ],
                       ),
                       const Expanded(
-                        child: TabBarView(children: [Questions(), Responses()]),
+                        child: TabBarView(
+                          children: [
+                            Questions(),
+                            Responses(),
+                            Shares(),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -93,6 +136,6 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    );
   }
 }
