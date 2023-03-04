@@ -12,6 +12,10 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api", logger.New())
 	api.Get("/", controllers.Hello)
 
+	// auth routes
+	auth := api.Group("/auth")
+	auth.Post("/login", controllers.Login)
+
 	// user routes
 	user := api.Group("/user")
 	user.Get("/", func(c *fiber.Ctx) error {
