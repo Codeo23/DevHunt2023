@@ -35,33 +35,6 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-// valid token
-func validToken(t *jwt.Token, id int) bool {
-	claims := t.Claims.(jwt.MapClaims)
-	user_id := int(claims["user_id"].(float64))
-
-	return user_id == id
-}
-
-// valid user
-func validUser(id int, pass string) bool {
-	// database
-	db := database.Database.DB
-
-	// check if the exist
-	var user models.User
-	if err := db.Where(&models.User{ID: uint(id)}).Find(&user).Error; err != nil {
-		return false
-	}
-
-	// check password
-	if !CheckPasswordHash(pass, user.Password) {
-		return false
-	}
-
-	return true
-}
-
 // get user id from cookie
 func GetUserID(c *fiber.Ctx) (int, error) {
 	// get token
@@ -81,6 +54,34 @@ func GetUserID(c *fiber.Ctx) (int, error) {
 	user_id := int(claims["user_id"].(float64))
 
 	return user_id, nil
+}
+
+// get me
+func GetMe(c *fiber.Ctx) error {
+	// get user id
+	user_id, err := GetUserID(c)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+
+	// database
+	db := database.Database.DB
+
+	// check if the exist
+	var user models.User
+	if err := db.Where(&models.User{ID: uint(user_id)}).Find(&user).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "User not found",
+		})
+	}
+
+	// response user
+	responseUser := UserResponse(user)
+
+	// return
+	return c.Status(fiber.StatusOK).JSON(responseUser)
 }
 
 // get user by id
