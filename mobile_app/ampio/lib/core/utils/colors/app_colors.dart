@@ -11,5 +11,7 @@ abstract class AppColors {
   static Color orangePrimary = const Color.fromRGBO(255,177,45,1);
   static Color greyPrimary = const Color.fromRGBO(231, 231, 231, 1);
   static Color greySecondary = const Color.fromRGBO(56, 56, 56, 1);
+  static Color greyThirdly = const Color.fromRGBO(231, 231, 231, 1);
   static Color darkPrimary = const Color.fromRGBO(30, 30, 30, 1);
+  static Color pinkPrimary = const Color.fromRGBO(255, 0, 110, 1);
 }

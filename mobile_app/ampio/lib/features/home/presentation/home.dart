@@ -24,21 +24,24 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: const CustomizedAppBar(),
-      floatingActionButton: FloatingActionButton(
-        elevation: 5.0,
-        backgroundColor: AppColors.yellowPrimary,
-        onPressed: () => setState(() => index = 1),
-        child: const Icon(
-          Icons.home,
-          size: 36.0,
+    return SafeArea(
+      child: Scaffold(
+        appBar: const CustomizedAppBar(),
+        extendBodyBehindAppBar: true,
+        floatingActionButton: FloatingActionButton(
+          elevation: 5.0,
+          backgroundColor: AppColors.yellowPrimary,
+          onPressed: () => setState(() => index = 1),
+          child: const Icon(
+            Icons.home,
+            size: 36.0,
+          ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: buildBottomNavigationBar(),
+        resizeToAvoidBottomInset: false,
+        body: pages[index],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: buildBottomNavigationBar(),
-      resizeToAvoidBottomInset: false,
-      body: pages[index],
     );
   }
 
