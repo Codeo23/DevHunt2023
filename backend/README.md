@@ -3,7 +3,6 @@
 
 This is the backend of the application Ampio that will be presented on the 2nd Edition of the DevHunt organised by ENI Fianarantsoa.
 
-
 ## API Reference
 
 ### Users
@@ -13,6 +12,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 ```http
   POST /api/auth/login
 ```
+
 ```json
 {
     "identity": "nanta", # username or email
@@ -51,6 +51,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 ```http
   POST /api/users/signup
 ```
+
 ```json
 {
     "matricule": 0000,
@@ -72,6 +73,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 ```http
   PATCH /api/users/password
 ```
+
 ```json
 {
     "old_password": "",
@@ -89,6 +91,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 ```http
   PATCH /api/users/me/avatar
 ```
+
 ```json
 {
     "avatar": "file.png"
@@ -98,14 +101,17 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 ### Posts
 
 #### List all Posts
+
 ```http
   GET /api/posts
 ```
 
 #### Publish a post
+
 ```http
   POST /api/posts
 ```
+
 ```json
 {
     "title": "Title",
@@ -113,6 +119,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
     "file": "file.pdf"
 }
 ```
+
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `cookie`      | `string` | **Required**. The user's token as a cookie |
@@ -120,6 +127,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 ### Comments
 
 #### Get all comments in a post
+
 ```http
   GET /api/comments/:post_id
 ```
@@ -129,15 +137,18 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 | `post_id`      | `int` | **Required**. Id of post where to fetch comments |
 
 #### Post a comment
+
 ```http
   POST /api/comments/:post_id/comment
 ```
+
 ```json
 {
     "content": "This is a comment to be published",
     "file": "file.pdf"
 }
 ```
+
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `post_id`      | `int` | **Required**. Id of post where to fetch comments |
@@ -147,11 +158,13 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 | `cookie`      | `string` | **Required**. The user's token as a cookie |
 
 #### Delete comment
+
 If the connected user is the author of the comment, delete is possible
 
 ```http
   DELETE /api/comments/:id
 ```
+
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `int` | **Required**. Id of comment to delete |
@@ -163,14 +176,17 @@ If the connected user is the author of the comment, delete is possible
 ### Topics
 
 #### List all available Topics
+
 ```http
   GET /api/topics
 ```
 
 #### Create new topic
+
 ```http
   POST /api/topics
 ```
+
 ```json
 {
     "content": "javascript",
