@@ -5,10 +5,12 @@ import '../../../features/welcome/presentation/welcome_screen.dart';
 import '../../features/home/presentation/home.dart';
 import '../../../features/login/presentation/login_screen.dart';
 import '../../../features/scan/presentation/scan_screen.dart';
+import '../../../features/response/presentation/response_screen.dart';
+
 
 abstract class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.homePath,
+    initialLocation: RoutePath.responsePath,
     routes: [
       GoRoute(
         path: RoutePath.welcomePath,
@@ -21,11 +23,15 @@ abstract class AppRouter {
       GoRoute(
         path: RoutePath.homePath,
         builder: (context, state) => const Home(),
-  ),
-        GoRoute(
+      ),
+      GoRoute(
         path: RoutePath.scanPath,
         builder: (context, state) => const ScanScreen(),
       ),
+      GoRoute(
+        path: RoutePath.responsePath,
+        builder: (context,state) => const ResponseScreen()
+      )
     ],
   );
 }
