@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/colors/app_colors.dart';
 import '../../../../features/profile/presentation/widget/questions.dart';
 import '../../../../features/profile/presentation/widget/responses.dart';
+import '../../../../features/profile/presentation/widget/shares.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -87,7 +88,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             Expanded(
               child: DefaultTabController(
-                length: 2,
+                length: 3,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 5,
@@ -113,10 +114,19 @@ class ProfileScreen extends StatelessWidget {
                           Tab(
                             text: 'Mes réponses',
                           ),
+                          Tab(
+                            text: 'Mes partages',
+                          ),
                         ],
                       ),
                       const Expanded(
-                        child: TabBarView(children: [Questions(), Responses()]),
+                        child: TabBarView(
+                          children: [
+                            Questions(),
+                            Responses(),
+                            Shares(),
+                          ],
+                        ),
                       ),
                     ],
                   ),

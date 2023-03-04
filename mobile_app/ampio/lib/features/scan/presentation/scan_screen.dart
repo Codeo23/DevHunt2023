@@ -51,7 +51,6 @@ class _ScanScreen extends State<ScanScreen>
             ),
           ),
           Expanded(
-            flex: 1,
             child: Center(
               child: (result != null)
                   ? TextButton(
