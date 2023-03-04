@@ -22,25 +22,28 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: index == 0 ? const CustomizedAppBar() : null,
-      floatingActionButton: FloatingActionButton(
-        elevation: 5.0,
-        backgroundColor: AppColors.yellowPrimary,
-        onPressed: () => showModalBottomSheet(
-          context: context,
-          isScrollControlled:  true,
-          builder: (context) => const AddQuestion(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: index == 0 ? const CustomizedAppBar() : null,
+        floatingActionButton: FloatingActionButton(
+          elevation: 5.0,
+          backgroundColor: AppColors.yellowPrimary,
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            isScrollControlled:  true,
+            builder: (context) => const AddQuestion(),
+          ),
+          child: const Icon(
+            Icons.home,
+            size: 36.0,
+          ),
         ),
-        child: const Icon(
-          Icons.home,
-          size: 36.0,
-        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: buildBottomNavigationBar(),
+        extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: false,
+        body: pages[index],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: buildBottomNavigationBar(),
-      resizeToAvoidBottomInset: false,
-      body: pages[index],
     );
   }
 
