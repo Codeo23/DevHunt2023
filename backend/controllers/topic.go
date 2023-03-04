@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
@@ -44,7 +45,12 @@ func AddTopic(c *fiber.Ctx) error {
 		})
 	}
 
-	link := fmt.Sprintf("./public/topics/%s", file.Filename)
+	link := fmt.Sprintf("public/topics/%s", file.Filename)
+
+	// create directory if not exists
+	if _, err := os.Stat("public/topics"); os.IsNotExist(err) {
+		os.MkdirAll("public/topics", 0755)
+	}
 
 	// save image
 	if err := c.SaveFile(file, link); err != nil {
