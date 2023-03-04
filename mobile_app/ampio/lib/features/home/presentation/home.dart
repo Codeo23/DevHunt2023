@@ -30,18 +30,17 @@ class _HomeState extends State<Home> {
         onPressed: () => showModalBottomSheet(
           context: context,
           isScrollControlled:  true,
-
           builder: (context) => const AddQuestion(),
         ),
         child: const Icon(
           Icons.home,
           size: 36.0,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: buildBottomNavigationBar(),
-        resizeToAvoidBottomInset: false,
-        body: pages[index],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: buildBottomNavigationBar(),
+      resizeToAvoidBottomInset: false,
+      body: pages[index],
     );
   }
 
