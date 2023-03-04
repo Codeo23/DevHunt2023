@@ -121,6 +121,20 @@
             </list>
           </value>
         </entry>
+        <entry key="fluttericon">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/fluttericon-2.0.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="glassmorphism_ui">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/glassmorphism_ui-0.3.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="go_router">
           <value>
             <list>
@@ -282,6 +296,27 @@
             </list>
           </value>
         </entry>
+        <entry key="qr">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/qr-2.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="qr_code_scanner">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-1.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="qr_flutter">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/qr_flutter-4.0.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="simple_shadow">
           <value>
             <list>
@@ -383,6 +418,8 @@
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.1.2/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-2.0.1/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_screenutil-5.6.1/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/fluttericon-2.0.0/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/glassmorphism_ui-0.3.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/go_router-6.2.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-3.0.1/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.5/lib" />
@@ -406,6 +443,9 @@
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.4/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.5/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/qr-2.1.0/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/qr_code_scanner-1.0.1/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/qr_flutter-4.0.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/simple_shadow-0.3.1/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.9.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
