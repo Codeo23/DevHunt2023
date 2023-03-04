@@ -22,6 +22,8 @@ abstract class AppRouter {
       GoRoute(
         path: RoutePath.homePath,
         builder: (context, state) => const Home(),
+  ),
+        GoRoute(
         path: RoutePath.scanPath,
         builder: (context, state) => const ScanScreen(),
       ),
