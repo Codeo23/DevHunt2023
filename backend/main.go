@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Codeo23/DevHunt2023/backend/config"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -11,5 +12,5 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 
-	app.Listen(":3000")
+	app.Listen(config.Config("PORT"))
 }
