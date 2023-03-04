@@ -31,5 +31,13 @@ func ConnectDB() {
 	log.Println("Database connected successfully")
 	db.Logger = logger.Default.LogMode(logger.Info)
 
+	// Migrate the schema
+	// db.AutoMigrate(
+	// 	&models.User{},
+	// 	&models.Topic{},
+	// 	&models.Post{},
+	// 	&models.Comment{},
+	// )
+
 	Database = DbInstance{DB: db}
 }
