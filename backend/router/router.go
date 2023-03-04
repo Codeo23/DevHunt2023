@@ -22,11 +22,11 @@ func SetupRoutes(app *fiber.App) {
 	user.Get("/:id<int>", controllers.GetUserByID)
 	user.Get("/me", controllers.GetMe)
 
-	user.Post("/me/avatar", controllers.UploadAvatar)
 	user.Post("/signup", controllers.CreateUser)
 	user.Post("/logout", controllers.Logout)
 
 	user.Patch("/password", controllers.UpdatePass)
+	user.Patch("/me/avatar", controllers.UploadAvatar)
 
 	// post routes
 	post := api.Group("/posts")
