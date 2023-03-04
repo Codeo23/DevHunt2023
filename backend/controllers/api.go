@@ -6,5 +6,5 @@ import (
 
 // Hello function
 func Hello(c *fiber.Ctx) error {
-	return c.SendString("Hello, World!")
+	return c.SendString("Hello, it's working!")
 }
