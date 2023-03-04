@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 
 import '../../../core/utils/colors/app_colors.dart';
+import 'home_screen.dart';
 import 'widget/bottom_nav_bar_item.dart';
 import 'widget/customized_app_bar.dart';
 
@@ -16,6 +17,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int index = 0;
+  static const List<Widget> pages = [
+    HomeScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,8 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: buildBottomNavigationBar(),
+      resizeToAvoidBottomInset: false,
+      body: pages[index],
     );
   }
 

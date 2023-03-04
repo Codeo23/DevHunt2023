@@ -7,30 +7,45 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final TextInputType? textInputType;
   final bool obscureText;
+  final Icon? prefixIcon;
+  final String? prefixText;
+  final TextStyle? hintStyle;
+  final Color? fillColor;
+  final double borderRadius;
+  final TextEditingController? controller;
   final Function()? onTapShowPassword;
 
   const CustomTextField({
     super.key,
     required this.hintText,
     this.textInputType,
+    this.prefixIcon,
+    this.prefixText,
     this.obscureText = false,
+    this.fillColor,
+    this.hintStyle,
     this.onTapShowPassword,
+    this.borderRadius = 6.0,
+    this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       keyboardType: textInputType,
       obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white, fontSize: 14.sp),
+        hintStyle: hintStyle ?? TextStyle(color: Colors.white, fontSize: 14.sp),
         border: OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(6.0)),
+            borderRadius: BorderRadius.circular(borderRadius)
+        ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         filled: true,
-        fillColor: AppColors.greenSecondary.withOpacity(0.5),
+        fillColor: fillColor ?? AppColors.greenSecondary.withOpacity(0.5),
+        prefixIcon: prefixIcon,
         suffixIcon: textInputType == TextInputType.visiblePassword
             ? _buildSuffixIconPassword(obscureText, onTapShowPassword)
             : null,
