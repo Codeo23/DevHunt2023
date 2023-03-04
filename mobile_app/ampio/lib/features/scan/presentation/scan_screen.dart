@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '../../../../features/scan/presentation/widgets/draw_clip.dart';
+import '../../../../features/scan/presentation/widget/draw_clip.dart';
+import '../../../core/utils/constants/route_path.dart';
 import '../../../core/utils/colors/app_colors.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -52,19 +54,28 @@ class _ScanScreen extends State<ScanScreen>
             flex: 1,
             child: Center(
               child: (result != null)
-                  ? Text('Barcode Type:  Data: ${result!.code}')
+                  ? TextButton(
+                      onPressed: () => context.go(RoutePath.profilePath),
+                      child: Text(
+                        'Continuer en tant que Mialy Rak',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20.sp,
+                        ),
+                      ),
+                    )
                   : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1.0,
-                              color: const Color.fromRGBO(207, 207, 207, 1)
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(5.0))
-                          ),
+                              border: Border.all(
+                                  width: 1.0,
+                                  color:
+                                      const Color.fromRGBO(207, 207, 207, 1)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0))),
                           child: const Icon(
                             Icons.qr_code_scanner_outlined,
                             size: 30,

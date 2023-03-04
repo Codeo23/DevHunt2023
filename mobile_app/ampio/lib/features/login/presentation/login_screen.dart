@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/utils/colors/app_colors.dart';
-import '../../../features/login/presentation/widgets/build_form_login.dart';
+import '../../../features/login/presentation/widget/build_form_login.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
