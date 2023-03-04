@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../../../features/scan/presentation/widget/draw_clip.dart';
-import '../../../core/utils/constants/route_path.dart';
 import '../../../core/utils/colors/app_colors.dart';
 
 class ScanScreen extends StatefulWidget {

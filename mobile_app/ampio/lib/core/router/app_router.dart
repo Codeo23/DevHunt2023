@@ -7,10 +7,9 @@ import '../../../features/login/presentation/login_screen.dart';
 import '../../../features/scan/presentation/scan_screen.dart';
 import '../../../features/response/presentation/response_screen.dart';
 
-
 abstract class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.welcomePath,
+    initialLocation: RoutePath.homePath,
     routes: [
       GoRoute(
         path: RoutePath.welcomePath,

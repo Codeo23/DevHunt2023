@@ -12,7 +12,7 @@ class CustomizedAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leadingWidth: 148.w,
       elevation: 0.0,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       leading: Padding(
         padding: EdgeInsets.only(left: 20.0.w),
         child: Image.asset(
