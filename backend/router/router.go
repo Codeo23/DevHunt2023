@@ -21,4 +21,5 @@ func SetupRoutes(app *fiber.App) {
 	user.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, User!")
 	})
+	user.Get("/:id<int>", controllers.GetUserByID)
 }
