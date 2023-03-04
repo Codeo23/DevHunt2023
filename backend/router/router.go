@@ -22,4 +22,6 @@ func SetupRoutes(app *fiber.App) {
 	user.Get("/:id<int>", controllers.GetUserByID)
 
 	user.Post("/signup", controllers.CreateUser)
+
+	user.Patch("/password", controllers.UpdatePass)
 }
