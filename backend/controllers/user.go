@@ -141,6 +141,28 @@ func CreateUser(c *fiber.Ctx) error {
 	// database
 	db := database.Database.DB
 
+	// get file
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid file",
+		})
+	}
+
+	// create file name
+	fileName := fmt.Sprintf("%d-%s", newUser.ID, file.Filename)
+
+	// upload file
+	link := fmt.Sprintf("./public/avatar/%s", fileName)
+	if err := c.SaveFile(file, link); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Something went wrong",
+		})
+	}
+
+	// update user
+	newUser.Avatar = link
+
 	// hash password
 	hashedPassword, _ := HashPassword(newUser.Password)
 	newUser.Password = hashedPassword
@@ -240,7 +262,7 @@ func UploadAvatar(c *fiber.Ctx) error {
 	}
 
 	// get file
-	file, err := c.FormFile("file")
+	file, err := c.FormFile("avatar")
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Invalid file",
