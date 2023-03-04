@@ -7,7 +7,7 @@ import (
 // User model
 type User struct {
 	ID        uint      `json:"id" gorm:"primary_key"`
-	Matricule int       `json:"matricule" gorm:"unique; not null; size:4; primary_key"`
+	Matricule int       `json:"matricule" gorm:"unique; not null; primary_key"`
 	Avatar    string    `json:"avatar"`
 	Username  string    `json:"username"`
 	Email     string    `json:"email"`
