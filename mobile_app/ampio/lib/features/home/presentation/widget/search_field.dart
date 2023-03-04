@@ -21,7 +21,8 @@ class SearchField extends StatelessWidget {
       offset: const Offset(0, 4),
       sigma: 7.0,
       color: Colors.black.withOpacity(0.25),
-      child: SizedBox(
+      child: Container(
+        margin: EdgeInsets.only(top: 19.0.h),
         width: 388.w,
         height: 51.h,
         child: CustomTextField(
