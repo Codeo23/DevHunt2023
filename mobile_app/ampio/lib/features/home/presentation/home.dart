@@ -34,14 +34,15 @@ class _HomeState extends State<Home> {
           builder: (context) => const AddQuestion(),
         ),
         child: const Icon(
-          Icons.home,
+          Icons.add,
           size: 36.0,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: buildBottomNavigationBar(),
-        resizeToAvoidBottomInset: false,
-        body: pages[index],
+
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: buildBottomNavigationBar(),
+      resizeToAvoidBottomInset: false,
+      body: pages[index],
     );
   }
 
@@ -71,7 +72,7 @@ class _HomeState extends State<Home> {
               BottomNavBarItem(
                 icon: Icons.person,
                 onTap: () => setState(() => index = 1),
-                borderSide: index == 2
+                borderSide: index == 1
                     ? BorderSide(
                         color: AppColors.greenSecondary,
                         width: 3.5,

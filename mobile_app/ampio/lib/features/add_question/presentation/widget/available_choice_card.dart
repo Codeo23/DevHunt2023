@@ -27,15 +27,15 @@ class AvailableChoiceCard extends StatelessWidget {
       color: Colors.black,
       offset: const Offset(15, 15),
       child: Container(
-        padding: EdgeInsets.only(left: 20.w, top: 13.h),
-        width: 190.w,
-        height: 190.w,
+        width: 170.w,
+        height: 170.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.r),
           color: const Color.fromRGBO(238, 238, 238, 1),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SimpleShadow(
               sigma: 12,

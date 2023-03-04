@@ -14,11 +14,10 @@ class AddQuestion extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.8,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 20,
+      constraints: BoxConstraints(
+        maxHeight: size.height * 0.75,
       ),
+      padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -28,25 +27,50 @@ class AddQuestion extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:  [
-          QuestionItem(titleField: 'Topiques', hintText: 'ex : typescript'),
-          QuestionItem(titleField: 'Question', hintText: 'Poser votre question'),
-          QuestionItem(titleField: 'Description', hintText: 'Description du problème'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              AvailableChoiceCard(image: 'assets/images/link.png', title: 'Liens'),
-              AvailableChoiceCard(image: 'assets/images/file.png', title: 'Fichier et doc'),
-              AvailableChoiceCard(image: 'assets/images/img.png', title: 'Images'),
-            ],
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const QuestionItem(
+            titleField: 'Topiques',
+            hintText: 'ex : typescript',
           ),
-          Expanded(child: GradientButton(
+          const QuestionItem(
+            titleField: 'Question',
+            hintText: 'Poser votre question',
+          ),
+          const QuestionItem(
+            titleField: 'Description',
+            hintText: 'Description du problème',
+          ),
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: const [
+                AvailableChoiceCard(
+                  image: 'assets/images/link.png',
+                  title: 'Liens',
+                ),
+                SizedBox(width: 10,),
+                AvailableChoiceCard(
+                  image: 'assets/images/file.png',
+                  title: 'Fichier et doc',
+                ),
+                SizedBox(width: 10,),
+                AvailableChoiceCard(
+                  image: 'assets/images/img.png',
+                  title: 'Images',
+                ),
+              ],
+            ),
+          ),
+          GradientButton(
+            height: 50,
             labelButton: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Poser la question',
-                  style: GoogleFonts.poppins(fontSize: 20.sp,color: Colors.white),
+                  style: GoogleFonts.poppins(
+                      fontSize: 20.sp, color: Colors.white),
                 ),
               ],
             ),
@@ -59,7 +83,7 @@ class AddQuestion extends StatelessWidget {
               ],
             ),
             width: double.infinity,
-          ),)
+          )
         ],
       ),
     );
