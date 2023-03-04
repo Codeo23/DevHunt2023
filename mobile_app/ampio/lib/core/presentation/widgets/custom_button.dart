@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final Color? backgroundColor;
   final double? borderRadius;
   final void Function()? onPressed;
+  final bool borderSide;
 
   const CustomButton({
     super.key,
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
     this.width = double.infinity,
     this.borderRadius,
     this.backgroundColor,
+    this.borderSide = false,
   });
 
   @override
@@ -27,13 +29,15 @@ class CustomButton extends StatelessWidget {
       // TODO : change Redirection in home page
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        elevation: 0.0,
-        fixedSize: Size(width, height),
-        backgroundColor: backgroundColor ?? AppColors.greenPrimary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 6.r),
-        ),
-      ),
+          elevation: 0.0,
+          fixedSize: Size(width, height),
+          backgroundColor: backgroundColor ?? AppColors.greenPrimary,
+          shape: RoundedRectangleBorder(
+            side: borderSide
+                ? const BorderSide(width: 1.0, color: Colors.white)
+                : BorderSide.none,
+            borderRadius: BorderRadius.circular(borderRadius ?? 6.r),
+          )),
       child: labelButton,
     );
   }
