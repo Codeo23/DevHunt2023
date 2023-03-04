@@ -29,56 +29,72 @@ class SharingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 20.w,
-        vertical: 11.w
-      ),
-      decoration: BoxDecoration(
-        color: color ?? Colors.white,
-        borderRadius: BorderRadius.circular(39.r),
-        gradient: gradientColor,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(5, 1),
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 2.0
-          )
-        ]
-      ),
-      width: 393.w,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return SizedBox(
+      child: Stack(
         children: [
-          Row(
-            children: [
-              Avatar(
-                imageProvider: AssetImage(profileImage),
-                borderRadius: 30.r,
-              ),
-              SizedBox(width: 15.w),
-              Text(
-                name,
-                style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white
+          Container(
+            margin: EdgeInsets.only(top: 15.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.w,
+              vertical: 11.w
+            ),
+            decoration: BoxDecoration(
+              color: color ?? Colors.white,
+              borderRadius: BorderRadius.circular(39.r),
+              gradient: gradientColor,
+              boxShadow: [
+                BoxShadow(
+                  offset: const Offset(5, 1),
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 2.0
+                )
+              ]
+            ),
+            width: 393.w,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Avatar(
+                      imageProvider: AssetImage(profileImage),
+                      borderRadius: 30.r,
+                    ),
+                    SizedBox(width: 15.w),
+                    Text(
+                      name,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white
+                      ),
+                    ),
+                    SizedBox(width: 15.w),
+                  ],
                 ),
-              ),
-              SizedBox(width: 15.w),
-            ],
-          ),
-          SizedBox(height: 11.h),
-          Text(
-            content!,
-            style: GoogleFonts.poppins(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.white
+                SizedBox(height: 11.h),
+                Text(
+                  content!,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                _buildSharingSubject()
+              ],
             ),
           ),
-          SizedBox(height: 41.h),
-          _buildSharingSubject()
+          Positioned(
+            top: -20.h,
+            right: 15.w,
+            child: Image.asset(
+              'assets/images/Check.png',
+              width: 64.w,
+              height: 89.h,
+            ),
+          ),
         ],
       ),
     );
