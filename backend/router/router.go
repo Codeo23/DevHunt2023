@@ -17,9 +17,9 @@ func SetupRoutes(app *fiber.App) {
 	auth.Post("/login", controllers.Login)
 
 	// user routes
-	user := api.Group("/user")
-	user.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, User!")
-	})
+	user := api.Group("/users")
+	user.Get("/", controllers.GetAllUsers)
 	user.Get("/:id<int>", controllers.GetUserByID)
+
+	user.Post("/signup", controllers.CreateUser)
 }

@@ -10,6 +10,24 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// responses for the user
+type UserShow struct {
+	ID        uint   `json:"id"`
+	Matricule int    `json:"matricule"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+}
+
+// func to create a user response
+func UserResponse(user models.User) UserShow {
+	return UserShow{
+		ID:        user.ID,
+		Matricule: user.Matricule,
+		Username:  user.Username,
+		Email:     user.Email,
+	}
+}
+
 // hash password
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
@@ -63,5 +81,57 @@ func GetUserByID(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "User found",
 		"user":    user,
+	})
+}
+
+// get all user
+func GetAllUsers(c *fiber.Ctx) error {
+	// database
+	db := database.Database.DB
+
+	// get all users
+	var users []models.User
+	db.Find(&users)
+
+	// response user
+	var responseUsers []UserShow
+	for _, user := range users {
+		responseUsers = append(responseUsers, UserResponse(user))
+	}
+
+	// return
+	return c.Status(fiber.StatusOK).JSON(responseUsers)
+}
+
+// create user
+func CreateUser(c *fiber.Ctx) error {
+	newUser := new(models.User)
+
+	// check if the request is valid
+	if err := c.BodyParser(newUser); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid data",
+		})
+	}
+
+	// database
+	db := database.Database.DB
+
+	// hash password
+	hashedPassword, _ := HashPassword(newUser.Password)
+	newUser.Password = hashedPassword
+
+	// create user
+	if err := db.Create(&newUser).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Something went wrong",
+		})
+	}
+
+	// return
+	responseUser := UserResponse(*newUser)
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"message": "User created",
+		"user":    responseUser,
 	})
 }
