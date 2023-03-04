@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
@@ -48,15 +49,20 @@ func Publish(c *fiber.Ctx) error {
 	db := database.Database.DB
 
 	// upload file with post
-	file, er := c.FormFile("file")
+	file, er := c.FormFile("post")
 	if er != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Invalid file",
 		})
 	}
 
-	fileName := fmt.Sprintf("%d_%d_%s", body.ID, user_id, file.Filename)
-	link := fmt.Sprintf("./public/posts/%s", fileName)
+	// create directory if not exists
+	if _, err := os.Stat("public/posts"); os.IsNotExist(err) {
+		os.MkdirAll("public/posts", 0755)
+	}
+
+	fileName := fmt.Sprintf("%d_%s", user_id, file.Filename)
+	link := fmt.Sprintf("public/posts/%s", fileName)
 
 	// upload file
 	if err := c.SaveFile(file, link); err != nil {
