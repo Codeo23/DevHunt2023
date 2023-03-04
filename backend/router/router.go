@@ -40,4 +40,8 @@ func SetupRoutes(app *fiber.App) {
 	comment.Post("/:post_id<int>/comment", controllers.Comment)
 
 	comment.Delete("/:id<int>", controllers.DeleteComment)
+
+	// topic routes
+	topic := api.Group("/topics")
+	topic.Post("/", controllers.AddTopic)
 }
