@@ -21,6 +21,7 @@ dependencies:
   qr_flutter: ^4.0.0
   fluttericon: ^2.0.0
   glassmorphism_ui: ^0.3.0
+  dio: ^5.0.1
 
 dev_dependencies:
   flutter_test:
