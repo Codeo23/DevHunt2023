@@ -161,11 +161,18 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(fiber.Map{
+	// generate cookie
+	cookie := &fiber.Cookie{
+		Name:    "jwt",
+		Value:   t,
+		Expires: time.Now().Add(time.Hour * 24),
+	}
+
+	// set cookie
+	c.Cookie(cookie)
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  "success",
-		"message": "Logged in",
-		"data": fiber.Map{
-			"token": t,
-		},
+		"message": "Logged in successfully",
 	})
 }
