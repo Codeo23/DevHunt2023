@@ -17,10 +17,24 @@ func CheckPasswordHash(password string, hash string) bool {
 	return err == nil
 }
 
+// get user by email
 func getUserByEmail(e string) (*models.User, error) {
 	db := database.Database.DB
 	var user models.User
 	if err := db.Where(&models.User{Email: e}).Find(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &user, nil
+}
+
+// get user by username
+func getUserByUsername(u string) (*models.User, error) {
+	db := database.Database.DB
+	var user models.User
+	if err := db.Where(&models.User{Username: u}).Find(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
