@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	"net/mail"
 
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
@@ -41,4 +42,10 @@ func getUserByUsername(u string) (*models.User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+// valid email
+func validEmail(e string) bool {
+	_, err := mail.ParseAddress(e)
+	return err == nil
 }
