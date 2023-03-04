@@ -1,5 +1,5 @@
 abstract class RoutePath {
-  static String welcomePath = '/welcome';
-  static String loginPath = '/login';
-  static String homePath = '/';
+  static const String welcomePath = '/welcome';
+  static const String loginPath = '/login';
+  static const String homePath = '/';
 }
