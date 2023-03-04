@@ -6,9 +6,16 @@ import '../../../core/utils/colors/app_colors.dart';
 import 'widget/bottom_nav_bar_item.dart';
 import 'widget/customized_app_bar.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
 
   const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +25,7 @@ class Home extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         elevation: 5.0,
         backgroundColor: AppColors.yellowPrimary,
-        onPressed: () {},
+        onPressed: () => setState(() => index = 1),
         child: const Icon(
           Icons.home,
           size: 36.0,
@@ -36,7 +43,8 @@ class Home extends StatelessWidget {
       sigma: 5.0,
       child: BottomAppBar(
         shape: const CircularNotchedRectangle(),
-        elevation: 0.0,
+        elevation: 5.0,
+        notchMargin: 8.0,
         child: SizedBox(
           height: 60.h,
           child: Row(
@@ -44,19 +52,19 @@ class Home extends StatelessWidget {
             children: [
               BottomNavBarItem(
                 icon: Icons.home_filled,
-                onTap: () {},
-                borderSide: BorderSide(
+                onTap: () => setState(() => index = 0),
+                borderSide: index == 0 ? BorderSide(
                   color: AppColors.greenSecondary,
                   width: 3.5,
-                ),
+                ) : BorderSide.none,
               ),
               BottomNavBarItem(
                 icon: Icons.person,
-                onTap: () {},
-                borderSide: BorderSide(
+                onTap: () => setState(() => index = 2),
+                borderSide: index == 2 ? BorderSide(
                   color: AppColors.greenSecondary,
                   width: 3.5,
-                ),
+                ) : BorderSide.none,
               ),
             ],
           ),
