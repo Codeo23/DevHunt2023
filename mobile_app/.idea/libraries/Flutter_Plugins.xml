@@ -1,6 +1,12 @@
 <component name="libraryTable">
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
-    <CLASSES />
+    <CLASSES>
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.9" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.4" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.13" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_foundation-2.1.2" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.23" />
+    </CLASSES>
     <JAVADOC />
     <SOURCES />
   </library>
