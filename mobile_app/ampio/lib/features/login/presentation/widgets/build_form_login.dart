@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/presentation/widgets/custom_textfield.dart';
 import '../../../../core/presentation/widgets/custom_button.dart';
+import '../../../../core/utils/constants/route_path.dart';
 
 class BuildFormLogin extends StatelessWidget {
   const BuildFormLogin({Key? key}) : super(key: key);
@@ -55,8 +57,7 @@ class BuildFormLogin extends StatelessWidget {
                   )
                 ],
               ),
-              // TODO : redirection in home screen
-              onPressed: () => {},
+              onPressed: () => context.go(RoutePath.scanPath),
             ),
           ),
         ],

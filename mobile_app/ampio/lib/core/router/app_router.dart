@@ -1,4 +1,5 @@
 import 'package:ampio/features/login/presentation/login_screen.dart';
+import 'package:ampio/features/scan/presentation/scan_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/constants/route_path.dart';
@@ -16,6 +17,10 @@ abstract class AppRouter {
         path: RoutePath.loginPath,
         builder: (context, state) => const LoginScreen(),
       ),
+      GoRoute(
+        path: RoutePath.scanPath,
+        builder: (context, state) => const ScanScreen(),
+      )
     ],
   );
 }
