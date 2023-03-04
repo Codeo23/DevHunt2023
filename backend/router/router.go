@@ -43,5 +43,7 @@ func SetupRoutes(app *fiber.App) {
 
 	// topic routes
 	topic := api.Group("/topics")
+	topic.Get("/", controllers.GetTopics)
+
 	topic.Post("/", controllers.AddTopic)
 }
