@@ -23,6 +23,13 @@ func SetupRoutes(app *fiber.App) {
 	user.Get("/me", controllers.GetMe)
 
 	user.Post("/signup", controllers.CreateUser)
+	user.Post("/logout", controllers.Logout)
 
 	user.Patch("/password", controllers.UpdatePass)
+
+	// post routes
+	post := api.Group("/posts")
+	post.Get("/", controllers.GetAllPosts)
+
+	post.Post("/", controllers.Publish)
 }
