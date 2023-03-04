@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"crypto/rand"
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/Codeo23/DevHunt2023/backend/config"
@@ -18,6 +20,7 @@ type UserShow struct {
 	Matricule int    `json:"matricule"`
 	Username  string `json:"username"`
 	Email     string `json:"email"`
+	Avatar    string `json:"avatar"`
 }
 
 // func to create a user response
@@ -27,6 +30,7 @@ func UserResponse(user models.User) UserShow {
 		Matricule: user.Matricule,
 		Username:  user.Username,
 		Email:     user.Email,
+		Avatar:    user.Avatar,
 	}
 }
 
@@ -149,11 +153,18 @@ func CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	// create file name
-	fileName := fmt.Sprintf("%d-%s", newUser.ID, file.Filename)
+	// generate random filename
+	b := make([]byte, 6)
+	rand.Read(b)
+	fileName := fmt.Sprintf("%x-%s", b, file.Filename)
+
+	// create directory if not exist
+	if _, err := os.Stat("public/avatar"); os.IsNotExist(err) {
+		os.MkdirAll("public/avatar", 0755)
+	}
 
 	// upload file
-	link := fmt.Sprintf("./public/avatar/%s", fileName)
+	link := fmt.Sprintf("public/avatar/%s", fileName)
 	if err := c.SaveFile(file, link); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Something went wrong",
@@ -272,8 +283,13 @@ func UploadAvatar(c *fiber.Ctx) error {
 	// create file name
 	fileName := fmt.Sprintf("%d-%s", user_id, file.Filename)
 
+	// create directory if not exist
+	if _, err := os.Stat("public/avatar"); os.IsNotExist(err) {
+		os.MkdirAll("public/avatar", 0755)
+	}
+
 	// upload file
-	link := fmt.Sprintf("./public/avatar/%s", fileName)
+	link := fmt.Sprintf("public/avatar/%s", fileName)
 	if err := c.SaveFile(file, link); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Something went wrong",
