@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
 	"github.com/gofiber/fiber/v2"
@@ -8,12 +10,14 @@ import (
 
 type TopicResponse struct {
 	Content string `json:"content"`
+	Image   string `json:"image"`
 }
 
 // func to create a topic response
 func TopicResp(topic models.Topic) TopicResponse {
 	return TopicResponse{
 		Content: topic.Content,
+		Image:   topic.Image,
 	}
 }
 
@@ -32,9 +36,27 @@ func AddTopic(c *fiber.Ctx) error {
 	// database
 	db := database.Database.DB
 
+	// upload image
+	file, er := c.FormFile("image")
+	if er != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid image",
+		})
+	}
+
+	link := fmt.Sprintf("./public/topics/%s", file.Filename)
+
+	// save image
+	if err := c.SaveFile(file, link); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error saving image",
+		})
+	}
+
 	// create topic
 	topic := models.Topic{
 		Content: body.Content,
+		Image:   link,
 	}
 	if err := db.Create(&topic).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
