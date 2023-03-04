@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/Codeo23/DevHunt2023/backend/database"
@@ -9,15 +11,15 @@ import (
 )
 
 type CommentResponse struct {
-	ID      uint   `json:"id"`
 	Content string `json:"content"`
+	File    string `json:"file"`
 }
 
 // func to create a comment response
 func CommentRep(comment models.Comment) CommentResponse {
 	return CommentResponse{
-		ID:      comment.ID,
 		Content: comment.Content,
+		File:    comment.File,
 	}
 }
 
@@ -84,6 +86,32 @@ func Comment(c *fiber.Ctx) error {
 	// database
 	db := database.Database.DB
 
+	// upload file in comment
+	file, er := c.FormFile("file")
+	if er != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid file",
+		})
+	}
+
+	// filename
+	filename := fmt.Sprintf("Post%d_User%d-%s", post_id, user_id, file.Filename)
+
+	// file path
+	path := fmt.Sprintf("public/comment/%s", filename)
+
+	// create directory if not exists
+	if _, err := os.Stat("public/comment"); os.IsNotExist(err) {
+		os.MkdirAll("public/comment", 0755)
+	}
+
+	// save file
+	if err := c.SaveFile(file, path); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error saving file",
+		})
+	}
+
 	// check if the post exist
 	var post models.Post
 	if err := db.Where("id = ?", uint(post_id)).Find(&post).Error; err != nil {
@@ -97,6 +125,7 @@ func Comment(c *fiber.Ctx) error {
 		Content:  body.Content,
 		AuthorID: uint(user_id),
 		PostID:   uint(post_id),
+		File:     path,
 	}
 
 	// save comment
