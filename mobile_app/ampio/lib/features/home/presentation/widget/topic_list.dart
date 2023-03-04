@@ -14,22 +14,30 @@ class TopicList extends StatelessWidget {
       children: [
         Avatar(
           borderRadius: 54.r,
-          imageUrl: 'assets/images/JS.png',
+          imageProvider: const AssetImage(
+            'assets/images/JS.png',
+          ),
         ),
         SizedBox(width: 29.5.w),
         Avatar(
           borderRadius: 54.r,
-          imageUrl: 'assets/images/c#.jpg',
+          imageProvider: const AssetImage(
+            'assets/images/c#.jpg',
+          ),
         ),
         SizedBox(width: 29.5.w),
         Avatar(
           borderRadius: 54.r,
-          imageUrl: 'assets/images/JAVA.jpg',
+          imageProvider: const AssetImage(
+            'assets/images/JAVA.jpg',
+          ),
         ),
         SizedBox(width: 29.5.w),
         Avatar(
           borderRadius: 54.r,
-          imageUrl: 'assets/images/uml.jpg',
+          imageProvider: const AssetImage(
+            'assets/images/uml.jpg',
+          ),
         ),
       ],
     );
