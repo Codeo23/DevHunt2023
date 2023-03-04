@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/Codeo23/DevHunt2023/backend/config"
@@ -208,6 +209,57 @@ func UpdatePass(c *fiber.Ctx) error {
 	}
 
 	// update user
+	if err := db.Save(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Something went wrong",
+		})
+	}
+
+	// return
+	responseUser := UserResponse(user)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "User updated",
+		"user":    responseUser,
+	})
+}
+
+// upload avatar
+func UploadAvatar(c *fiber.Ctx) error {
+	// get user id
+	user_id, _ := GetUserID(c)
+
+	// database
+	db := database.Database.DB
+
+	// get user
+	var user models.User
+	if err := db.Where(&models.User{ID: uint(user_id)}).Find(&user).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "User not found",
+		})
+	}
+
+	// get file
+	file, err := c.FormFile("file")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid file",
+		})
+	}
+
+	// create file name
+	fileName := fmt.Sprintf("%d-%s", user_id, file.Filename)
+
+	// upload file
+	link := fmt.Sprintf("./public/avatar/%s", fileName)
+	if err := c.SaveFile(file, link); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Something went wrong",
+		})
+	}
+
+	// update user
+	user.Avatar = link
 	if err := db.Save(&user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Something went wrong",
