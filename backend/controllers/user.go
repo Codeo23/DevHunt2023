@@ -77,11 +77,11 @@ func GetUserByID(c *fiber.Ctx) error {
 		})
 	}
 
+	// response user
+	responseUser := UserResponse(user)
+
 	// return
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "User found",
-		"user":    user,
-	})
+	return c.Status(fiber.StatusOK).JSON(responseUser)
 }
 
 // get all user
