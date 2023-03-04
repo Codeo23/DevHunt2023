@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 
 import '../../../core/utils/colors/app_colors.dart';
+import '../../../../features/profile/presentation/profile_screen.dart';
 import 'home_screen.dart';
 import 'widget/bottom_nav_bar_item.dart';
 import 'widget/customized_app_bar.dart';
@@ -18,14 +19,16 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int index = 0;
   static const List<Widget> pages = [
-    HomeScreen()
+    HomeScreen(),
+    SizedBox(),
+    ProfileScreen()
   ];
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: const CustomizedAppBar(),
+      appBar: index == 0 ? const CustomizedAppBar() : null,
       floatingActionButton: FloatingActionButton(
         elevation: 5.0,
         backgroundColor: AppColors.yellowPrimary,

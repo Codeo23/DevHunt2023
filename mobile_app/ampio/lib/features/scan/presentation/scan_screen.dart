@@ -55,7 +55,7 @@ class _ScanScreen extends State<ScanScreen>
             child: Center(
               child: (result != null)
                   ? TextButton(
-                      onPressed: () => context.go(RoutePath.profilePath),
+                      onPressed: () => context.go(RoutePath.homePath),
                       child: Text(
                         'Continuer en tant que Mialy Rak',
                         style: GoogleFonts.poppins(

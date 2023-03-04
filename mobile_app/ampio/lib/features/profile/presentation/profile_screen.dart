@@ -11,8 +11,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
+    return Container(
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
@@ -23,10 +22,44 @@ class ProfileScreen extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            const Icon(Icons.menu),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size(25.w, 25.h),
+                        padding: const EdgeInsets.all(7.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0.r),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.chevron_left,
+                        size: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size(25.w, 25.h),
+                        padding: const EdgeInsets.all(7.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0.r),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.menu,
+                        size: 20.0,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
@@ -37,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Text(
                   'Mialy Rak.',
@@ -50,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Expanded(
               child: DefaultTabController(
@@ -93,6 +126,6 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    );
   }
 }
