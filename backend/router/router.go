@@ -38,4 +38,6 @@ func SetupRoutes(app *fiber.App) {
 	comment.Get("/:post_id<int>", controllers.GetComments)
 
 	comment.Post("/:post_id<int>/comment", controllers.Comment)
+
+	comment.Delete("/:id<int>", controllers.DeleteComment)
 }

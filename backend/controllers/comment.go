@@ -110,3 +110,53 @@ func Comment(c *fiber.Ctx) error {
 	response := CommentRep(comment)
 	return c.Status(fiber.StatusCreated).JSON(response)
 }
+
+// delete a comment
+func DeleteComment(c *fiber.Ctx) error {
+	// get comment id
+	comment_id := c.Params("id")
+	id, err := strconv.Atoi(comment_id)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid comment id",
+		})
+	}
+
+	// get user id
+	user_id, err := GetUserID(c)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+
+	// database
+	db := database.Database.DB
+
+	// check if the comment exist
+	var comment models.Comment
+	if err := db.Where("id = ?", uint(id)).Find(&comment).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Comment not found",
+		})
+	}
+
+	// check if the user is the author
+	if comment.AuthorID != uint(user_id) {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Unauthorized",
+		})
+	}
+
+	// delete comment
+	if err := db.Delete(&comment).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error deleting comment",
+		})
+	}
+
+	// return
+	return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+		"message": "Comment deleted",
+	})
+}
