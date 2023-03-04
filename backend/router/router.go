@@ -35,5 +35,7 @@ func SetupRoutes(app *fiber.App) {
 
 	// comment routes
 	comment := api.Group("/comments")
-	comment.Post("/:post_id<int>", controllers.Comment)
+	comment.Get("/:post_id<int>", controllers.GetComments)
+
+	comment.Post("/:post_id<int>/comment", controllers.Comment)
 }

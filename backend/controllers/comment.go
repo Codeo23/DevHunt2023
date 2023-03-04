@@ -21,6 +21,36 @@ func CommentRep(comment models.Comment) CommentResponse {
 	}
 }
 
+// get all comments from a post
+func GetComments(c *fiber.Ctx) error {
+	// get post id
+	id := c.Params("post_id")
+	post_id, err := strconv.Atoi(id)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid post id",
+		})
+	}
+
+	// database
+	db := database.Database.DB
+
+	// get comments
+	var comments []models.Comment
+	if err := db.Where("post_id = ?", uint(post_id)).Find(&comments).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error getting comments",
+		})
+	}
+
+	// return
+	var response []CommentResponse
+	for _, comment := range comments {
+		response = append(response, CommentRep(comment))
+	}
+	return c.Status(fiber.StatusOK).JSON(response)
+}
+
 // comment a post
 func Comment(c *fiber.Ctx) error {
 	type CommentRequest struct {
