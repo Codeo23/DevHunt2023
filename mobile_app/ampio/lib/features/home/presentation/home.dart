@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 
 import '../../../core/utils/colors/app_colors.dart';
+import '../../../../features/add_question/presentation/add_question.dart';
 import '../../../../features/profile/presentation/profile_screen.dart';
 import 'home_screen.dart';
 import 'widget/bottom_nav_bar_item.dart';
 import 'widget/customized_app_bar.dart';
 
 class Home extends StatefulWidget {
-
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -18,21 +18,21 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int index = 0;
-  static const List<Widget> pages = [
-    HomeScreen(),
-    SizedBox(),
-    ProfileScreen()
-  ];
+  static const List<Widget> pages = [HomeScreen(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: index == 0 ? const CustomizedAppBar() : null,
       floatingActionButton: FloatingActionButton(
         elevation: 5.0,
         backgroundColor: AppColors.yellowPrimary,
-        onPressed: () => setState(() => index = 1),
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled:  true,
+
+          builder: (context) => const AddQuestion(),
+        ),
         child: const Icon(
           Icons.home,
           size: 36.0,
@@ -46,7 +46,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildBottomNavigationBar() {
-
     return SimpleShadow(
       opacity: 0.5,
       sigma: 5.0,
@@ -62,18 +61,22 @@ class _HomeState extends State<Home> {
               BottomNavBarItem(
                 icon: Icons.home_filled,
                 onTap: () => setState(() => index = 0),
-                borderSide: index == 0 ? BorderSide(
-                  color: AppColors.greenSecondary,
-                  width: 3.5,
-                ) : BorderSide.none,
+                borderSide: index == 0
+                    ? BorderSide(
+                        color: AppColors.greenSecondary,
+                        width: 3.5,
+                      )
+                    : BorderSide.none,
               ),
               BottomNavBarItem(
                 icon: Icons.person,
-                onTap: () => setState(() => index = 2),
-                borderSide: index == 2 ? BorderSide(
-                  color: AppColors.greenSecondary,
-                  width: 3.5,
-                ) : BorderSide.none,
+                onTap: () => setState(() => index = 1),
+                borderSide: index == 2
+                    ? BorderSide(
+                        color: AppColors.greenSecondary,
+                        width: 3.5,
+                      )
+                    : BorderSide.none,
               ),
             ],
           ),
