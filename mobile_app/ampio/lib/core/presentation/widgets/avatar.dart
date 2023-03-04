@@ -19,7 +19,7 @@ class Avatar extends StatelessWidget {
       radius: borderRadius,
       child: CircleAvatar(
         backgroundImage: imageProvider,
-        radius: borderRadius - 3,
+        radius: borderRadius,
       ),
     );
   }
