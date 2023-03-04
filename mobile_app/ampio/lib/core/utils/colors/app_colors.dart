@@ -7,4 +7,6 @@ abstract class AppColors {
   static Color greenAccentSecondary = const Color.fromRGBO(10, 128, 51, 1);
   static Color bluePrimary = const Color.fromRGBO(19, 0, 90, 1);
   static Color yellowPrimary = const Color.fromRGBO(255, 177, 45, 1);
+  static Color orangePrimary = const Color.fromRGBO(255,177,45,1);
+  static Color greyPrimary = const Color.fromRGBO(231, 231, 231, 1);
 }
