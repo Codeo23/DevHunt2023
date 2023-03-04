@@ -2,6 +2,6 @@ package models
 
 // Topic model
 type Topic struct {
-	ID      uint   `json:"id" gorm:"primary_key"`
-	Libelle string `json:"libelle" gorm:"size:100; not null;"` // foreign key
+	ID      uint   `json:"id" gorm:"primary_key; index;"`
+	Content string `json:"content" gorm:"size:200; not null;"`
 }
