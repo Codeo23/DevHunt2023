@@ -1,10 +1,10 @@
-import 'package:ampio/core/utils/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../../../features/scan/presentation/widgets/draw_clip.dart';
+import '../../../core/utils/colors/app_colors.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
