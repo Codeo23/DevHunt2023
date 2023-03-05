@@ -18,7 +18,6 @@ class _ComsState extends State<Coms> {
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -113,9 +112,7 @@ class _ComsState extends State<Coms> {
                             await record();
                           }
 
-                          setState(() {
-
-                          });
+                          setState(() {});
                         },
                         icon: recorder.isRecording
                             ? Icon(Icons.stop)
