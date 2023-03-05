@@ -18,4 +18,12 @@ class AuthRepository {
 
     return response;
   }
+
+  Future<Response> getCurrentUser() async {
+    final response = await _networkService.get(
+      path: ApiEndPoint.currentUser,
+    );
+
+    return response;
+  }
 }
