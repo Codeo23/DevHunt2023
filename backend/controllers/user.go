@@ -169,42 +169,38 @@ func CreateUser(c *fiber.Ctx) error {
 	user.Password = hash
 
 	// upload avatar for the user
-	file, err := c.FormFile("avatar")
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Error while uploading file",
-		})
+	file, _ := c.FormFile("avatar")
+
+	if file != nil {
+		// create directory if not exists
+		if _, err := os.Stat("public/avatar"); os.IsNotExist(err) {
+			os.MkdirAll("public/avatar", 0755)
+		}
+
+		// create random filename with 4 caracter
+
+		fileName := fmt.Sprintf("%d%s", user.Matricule, file.Filename)
+
+		// check if the file already exists
+		if _, err := os.Stat("public/avatar/" + fileName); err == nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"message": "File already exists",
+			})
+		}
+
+		// random filename using random string
+
+		link := fmt.Sprintf("public/avatar/%s", fileName)
+
+		// upload file
+		if err := c.SaveFile(file, link); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error while uploading file",
+			})
+		}
+
+		user.Avatar = link
 	}
-
-	// create directory if not exists
-	if _, err := os.Stat("public/avatar"); os.IsNotExist(err) {
-		os.MkdirAll("public/avatar", 0755)
-	}
-
-	// create random filename with 4 caracter
-
-	fileName := fmt.Sprintf("%d%s", user.Matricule, file.Filename)
-
-	// check if the file already exists
-	if _, err := os.Stat("public/avatar/" + fileName); err == nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "File already exists",
-		})
-	}
-
-	// random filename using random string
-
-	link := fmt.Sprintf("public/avatar/%s", fileName)
-
-	// upload file
-	if err := c.SaveFile(file, link); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error while uploading file",
-		})
-	}
-
-	// set the avatar link
-	user.Avatar = link
 
 	if err := db.Create(&user).Error; err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
