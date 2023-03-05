@@ -51,26 +51,32 @@ def get_mail(sender_id, cmd, **ext):
 def get_password(sender_id, cmd, **extends):
     matricule = query.get_temp(sender_id, 'mat')
     password = cmd
-    print(matricule,password)
-    query.set_action(sender_id, None)
-    menus =[
-            {"title":"Marihasina","subtitle":"Bienvenue Marihasina","pdp":"https://avatars.githubusercontent.com/u/80751503?s=400&u=6a0d04a90a1089e5ad180560b65371d56c0a20a8&v=4"},
+    data = users.getOneUser(matricule)
+    global author_id
+    author_id = data[0]
+    if(data!= None):
+        query.set_action(sender_id, None)
+        menus =[
+                {"title":f"{data[3]}","subtitle":f"Bienvenue {data[3]}","pdp":f"https://1223-197-149-23-165.ngrok.io/api/users/{data[0]}/avatar"},
+            ]
+        elements=[
+            Element(
+                title=r['title'],
+                subtitle=r['subtitle'],
+                image_url=r['pdp'],
+                buttons=[
+                    Button(
+                        type="postback",
+                        title="Continuer",
+                        payload=Payload('/is_authentified',title=r['title'])
+                    )
+                ],
+            ) for r in menus
         ]
-    elements=[
-        Element(
-            title=r['title'],
-            subtitle=r['subtitle'],
-            image_url=r['pdp'],
-            buttons=[
-                Button(
-                    type="postback",
-                    title="Continuer",
-                    payload=Payload('/is_authentified',title=r['title'])
-                )
-            ],
-        ) for r in menus
-    ]
-    chat.send_generic_template(sender_id,elements, next=True)
+        chat.send_generic_template(sender_id,elements, next=True)
+    else:
+        query.set_action(sender_id, "/get_password")
+    
     
 @ampalibe.command("/is_authentified")
 def is_authentified(sender_id,**extends):
@@ -81,7 +87,6 @@ def is_authentified(sender_id,**extends):
         QuickReply(title="Voir ampio app🤳🏼",payload=Payload('/get_answer',by='ampio_app'))
         ]
     chat.send_quick_reply(sender_id,quick_rep,"Que voulez-vous faire?😃 ")
-    query.del_temp(sender_id, 'mat')
 
 @ampalibe.command('/get_answer')
 def get_answer(sender_id ,by,**extends):
@@ -102,65 +107,106 @@ def get_answer(sender_id ,by,**extends):
                         type="postback",
                         title="Choisir",
                         payload=Payload('/checktypequestion',title=r['title'])
-                    )
+                    ),
                 ],
             ) for r in menus
         ]
         chat.send_generic_template(sender_id,elements, next=True)
     
-
 @ampalibe.command('/checktypequestion')
 def checktypequestion(sender_id,title,**extends):
     query.set_action(sender_id,None)
     chat.send_text(sender_id,f"Vous avez choisi de question une question de type 😃{title}")
     if title=='Text':
-        chat.send_text(sender_id,"Posez ici votre question pour que les autres membre puissent le voir🙏")
-        query.set_action(sender_id,'/get_simple_question')
+        chat.send_text(sender_id,"Posez ici le titre de votre question🙏")
+        query.set_action(sender_id,'/get_simple_question_title')
     elif title=='Avec_fichier':
-        chat.send_text(sender_id,"Posez ici la question, et n'oublies pas de joindre votre fichier 🙏")
-        query.set_action(sender_id,'/get_with_fic')
+        chat.send_text(sender_id,"Posez ici le titre de votre question 🙏")
+        query.set_action(sender_id,'/get_with_fic_title')
     elif title=="Fichier_seulement":
         chat.send_text(sender_id,"Glissez ici votre fichier 🙏")
         query.set_action(sender_id,'/get_fic_only')
 
-@ampalibe.action('/get_simple_question')
-def get_simple_question(sender_id,cmd,**extends):
-    query.set_temp(sender_id, 'question', cmd)
-    chat.send_text(sender_id,"Question bien anvoyé 👍")
-    quick_rep=[
-        QuickReply(title="Oui🤝",payload=Payload('/is_authentified',by='question')),
-        QuickReply(title="Non🙂",payload=Payload('/is_authentified',by='autre')),
-       
-    ]
-    chat.send_quick_reply(sender_id,quick_rep,"Vous voulez autre chose?😃 ")
 
-@ampalibe.action('/get_with_fic')
-def get_simple_question(sender_id,cmd,**extends):
-    query.set_temp(sender_id, 'question', cmd)
-    chat.send_text(sender_id,"Question bien anvoyé 👍")
-    quick_rep=[
-        QuickReply(title="Oui🤝",payload=Payload('/is_authentified',by='question')),
-        QuickReply(title="Non🙂",payload=Payload('/is_authentified',by='autre')),
-       
-    ]
-    chat.send_quick_reply(sender_id,quick_rep,"Vous voulez autre chose?😃 ")
-@ampalibe.action('/get_fic_only')
-def get_simple_question(sender_id,cmd,**extends):
-    query.set_temp(sender_id, 'question', cmd)
-    chat.send_text(sender_id,"Question bien anvoyé 👍")
-    quick_rep=[
-        QuickReply(title="Oui🤝",payload=Payload('/is_authentified',by='question')),
-        QuickReply(title="Non🙂",payload=Payload('/is_authentified',by='autre')),
-       
-    ]
-    chat.send_quick_reply(sender_id,quick_rep,"Vous voulez autre chose?😃 ")
+'''simple question'''
 
+@ampalibe.action('/get_simple_question_title')
+def get_simple_question(sender_id,cmd,**extends):
+    query.set_temp(sender_id, 'title', cmd)
+    chat.send_text(sender_id,"Veuilez saisir ici le contenu de votre question🙂")
+    query.set_action(sender_id,"/get_simple_question_itself")
+    
+
+@ampalibe.action('/get_simple_question_itself')
+def get_simple_question(sender_id, cmd,**extends):
+    query.set_action(sender_id,None)
+    contenu = cmd
+    try:
+        titre = query.get_temp(sender_id, 'title')
+        users.postPost(str(titre),str(contenu),author_id)
+        chat.send_text(sender_id,"Question bien posté🔥")
+        quick_rep=[
+            QuickReply(title="Oui🤝",payload=Payload('/is_authentified',by='question')),
+            QuickReply(title="Non🙂",payload=Payload('/is_authentified',by='autre')),
+        ]
+        chat.send_quick_reply(sender_id,quick_rep,"Vous voulez autre chose?😃 ")
+    except:
+        query.set_action(sender_id,"/get_simple_question_title")
+    query.del_temp(sender_id, 'title')
+
+
+
+
+@ampalibe.action('/get_with_fic_title')
+def get_simple_question(sender_id,cmd,**extends):
+    query.set_temp(sender_id, 'titre_fic', cmd)
+    chat.send_text(sender_id,"Veuilez saisir ici le contenu de votre question🙂")
+    query.set_action(sender_id,"/get_with_fic_contenu")
+   
+@ampalibe.action('/get_with_fic_contenu')
+def get_simple_question(sender_id, cmd,**extends):
+    query.set_temp(sender_id, 'cont_fic', cmd)
+    chat.send_text(sender_id,"Glissez maintenant votre fichier🙂")
+    query.set_action(sender_id,"/get_with_fic_itself")
+
+@ampalibe.action('/get_with_fic_itself')
+def get_simple_question(sender_id, cmd,**extends):
+    query.set_action(sender_id,None)
+    titre = query.get_temp(sender_id, 'titre_fic')
+    contenu = query.get_temp(sender_id, 'cont_fic')
+    fichier = cmd
+    try:
+        users.postPostFic(str(titre),str(contenu),str(fichier),author_id)
+        chat.send_text(sender_id,"Question bien posté🔥")
+        quick_rep=[
+            QuickReply(title="Oui🤝",payload=Payload('/is_authentified',by='question')),
+            QuickReply(title="Non🙂",payload=Payload('/saygoodbye',by='autre')),
+        ]
+        chat.send_quick_reply(sender_id,quick_rep,"Vous voulez autre chose?😃 ")
+    except:
+        query.set_action(sender_id,"/get_simple_question_title")
     
 
 
+@ampalibe.action('/get_fic_only')
+def get_simple_question(sender_id,cmd,**extends):
+    query.set_action(sender_id,None)
+    print(cmd)
+    """
+    query.set_temp(sender_id, 'question', cmd)
+    chat.send_text(sender_id,"Question bien anvoyé 👍")
+    quick_rep=[
+        QuickReply(title="Oui🤝",payload=Payload('/is_authentified',by='question')),
+        QuickReply(title="Non🙂",payload=Payload('/is_authentified',by='autre')),
+       
+    ]
+    chat.send_quick_reply(sender_id,quick_rep,"Vous voulez autre chose?😃 ")
+    """
+@ampalibe.command('/saygoodbye')
+def saygoodbye(sender_id,by,**extends):
+    query.set_action(sender_id,None)
+    chat.send_message(sender_id,"Au revoir🥺 et merci de votre visite👋")
 
-
-     
 
 
 
