@@ -26,122 +26,115 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-          child: Container(
-            color: AppColors.greyThirdly,
-            width: double.infinity,
-            child: Stack(
-              children: [
-                Positioned(
-                  right: -25.0.w,
-                  top: -25.0.h,
-                  child: BlurredContainer(
-                    color: AppColors.greenSecondary,
-                  ),
-                ),
-                Positioned(
-                  left: -38.w,
-                  top: 588.h,
-                  child: BlurredContainer(
-                    color: AppColors.pinkPrimary,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        color: AppColors.greyThirdly,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            Positioned(
+              right: -25.0.w,
+              top: -25.0.h,
+              child: BlurredContainer(
+                color: AppColors.greenSecondary,
+              ),
+            ),
+            Positioned(
+              left: -38.w,
+              top: 588.h,
+              child: BlurredContainer(
+                color: AppColors.pinkPrimary,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 50.w),
+                  const Center(child: SearchField()),
+                  SizedBox(height: 5.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(height: 50.w),
-                      const Center(child: SearchField()),
-                      SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'TOPIQUES',
-                            style: GoogleFonts.poppins(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Voir tout',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 60.h, child: const TopicList()),
-                      SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'QUESTIONS',
-                            style: GoogleFonts.poppins(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              context.push(RoutePath.allQuestionsPath);
-                            },
-                            child: Text(
-                              'Voir tout',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 45.h, child: const ChipList()),
-                      SizedBox(height: 5.h),
-                      const PostCard(
-                        profileImage: 'assets/images/person1.jpg',
-                        name: 'Jane Doe',
-                        createdAt: '1 min',
-                        content:
-                            'Group Array by Object key where key is an object',
-                        topic: 'JavaScript',
-                      ),
-                      SizedBox(height: 22.h),
                       Text(
-                        'PARTAGE',
+                        'TOPIQUES',
                         style: GoogleFonts.poppins(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
                       ),
-                      SizedBox(height: 12.h),
-                      const SharingLists(),
-                      SizedBox(height: 15.h),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Voir tout',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 60.h, child: const TopicList()),
+                  SizedBox(height: 5.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'QUESTIONS',
+                        style: GoogleFonts.poppins(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.push(RoutePath.allQuestionsPath);
+                        },
+                        child: Text(
+                          'Voir tout',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 45.h, child: _buildChipList()),
+                  SizedBox(height: 5.h),
+                  const PostCard(
+                    profileImage: 'assets/images/person1.jpg',
+                    name: 'Jane Doe',
+                    createdAt: '1 min',
+                    content: 'Group Array by Object key where key is an object',
+                    topic: 'JavaScript',
+                  ),
+                  SizedBox(height: 22.h),
+                  Text(
+                    'PARTAGE',
+                    style: GoogleFonts.poppins(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 12.h),
+                  const SharingLists(),
+                  SizedBox(height: 15.h),
+                ],
+              ),
             ),
-          ),
-        );
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildChipList() {
     TextStyle style1 = GoogleFonts.poppins(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w500,
-        color: Colors.white
-    );
+        fontSize: 14.sp, fontWeight: FontWeight.w500, color: Colors.white);
     TextStyle style2 = GoogleFonts.poppins(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w500,
-        color: Colors.black
-    );
+        fontSize: 14.sp, fontWeight: FontWeight.w500, color: Colors.black);
 
     return ListView(
       scrollDirection: Axis.horizontal,
@@ -157,10 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           selectedColor: AppColors.darkPrimary,
-          label: Text(
-              'Top question',
-              style: style1
-          ),
+          label: Text('Top question', style: isTopQuestions ? style1 : style2),
         ),
         SizedBox(width: 15.w),
         ChoiceChip(
@@ -174,13 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           disabledColor: Colors.transparent,
-          side: const BorderSide(
-              color: Colors.grey
-          ),
-          label: Text(
-              'Récents',
-              style: style2
-          ),
+          side: const BorderSide(color: Colors.grey),
+          label: Text('Récents', style: isRecentQuestions ? style1 : style2),
         ),
         SizedBox(width: 15.w),
         ChoiceChip(
@@ -194,13 +179,9 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           disabledColor: Colors.transparent,
-          side: const BorderSide(
-              color: Colors.grey
-          ),
-          label: Text(
-              'Cette semaine',
-              style: style2
-          ),
+          side: const BorderSide(color: Colors.grey),
+          label: Text('Cette semaine',
+              style: isThisWeekQuestions ? style1 : style2),
         ),
       ],
     );

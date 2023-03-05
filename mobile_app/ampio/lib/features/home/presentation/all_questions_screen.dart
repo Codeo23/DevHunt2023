@@ -1,4 +1,3 @@
-import 'package:ampio/features/home/presentation/widget/chip_list.dart';
 import 'package:ampio/features/home/presentation/widget/search_field.dart';
 import 'package:ampio/features/home/presentation/widget/top_questions.dart';
 import 'package:flutter/material.dart';
@@ -52,14 +51,14 @@ class AllQuestionsScreen extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black),
+                            color: Colors.black
+                        ),
                       ),
+                    ],
                     ),
                   ],
                 ),
-                SizedBox(height: 12.h),
-                const TopQuestions()
-              ]),
+              ),
             ),
           ],
         ),

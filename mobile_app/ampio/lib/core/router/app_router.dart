@@ -9,6 +9,7 @@ import '../../features/home/presentation/home.dart';
 import '../../../features/login/presentation/login_screen.dart';
 import '../../../features/scan/presentation/scan_screen.dart';
 import '../../../features/response/presentation/response_screen.dart';
+import '../../features/settings/presentation/settings_screen.dart';
 
 abstract class AppRouter {
   static GoRouter configurations = GoRouter(

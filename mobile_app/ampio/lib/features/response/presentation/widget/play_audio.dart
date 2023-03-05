@@ -53,106 +53,79 @@ class _PlayAudioState extends State<PlayAudio> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        /*Slider(
-            min: 0,
-            max: duration.inSeconds.toDouble(),
-            value: position.inSeconds.toDouble(),
-            onChanged: (value) async {
-              final position = Duration(seconds: value.toInt());
-              await audioPlayer.seek(position);
-
-              await audioPlayer.resume();
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${numberToTwoDigits(position.inMinutes)}:${numberToTwoDigits(position.inSeconds)}',
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromRGBO(231, 231, 231, 1),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.5),
+                child: Image.asset(
+                  'assets/images/avatar.jpg',
+                  height: 25,
+                  width: 25,
+                  fit: BoxFit.cover,
                 ),
-                Text(
-                  '${numberToTwoDigits(duration.inMinutes)}:${numberToTwoDigits(duration.inSeconds)}',
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-              onPressed: () async {
-                if (isPlaying) {
-                  await audioPlayer.pause();
-                } else {
-                  await audioPlayer.resume();
-                }
-              },
-              icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow))*/
-        Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.5),
-              child: Image.asset(
-                'assets/images/avatar.jpg',
-                height: 25,
-                width: 25,
-                fit: BoxFit.cover,
               ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hasina BG',
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600, fontSize: 12.sp),
-                ),
-                Text(
-                  '2h',
-                  style: GoogleFonts.poppins(
-                    color: Colors.grey,
-                    fontSize: 12.sp,
+              const SizedBox(
+                width: 5,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hasina BG',
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600, fontSize: 12.sp),
                   ),
-                )
-              ],
-            )
-          ],
-        ),
-        Row(
-          children: [
-            IconButton(
-                onPressed: () async {
-                  if (isPlaying) {
-                    await audioPlayer.pause();
-                  } else {
-                    await audioPlayer.resume();
-                  }
+                  Text(
+                    '2h',
+                    style: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.sp,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () async {
+                    if (isPlaying) {
+                      await audioPlayer.pause();
+                    } else {
+                      await audioPlayer.resume();
+                    }
+                  },
+                  icon: Icon(
+                    isPlaying ? Icons.pause : Icons.play_arrow,
+                  ),
+              ),
+              Slider(
+                min: 0,
+                max: duration.inSeconds.toDouble(),
+                value: position.inSeconds.toDouble(),
+                onChanged: (value) async {
+                  final position = Duration(seconds: value.toInt());
+                  await audioPlayer.seek(position);
+                  await audioPlayer.resume();
                 },
-                icon: Icon(
-                  isPlaying ? Icons.pause : Icons.play_arrow,
-                ),
-            ),
-            Slider(
-              min: 0,
-              max: duration.inSeconds.toDouble(),
-              value: position.inSeconds.toDouble(),
-              onChanged: (value) async {
-                final position = Duration(seconds: value.toInt());
-                await audioPlayer.seek(position);
-
-                await audioPlayer.resume();
-              },
-            ),
-            Text(
-              '${numberToTwoDigits(position.inMinutes)}:${numberToTwoDigits(position.inSeconds)}',
-            ),
-          ],
-        )
-      ],
+              ),
+              Text(
+                '${numberToTwoDigits(position.inMinutes)}:${numberToTwoDigits(position.inSeconds)}',
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
