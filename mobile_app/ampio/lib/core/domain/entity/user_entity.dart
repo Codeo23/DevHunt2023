@@ -14,8 +14,8 @@ class UserEntity {
   });
 
   UserEntity.fromJson(Map<String, dynamic> json)
-      : matriculate = json['matriculate'],
-        username = json['username'],
+      : matriculate = json['matriculate'] as String,
+        username = json['username'] as String,
         password = json['password'] ?? '',
         email = json['email'] ?? '',
         avatar = json['avatar'] ?? '';
