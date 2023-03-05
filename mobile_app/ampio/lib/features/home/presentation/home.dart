@@ -22,28 +22,27 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: index == 0 ? const CustomizedAppBar() : null,
-        floatingActionButton: FloatingActionButton(
-          elevation: 5.0,
-          backgroundColor: AppColors.yellowPrimary,
-          onPressed: () => showModalBottomSheet(
-            context: context,
-            isScrollControlled:  true,
-            builder: (context) => const AddQuestion(),
-          ),
-          child: const Icon(
-            Icons.home,
-            size: 36.0,
-          ),
+    return Scaffold(
+      appBar: index == 0 ? const CustomizedAppBar() : null,
+      floatingActionButton: FloatingActionButton(
+        elevation: 5.0,
+        backgroundColor: AppColors.yellowPrimary,
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled:  true,
+
+          builder: (context) => const AddQuestion(),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: buildBottomNavigationBar(),
-        extendBodyBehindAppBar: true,
-        resizeToAvoidBottomInset: false,
-        body: pages[index],
+        child: const Icon(
+          Icons.add,
+          size: 36.0,
+        ),
+
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: buildBottomNavigationBar(),
+      resizeToAvoidBottomInset: false,
+      body: pages[index],
     );
   }
 
@@ -73,7 +72,7 @@ class _HomeState extends State<Home> {
               BottomNavBarItem(
                 icon: Icons.person,
                 onTap: () => setState(() => index = 1),
-                borderSide: index == 2
+                borderSide: index == 1
                     ? BorderSide(
                         color: AppColors.greenSecondary,
                         width: 3.5,
