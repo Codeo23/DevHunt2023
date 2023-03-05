@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/Codeo23/DevHunt2023/backend/controllers"
+	"github.com/Codeo23/DevHunt2023/backend/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
@@ -18,33 +19,33 @@ func SetupRoutes(app *fiber.App) {
 
 	// user routes
 	user := api.Group("/users")
-	user.Get("/", controllers.GetAllUsers)
-	user.Get("/:id<int>", controllers.GetUserByID)
-	user.Get("/me", controllers.GetMe)
+	user.Get("/", controllers.GetUsers)
+	user.Get("/:id<int>", controllers.GetUser)
+	user.Get("/me", middleware.Protected(), controllers.GetMe)
+	user.Get("/search", controllers.GetUserByEmail)
+	user.Get("/:user_id<int>/avatar", controllers.GetAvatar)
 
 	user.Post("/signup", controllers.CreateUser)
-	user.Post("/logout", controllers.Logout)
-
-	user.Patch("/password", controllers.UpdatePass)
-	user.Patch("/me/avatar", controllers.UploadAvatar)
+	user.Put("/:id<int>", middleware.Protected(), controllers.UpdateUser)
+	user.Delete("/:id<int>", middleware.Protected(), controllers.DeleteUser)
 
 	// post routes
 	post := api.Group("/posts")
 	post.Get("/", controllers.GetAllPosts)
+	post.Get("/:topic<string>", controllers.GetPostsFromTopic)
+	post.Get("/:id<int>/file", controllers.GetPostFile)
 
-	post.Post("/", controllers.Publish)
+	post.Post("/publish", controllers.Publish)
 
 	// comment routes
 	comment := api.Group("/comments")
 	comment.Get("/:post_id<int>", controllers.GetComments)
 
-	comment.Post("/:post_id<int>/comment", controllers.Comment)
+	comment.Post("/:post_id<int>/comment", middleware.Protected(), controllers.Comment)
 
-	comment.Delete("/:id<int>", controllers.DeleteComment)
+	comment.Delete("/user_:user_id<int>/:id<int>", middleware.Protected(), controllers.DeleteComment)
 
 	// topic routes
 	topic := api.Group("/topics")
 	topic.Get("/", controllers.GetTopics)
-
-	topic.Post("/", controllers.AddTopic)
 }

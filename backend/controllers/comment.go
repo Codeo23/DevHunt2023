@@ -67,12 +67,7 @@ func Comment(c *fiber.Ctx) error {
 	}
 
 	// get user id
-	user_id, err := GetUserID(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
-		})
-	}
+	user_id := GetUserID(c)
 
 	// get post id
 	id := c.Params("post_id")
@@ -89,9 +84,7 @@ func Comment(c *fiber.Ctx) error {
 	// upload file in comment
 	file, er := c.FormFile("file")
 	if er != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid file",
-		})
+		return c.Next()
 	}
 
 	// filename
@@ -123,8 +116,8 @@ func Comment(c *fiber.Ctx) error {
 	// create comment
 	comment := models.Comment{
 		Content:  body.Content,
-		AuthorID: uint(user_id),
-		PostID:   uint(post_id),
+		AuthorID: user_id,
+		PostID:   user_id,
 		File:     path,
 	}
 
@@ -152,12 +145,7 @@ func DeleteComment(c *fiber.Ctx) error {
 	}
 
 	// get user id
-	user_id, err := GetUserID(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
-		})
-	}
+	user_id := GetUserID(c)
 
 	// database
 	db := database.Database.DB
@@ -170,8 +158,14 @@ func DeleteComment(c *fiber.Ctx) error {
 		})
 	}
 
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid user id",
+		})
+	}
+
 	// check if the user is the author
-	if comment.AuthorID != uint(user_id) {
+	if comment.AuthorID != user_id {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
 		})

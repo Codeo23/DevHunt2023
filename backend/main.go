@@ -18,9 +18,11 @@ func main() {
 	app := fiber.New(
 		fiber.Config{
 			CaseSensitive: true,
-			AppName:       "DevHunt2023",
+			AppName:       "DevHunt 2023",
 		},
 	)
+
+	// use cors
 	app.Use(cors.New())
 
 	// Setup routes
