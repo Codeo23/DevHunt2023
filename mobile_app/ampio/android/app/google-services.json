@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "291472511327",
+    "project_id": "ampio-e00ff",
+    "storage_bucket": "ampio-e00ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291472511327:android:f402fbdd1c9870febaa6ea",
+        "android_client_info": {
+          "package_name": "com.codeo.ampio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291472511327-maq6a048laq1o7c50dlk2mstd19120sb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn9pNcqPzfJcYCPV6mnQS4IMNSwj4b2Ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291472511327-maq6a048laq1o7c50dlk2mstd19120sb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
