@@ -1,11 +1,12 @@
+import 'package:ampio/core/utils/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../features/response/presentation/widget/response_item.dart';
 import '../../../../core/presentation/widgets/blurred_container.dart';
 import '../../../../features/response/presentation/widget/coms.dart';
-
 
 class ResponseScreen extends StatelessWidget {
   const ResponseScreen({Key? key}) : super(key: key);
@@ -23,12 +24,15 @@ class ResponseScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Icon(Icons.chevron_left),
+                      IconButton(
+                        onPressed: () => context.pop(),
+                        icon: const Icon(Icons.chevron_left),
+                      ),
                       const SizedBox(
                         width: 5,
                       ),
@@ -99,39 +103,22 @@ class ResponseScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  Expanded(
-                      child: ListView.separated(
-                          itemBuilder: (context, index) {
-                            return ResponseItem();
-                          },
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 10,
-                            );
-                          },
-                          itemCount: 5))
+                  ResponseItem(),
+                  const SizedBox(height: 5),
+                  ResponseItem(),
+                  const SizedBox(height: 5),
+                  ResponseItem()
                 ],
               ),
             ),
             Positioned(
               bottom: 10,
-              child: Padding(
+              right: 0,
+              left: 0,
+              child: Container(
                 padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/images/avatar.jpg',
-                        height: 40,
-                        width: 40,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(width: 20,),
-                    // TODO : TextField commentaire
-                  ],
-                ),
+                color: Colors.white,
+                child: Coms()
               ),
             )
           ],

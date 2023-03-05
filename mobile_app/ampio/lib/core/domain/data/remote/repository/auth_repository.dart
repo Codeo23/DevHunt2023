@@ -1,14 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../utils/constants/api_end_point.dart';
+import '../network_service.dart';
 
 class AuthRepository {
 
-  Future<UserCredential> login(String username, String password) async {
+  final NetworkService _networkService = NetworkService();
 
-    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: username,
-      password: password,
+  Future<dynamic> login(String identity, String password) async {
+
+    final response = await _networkService.post(
+      path: ApiEndPoint.authentication,
+      data: {
+        'identity': identity,
+        'password': password,
+      }
     );
 
-    return credential;
+    return response.data;
   }
 }

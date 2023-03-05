@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Questions',
+                          'QUESTIONS',
                           style: GoogleFonts.poppins(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w600,

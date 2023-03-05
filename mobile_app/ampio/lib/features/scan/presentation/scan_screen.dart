@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:go_router/go_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../../../features/scan/presentation/widget/draw_clip.dart';
 import '../../../core/utils/colors/app_colors.dart';
+import '../../../core/presentation/widgets/custom_button.dart';
 import '../../../core/utils/constants/route_path.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -26,12 +26,12 @@ class _ScanScreen extends State<ScanScreen>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: <Widget>[
           ClipPath(
             clipper: DrawClip(0.0),
             child: Container(
-              height: size.height * 0.8,
+              height: size.height * 0.9,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
@@ -40,7 +40,7 @@ class _ScanScreen extends State<ScanScreen>
                 ),
               ),
               child: Center(
-                child: Container(
+                child: SizedBox(
                   height: size.height * 0.4,
                   width: size.height * 0.4,
                   child: QRView(
@@ -51,35 +51,46 @@ class _ScanScreen extends State<ScanScreen>
               ),
             ),
           ),
-          Expanded(
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Center(
               child: (result != null)
-                  ? TextButton(
-                      onPressed: () => context.go(RoutePath.homePath),
-                      child: Text(
-                        'Continuer en tant que Mialy Rak',
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20.sp,
-                        ),
+                  ? CustomButton(
+                    onPressed: () => context.go(RoutePath.homePath),
+                    height: 200,
+                    backgroundColor: Colors.transparent,
+                    labelButton: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Image(
+                            image: AssetImage(
+                              'assets/images/checks.png',
+                            ),
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Continuer en tant que Mialy Rak',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20.sp,
+                              color: Colors.black
+                            ),
+                          )
+                        ],
                       ),
-                    )
+                  )
                   : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1.0,
-                                  color:
-                                      const Color.fromRGBO(207, 207, 207, 1)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5.0))),
-                          child: const Icon(
-                            Icons.qr_code_scanner_outlined,
-                            size: 30,
-                          ),
+                        const Icon(
+                          Icons.qr_code_scanner_outlined,
+                          size: 100,
                         ),
                         const SizedBox(
                           height: 5,
