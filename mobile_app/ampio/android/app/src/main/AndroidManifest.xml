@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeo.ampio">
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
    <application
         android:label="ampio"
         android:name="${applicationName}"

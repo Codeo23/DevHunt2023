@@ -13,6 +13,7 @@ class ResponseItem extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: AppColors.greyPrimary,
+        borderRadius: BorderRadius.circular(10)
       ),
       child: Column(
         children: [
