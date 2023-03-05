@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/constants/route_path.dart';
@@ -8,10 +9,9 @@ import '../../../features/scan/presentation/scan_screen.dart';
 import '../../../features/response/presentation/response_screen.dart';
 import '../../../features/settings/presentation/settings_screen.dart';
 
-
 abstract class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.settingsPath,
+    initialLocation: RoutePath.welcomePath,
     routes: [
       GoRoute(
         path: RoutePath.welcomePath,
@@ -19,7 +19,13 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: RoutePath.loginPath,
-        builder: (context, state) => const LoginScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: const LoginScreen(),
+          transitionDuration: const Duration(seconds: 2),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: RoutePath.homePath,
