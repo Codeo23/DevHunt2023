@@ -61,7 +61,6 @@ class AllQuestionsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 45.h, child: const ChipList()),
                 SizedBox(height: 12.h),
                 const TopQuestions()
               ]),

@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/router/app_router.dart';
 import 'core/domain/data/remote/repository/auth_repository.dart';
+import 'core/domain/data/remote/repository/post_repository.dart';
 import 'core/presentation/bloc/user/user_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(const AmpioApp());
 }
 
