@@ -29,8 +29,7 @@ func Publish(c *fiber.Ctx) error {
 	db := database.Database.DB
 
 	// get user id
-	// user_id := GetUserID(c)
-	user_id := uint(1)
+	user_id := GetUserID(c)
 
 	// get new post
 	newPost := new(models.Post)
@@ -41,23 +40,24 @@ func Publish(c *fiber.Ctx) error {
 	}
 
 	// upload file
-	file, err := c.FormFile("file")
-	if err != nil {
-		return c.Next()
-	}
-	fileName := fmt.Sprintf("%d%s", user_id, file.Filename)
-	path := fmt.Sprintf("public/posts/%s", fileName)
+	file, _ := c.FormFile("file")
 
-	// create directory if not exists
-	if _, err := os.Stat("public/posts"); os.IsNotExist(err) {
-		os.MkdirAll("public/posts", 0755)
-	}
+	if file != nil {
+		fileName := fmt.Sprintf("%d%s", user_id, file.Filename)
+		path := fmt.Sprintf("public/posts/%s", fileName)
+		newPost.File = path
 
-	// upload file
-	if err := c.SaveFile(file, path); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error while uploading file",
-		})
+		// create directory if not exists
+		if _, err := os.Stat("public/posts"); os.IsNotExist(err) {
+			os.MkdirAll("public/posts", 0755)
+		}
+
+		// upload file
+		if err := c.SaveFile(file, path); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error while uploading file",
+			})
+		}
 	}
 
 	// create topic for all topic in topics if not exists
@@ -83,7 +83,6 @@ func Publish(c *fiber.Ctx) error {
 	}
 
 	// add post to database
-	newPost.File = path
 	newPost.AuthorID = user_id
 	newPost.Author = user
 	if err := db.Create(&newPost).Error; err != nil {

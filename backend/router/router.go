@@ -26,8 +26,8 @@ func SetupRoutes(app *fiber.App) {
 	user.Get("/:user_id<int>/avatar", controllers.GetAvatar)
 
 	user.Post("/signup", controllers.CreateUser)
-	user.Put("/:id<int>", middleware.Protected(), controllers.UpdateUser)
-	user.Delete("/:id<int>", middleware.Protected(), controllers.DeleteUser)
+	user.Put("/me/password", middleware.Protected(), controllers.UpdateUser)
+	user.Delete("/delete", middleware.Protected(), controllers.DeleteUser)
 
 	// post routes
 	post := api.Group("/posts")
@@ -35,7 +35,7 @@ func SetupRoutes(app *fiber.App) {
 	post.Get("/:topic<string>", controllers.GetPostsFromTopic)
 	post.Get("/:id<int>/file", controllers.GetPostFile)
 
-	post.Post("/publish", controllers.Publish)
+	post.Post("/publish", middleware.Protected(), controllers.Publish)
 
 	// comment routes
 	comment := api.Group("/comments")

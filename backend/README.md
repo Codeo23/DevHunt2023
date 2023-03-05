@@ -5,6 +5,8 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 
 ## API Reference
 
+![image](routes.png)
+
 ### Users
 
 #### Login
@@ -26,10 +28,6 @@ This is the backend of the application Ampio that will be presented on the 2nd E
   GET /api/users
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
 #### Get user by id
 
 ```http
@@ -44,6 +42,18 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 
 ```http
   GET /api/users/me
+```
+
+#### Search user
+
+```http
+  GET /api/users/search
+```
+
+```json
+{
+  "query": "<word to search for>"
+}
 ```
 
 #### SignUp
@@ -62,16 +72,10 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 }
 ```
 
-#### Logout
-
-```http
-  POST /api/users/logout
-```
-
 #### Get user by id
 
 ```http
-  PATCH /api/users/password
+  PUT /api/users/me/password
 ```
 
 ```json
@@ -84,17 +88,17 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `cookie`      | `string` | **Required**. The user's token as a cookie |
+| `bearer`      | `jwt` | **Required**. The user's token for the jwt |
 
-#### Change Avatar
+#### Delete user
 
 ```http
-  PATCH /api/users/me/avatar
+  DELETE /api/users/delete
 ```
 
 ```json
 {
-    "avatar": "file.png"
+  "password": ""
 }
 ```
 
@@ -109,20 +113,21 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 #### Publish a post
 
 ```http
-  POST /api/posts
+  POST /api/posts/publish
 ```
 
 ```json
 {
     "title": "Title",
     "content": "Content",
+    "topics": "Topic",
     "file": "file.pdf"
 }
 ```
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `cookie`      | `string` | **Required**. The user's token as a cookie |
+| `bearer`      | `jwt` | **Required**. The user's token |
 
 ### Comments
 
