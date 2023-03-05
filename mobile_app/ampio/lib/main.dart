@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/router/app_router.dart';
-import 'core/domain/usecase/auth_usecase.dart';
+import 'core/domain/data/remote/repository/auth_repository.dart';
 import 'core/presentation/bloc/user/user_bloc.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class AmpioApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserBloc(AuthUseCase()),
+      create: (context) => UserBloc(AuthRepository()),
       child: ScreenUtilInit(
         builder: (context,child) {
           return MaterialApp.router(
