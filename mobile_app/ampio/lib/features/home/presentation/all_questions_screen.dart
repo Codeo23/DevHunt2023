@@ -1,4 +1,3 @@
-import 'package:ampio/features/home/presentation/widget/chip_list.dart';
 import 'package:ampio/features/home/presentation/widget/search_field.dart';
 import 'package:ampio/features/home/presentation/widget/top_questions.dart';
 import 'package:flutter/material.dart';

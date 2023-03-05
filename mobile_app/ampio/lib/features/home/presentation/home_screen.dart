@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedColor: AppColors.darkPrimary,
           label: Text(
               'Top question',
-              style: style1
+              style: isTopQuestions ? style1 : style2
           ),
         ),
         SizedBox(width: 15.w),
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           label: Text(
               'Récents',
-              style: style2
+              style: isRecentQuestions ? style1 : style2
           ),
         ),
         SizedBox(width: 15.w),
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           label: Text(
               'Cette semaine',
-              style: style2
+              style: isThisWeekQuestions ? style1 : style2
           ),
         ),
       ],
