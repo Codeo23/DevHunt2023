@@ -82,27 +82,28 @@ func Comment(c *fiber.Ctx) error {
 	db := database.Database.DB
 
 	// upload file in comment
-	file, er := c.FormFile("file")
-	if er != nil {
-		return c.Next()
-	}
+	file, _ := c.FormFile("file")
+	path := ""
 
-	// filename
-	filename := fmt.Sprintf("Post%d_User%d-%s", post_id, user_id, file.Filename)
+	if file != nil {
 
-	// file path
-	path := fmt.Sprintf("public/comment/%s", filename)
+		// filename
+		filename := fmt.Sprintf("Post%d_User%d-%s", post_id, user_id, file.Filename)
 
-	// create directory if not exists
-	if _, err := os.Stat("public/comment"); os.IsNotExist(err) {
-		os.MkdirAll("public/comment", 0755)
-	}
+		// file path
+		path = fmt.Sprintf("public/comment/%s", filename)
 
-	// save file
-	if err := c.SaveFile(file, path); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error saving file",
-		})
+		// create directory if not exists
+		if _, err := os.Stat("public/comment"); os.IsNotExist(err) {
+			os.MkdirAll("public/comment", 0755)
+		}
+
+		// save file
+		if err := c.SaveFile(file, path); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error saving file",
+			})
+		}
 	}
 
 	// check if the post exist

@@ -29,8 +29,7 @@ func Publish(c *fiber.Ctx) error {
 	db := database.Database.DB
 
 	// get user id
-	// user_id := GetUserID(c)
-	user_id := uint(1)
+	user_id := GetUserID(c)
 
 	// get new post
 	newPost := new(models.Post)

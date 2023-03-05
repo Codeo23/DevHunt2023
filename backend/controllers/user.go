@@ -222,17 +222,17 @@ func UpdateUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(&uui); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
-	id := c.Params("id")
-	token := c.Locals("user").(*jwt.Token)
 
-	if !ValidToken(token, id) {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Invalid token id", "data": nil})
-	}
+	// get user id
+	id := GetUserID(c)
+
+	// convert id to string
+	idStr := strconv.Itoa(int(id))
 
 	db := database.Database.DB
 	var user models.User
 
-	if !ValidUser(id, uui.OldPassword) {
+	if !ValidUser(idStr, uui.OldPassword) {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
@@ -256,15 +256,12 @@ func DeleteUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(&pi); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 	}
-	id := c.Params("id")
-	token := c.Locals("user").(*jwt.Token)
 
-	if !ValidToken(token, id) {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Invalid token id", "data": nil})
+	// get user id
+	id := GetUserID(c)
+	idStr := strconv.Itoa(int(id))
 
-	}
-
-	if !ValidUser(id, pi.Password) {
+	if !ValidUser(idStr, pi.Password) {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Not valid user", "data": nil})
 
 	}
