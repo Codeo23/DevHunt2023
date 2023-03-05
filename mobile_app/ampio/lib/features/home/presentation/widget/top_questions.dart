@@ -1,5 +1,6 @@
-import 'package:ampio/core/presentation/widgets/post_card.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/presentation/widgets/post_card.dart';
 
 class TopQuestions extends StatelessWidget {
 
