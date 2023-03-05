@@ -10,7 +10,7 @@ class PostCard extends StatelessWidget {
 
   final String profileImage;
   final String name;
-  final String createdAt;
+  final String? createdAt;
   final String? content;
   final String? topic;
   final Color? color;
@@ -20,7 +20,7 @@ class PostCard extends StatelessWidget {
     super.key,
     required this.profileImage,
     required this.name,
-    required this.createdAt,
+    this.createdAt,
     this.content,
     this.topic,
     this.gradientColor,
@@ -67,7 +67,7 @@ class PostCard extends StatelessWidget {
               ),
               SizedBox(width: 15.w),
               Text(
-                createdAt,
+                createdAt ?? '5 min',
                 style: GoogleFonts.poppins(
                   color: Colors.grey,
                   fontSize: 14.sp,

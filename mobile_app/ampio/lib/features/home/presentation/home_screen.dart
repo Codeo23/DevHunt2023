@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../core/presentation/widgets/post_card.dart';
 import '../../../core/utils/colors/app_colors.dart';
 import 'widget/blurred_container.dart';
 import 'widget/chip_list.dart';
@@ -22,8 +23,8 @@ class HomeScreen extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              right: -25.0,
-              top: -25.0,
+              right: -25.0.w,
+              top: -25.0.h,
               child: BlurredContainer(
                 color: AppColors.greenSecondary,
               ),
@@ -40,7 +41,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 70.h),
+                    SizedBox(height: 50.w),
                     const Center(child: SearchField()),
                     SizedBox(height: 17.h),
                     Row(
@@ -91,7 +92,13 @@ class HomeScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 45.h, child: const ChipList()),
                     SizedBox(height: 12.h),
-                    const TopQuestions(),
+                    const PostCard(
+                      profileImage: 'assets/images/person1.jpg',
+                      name: 'Jane Doe',
+                      createdAt: '1 min',
+                      content: 'Group Array by Object key where key is an object',
+                      topic: 'JavaScript',
+                    ),
                     SizedBox(height: 22.h),
                     Text(
                       'PARTAGE',
