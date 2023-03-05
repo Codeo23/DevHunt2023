@@ -1,12 +1,10 @@
 package controllers
 
 import (
-	"crypto/rand"
 	"fmt"
 	"os"
 	"strconv"
 
-	"github.com/Codeo23/DevHunt2023/backend/config"
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
 	"github.com/gofiber/fiber/v2"
@@ -40,274 +38,221 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-// get user id from cookie
-func GetUserID(c *fiber.Ctx) (int, error) {
-	// get token
-	token := c.Cookies("jwt")
-
-	// parse token
-	t, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, nil
-		}
-		return []byte(config.Config("JWT_SECRET")), nil
-	})
+func ValidToken(t *jwt.Token, id string) bool {
+	n, err := strconv.Atoi(id)
 	if err != nil {
-		return 0, err
+		return false
 	}
+
 	claims := t.Claims.(jwt.MapClaims)
-	user_id := int(claims["user_id"].(float64))
+	uid := int(claims["user_id"].(float64))
 
-	return user_id, nil
+	return uid == n
 }
 
-// get me
-func GetMe(c *fiber.Ctx) error {
-	// get user id
-	user_id, err := GetUserID(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
-		})
-	}
-
-	// database
+func ValidUser(id string, p string) bool {
 	db := database.Database.DB
-
-	// check if the exist
 	var user models.User
-	if err := db.Where(&models.User{ID: uint(user_id)}).Find(&user).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "User not found",
-		})
+	db.First(&user, id)
+	if user.Username == "" {
+		return false
 	}
-
-	// response user
-	responseUser := UserResponse(user)
-
-	// return
-	return c.Status(fiber.StatusOK).JSON(responseUser)
+	if !CheckPasswordHash(p, user.Password) {
+		return false
+	}
+	return true
 }
 
-// get user by id
-func GetUserByID(c *fiber.Ctx) error {
-	// get id
-	id, _ := strconv.Atoi(c.Params("id"))
-
-	// database
+// GetUsers get all users
+func GetUsers(c *fiber.Ctx) error {
 	db := database.Database.DB
-
-	// check if the exist
-	var user models.User
-	if err := db.Where(&models.User{ID: uint(id)}).Find(&user).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "User not found",
-		})
-	}
-
-	// response user
-	responseUser := UserResponse(user)
-
-	// return
-	return c.Status(fiber.StatusOK).JSON(responseUser)
-}
-
-// get all user
-func GetAllUsers(c *fiber.Ctx) error {
-	// database
-	db := database.Database.DB
-
-	// get all users
 	var users []models.User
 	db.Find(&users)
-
-	// response user
-	var responseUsers []UserShow
+	var respUsers []UserShow
 	for _, user := range users {
-		responseUsers = append(responseUsers, UserResponse(user))
+		respUsers = append(respUsers, UserResponse(user))
 	}
-
-	// return
-	return c.Status(fiber.StatusOK).JSON(responseUsers)
+	return c.JSON(fiber.Map{"status": "success", "message": "Users found", "data": respUsers})
 }
 
-// create user
-func CreateUser(c *fiber.Ctx) error {
-	newUser := new(models.User)
+// GetUser get a user
+func GetUser(c *fiber.Ctx) error {
+	id := c.Params("id")
+	db := database.Database.DB
+	var user models.User
+	db.Find(&user, id)
+	if user.Username == "" {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
+	}
+	// response user
+	respUser := UserResponse(user)
 
-	// check if the request is valid
-	if err := c.BodyParser(newUser); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid data",
-		})
+	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": respUser})
+}
+
+// Get user by email
+func GetUserByEmail(c *fiber.Ctx) error {
+	type Query struct {
+		Query string `json:"query"`
+	}
+	query := new(Query)
+	if err := c.BodyParser(query); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+	db := database.Database.DB
+	var user models.User
+
+	// check if the query word is present in an username or email
+	db.Where("username = ? OR email = ?", query.Query, query.Query).First(&user)
+	if user.Username == "" {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "No user found with email or username", "data": nil})
+	}
+	// response user
+	respUser := UserResponse(user)
+
+	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": respUser})
+}
+
+// Get Avatar from file
+func GetAvatar(c *fiber.Ctx) error {
+	// get the user id
+	id := c.Params("user_id")
+	// get the user
+	db := database.Database.DB
+	var user models.User
+	db.Find(&user, id)
+	if user.Username == "" {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
+	}
+	// get the avatar
+	avatar := user.Avatar
+	// return the avatar
+	return c.SendFile(avatar)
+}
+
+// CreateUser new user
+func CreateUser(c *fiber.Ctx) error {
+	db := database.Database.DB
+	user := new(models.User)
+	if err := c.BodyParser(user); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+
 	}
 
-	// database
-	db := database.Database.DB
-
-	// get file
-	file, err := c.FormFile("avatar")
+	hash, err := HashPassword(user.Password)
 	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Couldn't hash password", "data": err})
+
+	}
+	user.Password = hash
+
+	// upload avatar for the user
+	file, er := c.FormFile("avatar")
+	if er != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Invalid file",
 		})
 	}
 
-	// generate random filename
-	b := make([]byte, 6)
-	rand.Read(b)
-	fileName := fmt.Sprintf("%x-%s", b, file.Filename)
-
-	// create directory if not exist
+	// create directory if not exists
 	if _, err := os.Stat("public/avatar"); os.IsNotExist(err) {
 		os.MkdirAll("public/avatar", 0755)
 	}
 
-	// upload file
+	// create random filename with 4 caracter
+
+	fileName := fmt.Sprintf("%d%s", user.Matricule, file.Filename)
+
+	// check if the file already exists
+	if _, err := os.Stat("public/avatar/" + fileName); err == nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "File already exists",
+		})
+	}
+
+	// random filename using random string
+
 	link := fmt.Sprintf("public/avatar/%s", fileName)
+
+	// upload file
 	if err := c.SaveFile(file, link); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Something went wrong",
+			"message": "Error while uploading file",
 		})
 	}
 
-	// update user
-	newUser.Avatar = link
-
-	// hash password
-	hashedPassword, _ := HashPassword(newUser.Password)
-	newUser.Password = hashedPassword
-
-	// create user
-	if err := db.Create(&newUser).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Something went wrong",
-		})
+	if err := db.Create(&user).Error; err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})
 	}
 
-	// return
-	responseUser := UserResponse(*newUser)
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-		"message": "User created",
-		"user":    responseUser,
-	})
+	respUser := UserResponse(*user)
+
+	return c.JSON(fiber.Map{"status": "success", "message": "Created user", "data": respUser})
 }
 
-// update auth user pass
-func UpdatePass(c *fiber.Ctx) error {
-	// input
-	type Input struct {
+// UpdateUser update user
+func UpdateUser(c *fiber.Ctx) error {
+	type UpdateUserInput struct {
 		OldPassword string `json:"old_password"`
 		NewPassword string `json:"new_password"`
 		ConfirmPass string `json:"confirm_pass"`
 	}
+	var uui UpdateUserInput
+	if err := c.BodyParser(&uui); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+	id := c.Params("id")
+	token := c.Locals("user").(*jwt.Token)
 
-	// validate input
-	input := new(Input)
-	if err := c.BodyParser(input); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid input",
-		})
+	if !ValidToken(token, id) {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Invalid token id", "data": nil})
 	}
 
-	// database
 	db := database.Database.DB
-
-	// get user id
-	user_id, _ := GetUserID(c)
-
-	// get user
 	var user models.User
-	if err := db.Where(&models.User{ID: uint(user_id)}).Find(&user).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "User not found",
-		})
+
+	if !ValidUser(id, uui.OldPassword) {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Invalid password", "data": nil})
 	}
 
-	// check if the request is valid
-	if err := c.BodyParser(&user); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid data",
-		})
+	if uui.NewPassword != uui.ConfirmPass {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Passwords don't match", "data": nil})
 	}
 
-	// hash new password if it is equal to confirm pass
-	if input.NewPassword == input.ConfirmPass {
-		hashedPassword, _ := HashPassword(input.NewPassword)
-		user.Password = hashedPassword
-	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Password and confirm password must be equal",
-		})
-	}
+	db.First(&user, id)
+	user.Password = uui.NewPassword
+	db.Save(&user)
 
-	// update user
-	if err := db.Save(&user).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Something went wrong",
-		})
-	}
-
-	// return
-	responseUser := UserResponse(user)
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "User updated",
-		"user":    responseUser,
-	})
+	return c.JSON(fiber.Map{"status": "success", "message": "User successfully updated", "data": user})
 }
 
-// upload avatar
-func UploadAvatar(c *fiber.Ctx) error {
-	// get user id
-	user_id, _ := GetUserID(c)
+// DeleteUser delete user
+func DeleteUser(c *fiber.Ctx) error {
+	type PasswordInput struct {
+		Password string `json:"password"`
+	}
+	var pi PasswordInput
+	if err := c.BodyParser(&pi); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
+	}
+	id := c.Params("id")
+	token := c.Locals("user").(*jwt.Token)
 
-	// database
+	if !ValidToken(token, id) {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Invalid token id", "data": nil})
+
+	}
+
+	if !ValidUser(id, pi.Password) {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "error", "message": "Not valid user", "data": nil})
+
+	}
+
 	db := database.Database.DB
-
-	// get user
 	var user models.User
-	if err := db.Where(&models.User{ID: uint(user_id)}).Find(&user).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "User not found",
-		})
-	}
 
-	// get file
-	file, err := c.FormFile("avatar")
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid file",
-		})
-	}
+	db.First(&user, id)
 
-	// create file name
-	fileName := fmt.Sprintf("%d-%s", user_id, file.Filename)
-
-	// create directory if not exist
-	if _, err := os.Stat("public/avatar"); os.IsNotExist(err) {
-		os.MkdirAll("public/avatar", 0755)
-	}
-
-	// upload file
-	link := fmt.Sprintf("public/avatar/%s", fileName)
-	if err := c.SaveFile(file, link); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Something went wrong",
-		})
-	}
-
-	// update user
-	user.Avatar = link
-	if err := db.Save(&user).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Something went wrong",
-		})
-	}
-
-	// return
-	responseUser := UserResponse(user)
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "User updated",
-		"user":    responseUser,
-	})
+	db.Delete(&user)
+	return c.JSON(fiber.Map{"status": "success", "message": "User successfully deleted", "data": nil})
 }

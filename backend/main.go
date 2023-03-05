@@ -4,7 +4,6 @@ import (
 	"github.com/Codeo23/DevHunt2023/backend/config"
 	"github.com/Codeo23/DevHunt2023/backend/router"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	"github.com/Codeo23/DevHunt2023/backend/database"
 )
@@ -18,10 +17,9 @@ func main() {
 	app := fiber.New(
 		fiber.Config{
 			CaseSensitive: true,
-			AppName:       "DevHunt2023",
+			AppName:       "DevHunt 2023",
 		},
 	)
-	app.Use(cors.New())
 
 	// Setup routes
 	router.SetupRoutes(app)

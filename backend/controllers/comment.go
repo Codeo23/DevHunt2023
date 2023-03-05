@@ -8,6 +8,7 @@ import (
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type CommentResponse struct {
@@ -67,10 +68,12 @@ func Comment(c *fiber.Ctx) error {
 	}
 
 	// get user id
-	user_id, err := GetUserID(c)
-	if err != nil {
+	user_id := c.Params("user_id")
+	token := c.Locals("user").(*jwt.Token)
+
+	if !ValidToken(token, user_id) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
+			"message": "Invalid token",
 		})
 	}
 
@@ -95,7 +98,7 @@ func Comment(c *fiber.Ctx) error {
 	}
 
 	// filename
-	filename := fmt.Sprintf("Post%d_User%d-%s", post_id, user_id, file.Filename)
+	filename := fmt.Sprintf("Post%d_User%s-%s", post_id, user_id, file.Filename)
 
 	// file path
 	path := fmt.Sprintf("public/comment/%s", filename)
@@ -120,11 +123,14 @@ func Comment(c *fiber.Ctx) error {
 		})
 	}
 
+	// convert user id to uint
+	us_id, _ := strconv.Atoi(user_id)
+
 	// create comment
 	comment := models.Comment{
 		Content:  body.Content,
-		AuthorID: uint(user_id),
-		PostID:   uint(post_id),
+		AuthorID: uint(us_id),
+		PostID:   uint(us_id),
 		File:     path,
 	}
 
@@ -152,7 +158,15 @@ func DeleteComment(c *fiber.Ctx) error {
 	}
 
 	// get user id
-	user_id, err := GetUserID(c)
+	user_id := c.Params("user_id")
+	token := c.Locals("user").(*jwt.Token)
+
+	if !ValidToken(token, user_id) {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"message": "Invalid token",
+		})
+	}
+
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
@@ -170,8 +184,14 @@ func DeleteComment(c *fiber.Ctx) error {
 		})
 	}
 
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid user id",
+		})
+	}
+
 	// check if the user is the author
-	if comment.AuthorID != uint(user_id) {
+	if comment.AuthorID != uint(id) {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
 		})
