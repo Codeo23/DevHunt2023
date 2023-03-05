@@ -68,7 +68,7 @@ class _ScanScreen extends State<ScanScreen>
                             image: AssetImage(
                               'assets/images/checks.png',
                             ),
-                            height: 150,
+                            height: 100,
                             fit: BoxFit.cover,
                           ),
                           const SizedBox(
@@ -88,19 +88,9 @@ class _ScanScreen extends State<ScanScreen>
                   : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1.0,
-                                  color:
-                                      const Color.fromRGBO(207, 207, 207, 1)),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0))),
-                          child: const Icon(
-                            Icons.qr_code_scanner_outlined,
-                            size: 150,
-                          ),
+                        const Icon(
+                          Icons.qr_code_scanner_outlined,
+                          size: 100,
                         ),
                         const SizedBox(
                           height: 5,
