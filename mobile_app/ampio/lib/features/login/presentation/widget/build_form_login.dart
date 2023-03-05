@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../core/presentation/bloc/user/user_bloc.dart';
 import '../../../../core/presentation/widgets/custom_textfield.dart';
@@ -77,15 +78,28 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
             SizedBox(height: 35.h,),
             SizedBox(
               width: double.infinity,
-              child: CustomButton(
-                labelButton: const Text('SE CONNECTER'),
-                // TODO : redirection in home screen
-                onPressed: () => userBloc.add(
-                  AuthenticateWithFormEvent(
-                    identity: _identityController.text,
-                    password: _passwordController.text,
+              child: BlocBuilder<UserBloc, AuthState>(
+                builder: (context, state) => CustomButton(
+                  labelButton: state.status == AuthStatus.loading
+                    ? SpinKitRing(
+                    color: Colors.white,
+                    size: 30.sp,
+                    lineWidth: 2.5,
+                    ) : Text(
+                    'Se connecter',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                )
+                  onPressed: () => userBloc.add(
+                    AuthenticateWithFormEvent(
+                      identity: _identityController.text,
+                      password: _passwordController.text,
+                    ),
+                  )
+                ),
               ),
             ),
             const SizedBox(height: 20,),

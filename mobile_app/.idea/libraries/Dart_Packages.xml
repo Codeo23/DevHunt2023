@@ -121,6 +121,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_spinkit">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_spinkit-5.1.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_test">
           <value>
             <list>
@@ -434,6 +441,7 @@
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.1.2/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-2.0.1/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_screenutil-5.6.1/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_spinkit-5.1.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/fluttericon-2.0.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/glassmorphism_ui-0.3.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/go_router-6.2.0/lib" />

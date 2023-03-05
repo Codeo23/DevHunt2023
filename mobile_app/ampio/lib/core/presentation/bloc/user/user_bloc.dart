@@ -22,6 +22,7 @@ class UserBloc extends Bloc<AuthEvent, AuthState> {
       AuthenticateWithFormEvent event, Emitter<AuthState> emit) async {
 
     try {
+      emit(const AuthState.loading());
       await authRepository.login(event.identity, event.password);
       emit(AuthState.authenticated(UserEntity(
         matriculate: '2315',

@@ -1,9 +1,10 @@
 part of 'user_bloc.dart';
 
-enum AuthStatus { unknown, authenticated, unauthenticated }
+enum AuthStatus { unknown, loading, authenticated, unauthenticated }
 
 extension AuthStatusExtension on AuthStatus {
   bool get isUnknown => this == AuthStatus.unknown;
+  bool get isLoading => this == AuthStatus.loading;
   bool get isAuthenticated => this == AuthStatus.authenticated;
   bool get isUnauthenticated => this == AuthStatus.unauthenticated;
 }
@@ -18,6 +19,8 @@ class AuthState extends Equatable {
   });
 
   const AuthState.unknown() : this._(status: AuthStatus.unknown);
+
+  const AuthState.loading() : this._(status: AuthStatus.loading);
 
   const AuthState.authenticated(UserEntity user)
       : this._(status: AuthStatus.authenticated, user: user);
