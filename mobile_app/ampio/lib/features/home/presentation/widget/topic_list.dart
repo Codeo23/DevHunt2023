@@ -13,28 +13,26 @@ class TopicList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       children: [
         Avatar(
-          borderRadius: 54.r,
+          borderRadius: 45.r,
           imageProvider: const AssetImage(
             'assets/images/JS.png',
           ),
         ),
-        SizedBox(width: 29.5.w),
         Avatar(
-          borderRadius: 54.r,
+          borderRadius: 45.r,
           imageProvider: const AssetImage(
             'assets/images/c#.jpg',
+
           ),
         ),
-        SizedBox(width: 29.5.w),
         Avatar(
-          borderRadius: 54.r,
+          borderRadius: 45.r,
           imageProvider: const AssetImage(
             'assets/images/JAVA.jpg',
           ),
         ),
-        SizedBox(width: 29.5.w),
         Avatar(
-          borderRadius: 54.r,
+          borderRadius: 45.r,
           imageProvider: const AssetImage(
             'assets/images/uml.jpg',
           ),
