@@ -5,6 +5,7 @@ import 'package:simple_shadow/simple_shadow.dart';
 import '../../../core/utils/colors/app_colors.dart';
 import '../../../../features/add_question/presentation/add_question.dart';
 import '../../../../features/profile/presentation/profile_screen.dart';
+import '../../../../features/home/presentation/all_questions_screen.dart';
 import 'home_screen.dart';
 import 'widget/bottom_nav_bar_item.dart';
 import 'widget/customized_app_bar.dart';
@@ -18,29 +19,32 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int index = 0;
-  static const List<Widget> pages = [HomeScreen(), ProfileScreen()];
+  static const List<Widget> pages = [
+    HomeScreen(),
+    ProfileScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: index == 0 ? const CustomizedAppBar() : null,
         floatingActionButton: FloatingActionButton(
           elevation: 5.0,
           backgroundColor: AppColors.yellowPrimary,
           onPressed: () => showModalBottomSheet(
             context: context,
-            isScrollControlled:  true,
+            isScrollControlled: true,
             builder: (context) => const AddQuestion(),
           ),
           child: const Icon(
-            Icons.home,
+            Icons.add,
             size: 36.0,
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: buildBottomNavigationBar(),
-        extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         body: pages[index],
       ),
@@ -73,7 +77,7 @@ class _HomeState extends State<Home> {
               BottomNavBarItem(
                 icon: Icons.person,
                 onTap: () => setState(() => index = 1),
-                borderSide: index == 2
+                borderSide: index == 1
                     ? BorderSide(
                         color: AppColors.greenSecondary,
                         width: 3.5,

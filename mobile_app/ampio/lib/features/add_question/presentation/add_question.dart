@@ -7,18 +7,43 @@ import '../../../../features/add_question/presentation/widget/available_choice_c
 import '../../../../core/presentation/widgets/gradient_button.dart';
 import '../../../../core/utils/colors/app_colors.dart';
 
-class AddQuestion extends StatelessWidget {
+class AddQuestion extends StatefulWidget {
   const AddQuestion({Key? key}) : super(key: key);
+
+  @override
+  State<AddQuestion> createState() => _AddQuestionState();
+}
+
+class _AddQuestionState extends State<AddQuestion> {
+
+  late final TextEditingController _topicController;
+  late final TextEditingController _questionController;
+  late final TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    _topicController = TextEditingController();
+    _questionController = TextEditingController();
+    _descriptionController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _topicController.dispose();
+    _questionController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.8,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 20,
+      constraints: BoxConstraints(
+        maxHeight: size.height * 0.75,
       ),
+      padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -28,25 +53,53 @@ class AddQuestion extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:  [
-          QuestionItem(titleField: 'Topiques', hintText: 'ex : typescript'),
-          QuestionItem(titleField: 'Question', hintText: 'Poser votre question'),
-          QuestionItem(titleField: 'Description', hintText: 'Description du problème'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              AvailableChoiceCard(image: 'assets/images/link.png', title: 'Liens'),
-              AvailableChoiceCard(image: 'assets/images/file.png', title: 'Fichier et doc'),
-              AvailableChoiceCard(image: 'assets/images/img.png', title: 'Images'),
-            ],
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          QuestionItem(
+            titleField: 'Topiques',
+            hintText: 'ex : typescript',
+            controller: _topicController,
           ),
-          Expanded(child: GradientButton(
+          QuestionItem(
+            titleField: 'Question',
+            hintText: 'Posez votre question',
+            controller: _questionController,
+          ),
+          QuestionItem(
+            titleField: 'Description',
+            hintText: 'Description du problème',
+            controller: _descriptionController,
+          ),
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: const [
+                AvailableChoiceCard(
+                  image: 'assets/images/link.png',
+                  title: 'Liens',
+                ),
+                SizedBox(width: 10,),
+                AvailableChoiceCard(
+                  image: 'assets/images/file.png',
+                  title: 'Fichier et doc',
+                ),
+                SizedBox(width: 10,),
+                AvailableChoiceCard(
+                  image: 'assets/images/img.png',
+                  title: 'Images',
+                ),
+              ],
+            ),
+          ),
+          GradientButton(
+            height: 50,
             labelButton: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Poser la question',
-                  style: GoogleFonts.poppins(fontSize: 20.sp,color: Colors.white),
+                  style: GoogleFonts.poppins(
+                      fontSize: 20.sp, color: Colors.white),
                 ),
               ],
             ),
@@ -59,7 +112,7 @@ class AddQuestion extends StatelessWidget {
               ],
             ),
             width: double.infinity,
-          ),)
+          )
         ],
       ),
     );

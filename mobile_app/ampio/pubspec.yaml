@@ -21,6 +21,14 @@ dependencies:
   qr_flutter: ^4.0.0
   fluttericon: ^2.0.0
   glassmorphism_ui: ^0.3.0
+  dio: ^5.0.1
+  equatable: ^2.0.5
+  flutter_spinkit: ^5.1.0
+  firebase_core: ^2.7.0
+  flutter_sound: ^9.2.13
+  audioplayers: ^3.0.1
+  permission_handler: ^10.2.0
+  webview_flutter: ^4.0.6
 
 dev_dependencies:
   flutter_test:

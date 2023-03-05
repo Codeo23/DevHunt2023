@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
 import '../../utils/colors/app_colors.dart';
+import '../../../core/utils/constants/route_path.dart';
 import 'avatar.dart';
 
 class PostCard extends StatelessWidget {
 
   final String profileImage;
   final String name;
-  final String createdAt;
+  final String? createdAt;
   final String? content;
   final String? topic;
   final Color? color;
@@ -20,7 +22,7 @@ class PostCard extends StatelessWidget {
     super.key,
     required this.profileImage,
     required this.name,
-    required this.createdAt,
+    this.createdAt,
     this.content,
     this.topic,
     this.gradientColor,
@@ -30,62 +32,66 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 14.w,
-        vertical: 11.w
-      ),
-      decoration: BoxDecoration(
-        color: color ?? Colors.white,
-        borderRadius: BorderRadius.circular(39.r),
-        gradient: gradientColor,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(5, 1),
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 2.0
-          )
-        ]
-      ),
-      width: 393.w,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Avatar(
-                imageProvider: AssetImage(profileImage),
-                borderRadius: 39.r,
-              ),
-              SizedBox(width: 15.w),
-              Text(
-                name,
-                style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
+    return GestureDetector(
+      onTap: () => context.push(RoutePath.responsePath),
+      child: Container(
+        margin: const EdgeInsets.only(top: 10),
+        padding: EdgeInsets.symmetric(
+          horizontal: 14.w,
+          vertical: 11.w
+        ),
+        decoration: BoxDecoration(
+          color: color ?? Colors.white,
+          borderRadius: BorderRadius.circular(39.r),
+          gradient: gradientColor,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(5, 1),
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 2.0
+            )
+          ]
+        ),
+        width: 393.w,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Avatar(
+                  imageProvider: AssetImage(profileImage),
+                  borderRadius: 39.r,
                 ),
-              ),
-              SizedBox(width: 15.w),
-              Text(
-                createdAt,
-                style: GoogleFonts.poppins(
-                  color: Colors.grey,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
+                SizedBox(width: 15.w),
+                Text(
+                  name,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              )
-            ],
-          ),
-          SizedBox(height: 11.h),
-          Text(
-            content!,
-            style: GoogleFonts.poppins(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400
+                SizedBox(width: 15.w),
+                Text(
+                  createdAt ?? '5 min',
+                  style: GoogleFonts.poppins(
+                    color: Colors.grey,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              ],
             ),
-          ),
-          SizedBox(height: 41.h),
-          _buildPostCardFooter()
-        ],
+            SizedBox(height: 11.h),
+            Text(
+              content!,
+              style: GoogleFonts.poppins(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400
+              ),
+            ),
+            SizedBox(height: 41.h),
+            _buildPostCardFooter()
+          ],
+        ),
       ),
     );
   }
