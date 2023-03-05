@@ -20,19 +20,12 @@ class CustomizedAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        OutlinedButton(
-          onPressed: (){},
-          style: OutlinedButton.styleFrom(
-            minimumSize: Size(39.w, 39.h),
-            padding: const EdgeInsets.all(7.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0.r),
-            ),
-          ),
+        Padding(
+          padding: const EdgeInsets.only(right: 20),
           child: Icon(
             Icons.menu,
-            size: 25.0,
-            color: AppColors.greenPrimary,
+            size: 30.0,
+            color: AppColors.greenAccentSecondary,
           ),
         )
       ],

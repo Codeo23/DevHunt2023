@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ampio/core/utils/function/numberToTowDigits.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,6 +16,7 @@ class Coms extends StatefulWidget {
 }
 
 class _ComsState extends State<Coms> {
+  // Audio recorder **
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
 
@@ -43,7 +45,6 @@ class _ComsState extends State<Coms> {
       const Duration(milliseconds: 500),
     );
   }
-
   Future record() async {
     if (!isRecorderReady) return;
     await recorder.startRecorder(toFile: 'audio');
@@ -54,6 +55,8 @@ class _ComsState extends State<Coms> {
     final audioFile = File(path!);
     print('Recorded audio: $audioFile');
   }
+  //.///////////////:
+
 
   @override
   Widget build(BuildContext context) {

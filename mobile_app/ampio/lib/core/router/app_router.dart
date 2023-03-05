@@ -1,3 +1,4 @@
+import 'package:ampio/features/home/presentation/all_questions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,6 +43,10 @@ abstract class AppRouter {
         path: RoutePath.settingsPath,
         builder: (context, state) => const SettingsScreen(),
       ),
+      GoRoute(
+        path: RoutePath.allQuestionsPath,
+        builder: (context,state) => const AllQuestionsScreen(),
+      )
     ],
   );
 }
