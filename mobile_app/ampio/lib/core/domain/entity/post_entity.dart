@@ -18,7 +18,7 @@ class PostEntity {
   });
 
   PostEntity.fromJson(Map<String, dynamic> json)
-      : id = json['id'] as String,
+      : id = json['ID'] as String,
         title = json['title'] as String,
         content = json['content'] as String,
         file = json['file'] as String,
