@@ -1,29 +1,20 @@
-import 'package:dio/dio.dart';
-
-import '../../../../../core/domain/data/remote/network_service.dart';
-import '../../../../../core/utils/constants/api_end_point.dart';
+import '../../../../utils/constants/api_end_point.dart';
+import '../network_service.dart';
 
 class AuthRepository {
 
-  final _networkService = NetworkService();
+  final NetworkService _networkService = NetworkService();
 
-  Future<Response> login(String username, String password) async {
+  Future<dynamic> login(String identity, String password) async {
+
     final response = await _networkService.post(
       path: ApiEndPoint.authentication,
       data: {
-        'identity': username,
+        'identity': identity,
         'password': password,
-      },
+      }
     );
 
-    return response;
-  }
-
-  Future<Response> getCurrentUser() async {
-    final response = await _networkService.get(
-      path: ApiEndPoint.currentUser,
-    );
-
-    return response;
+    return response.data;
   }
 }

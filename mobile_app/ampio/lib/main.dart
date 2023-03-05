@@ -1,12 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/router/app_router.dart';
 import 'core/domain/data/remote/repository/auth_repository.dart';
+import 'core/domain/data/remote/repository/post_repository.dart';
 import 'core/presentation/bloc/user/user_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const AmpioApp());
 }
 

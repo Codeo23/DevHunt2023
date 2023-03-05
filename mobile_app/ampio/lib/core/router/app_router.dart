@@ -1,3 +1,4 @@
+
 import 'package:ampio/features/home/presentation/all_questions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -8,11 +9,10 @@ import '../../features/home/presentation/home.dart';
 import '../../../features/login/presentation/login_screen.dart';
 import '../../../features/scan/presentation/scan_screen.dart';
 import '../../../features/response/presentation/response_screen.dart';
-import '../../../features/settings/presentation/settings_screen.dart';
 
 abstract class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.welcomePath,
+    initialLocation: RoutePath.homePath,
     routes: [
       GoRoute(
         path: RoutePath.welcomePath,
@@ -20,13 +20,7 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: RoutePath.loginPath,
-        pageBuilder: (context, state) => CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: const LoginScreen(),
-          transitionDuration: const Duration(seconds: 2),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: RoutePath.homePath,

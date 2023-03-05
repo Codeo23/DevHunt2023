@@ -7,13 +7,21 @@ import '../../../core/presentation/widgets/post_card.dart';
 import '../../../core/utils/colors/app_colors.dart';
 import '../../../core/utils/constants/route_path.dart';
 import 'widget/blurred_container.dart';
-import 'widget/chip_list.dart';
 import 'widget/search_field.dart';
 import 'widget/sharing_lists.dart';
 import 'widget/topic_list.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool isTopQuestions = true;
+  bool isRecentQuestions = false;
+  bool isThisWeekQuestions = false;
 
   @override
   Widget build(BuildContext context) {
@@ -121,5 +129,80 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         );
+  }
+
+  Widget _buildChipList() {
+    TextStyle style1 = GoogleFonts.poppins(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        color: Colors.white
+    );
+    TextStyle style2 = GoogleFonts.poppins(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        color: Colors.black
+    );
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      primary: false,
+      children: [
+        ChoiceChip(
+          selected: isTopQuestions,
+          onSelected: (value) {
+            setState(() {
+              isTopQuestions = value;
+              isRecentQuestions = !value;
+              isThisWeekQuestions = !value;
+            });
+          },
+          selectedColor: AppColors.darkPrimary,
+          label: Text(
+              'Top question',
+              style: style1
+          ),
+        ),
+        SizedBox(width: 15.w),
+        ChoiceChip(
+          selected: isRecentQuestions,
+          selectedColor: AppColors.darkPrimary,
+          onSelected: (value) {
+            setState(() {
+              isTopQuestions = !value;
+              isRecentQuestions = value;
+              isThisWeekQuestions = !value;
+            });
+          },
+          disabledColor: Colors.transparent,
+          side: const BorderSide(
+              color: Colors.grey
+          ),
+          label: Text(
+              'Récents',
+              style: style2
+          ),
+        ),
+        SizedBox(width: 15.w),
+        ChoiceChip(
+          selected: isThisWeekQuestions,
+          selectedColor: AppColors.darkPrimary,
+          onSelected: (value) {
+            setState(() {
+              isTopQuestions = !value;
+              isRecentQuestions = !value;
+              isThisWeekQuestions = value;
+            });
+          },
+          disabledColor: Colors.transparent,
+          side: const BorderSide(
+              color: Colors.grey
+          ),
+          label: Text(
+              'Cette semaine',
+              style: style2
+          ),
+        ),
+      ],
+    );
   }
 }
