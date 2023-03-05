@@ -90,6 +90,28 @@ func GetUser(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": respUser})
 }
 
+// get me
+func GetMe(c *fiber.Ctx) error {
+	// get the token
+	token := c.Locals("user").(*jwt.Token)
+
+	// get the claims
+	claims := token.Claims.(jwt.MapClaims)
+
+	// get the user id
+	id := int(claims["user_id"].(float64))
+
+	// get the user
+	db := database.Database.DB
+	var user models.User
+	db.Find(&user, id)
+	if user.Username == "" {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
+	}
+	// return
+	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": user})
+}
+
 // Get user by email
 func GetUserByEmail(c *fiber.Ctx) error {
 	type Query struct {
@@ -147,10 +169,10 @@ func CreateUser(c *fiber.Ctx) error {
 	user.Password = hash
 
 	// upload avatar for the user
-	file, er := c.FormFile("avatar")
-	if er != nil {
+	file, err := c.FormFile("avatar")
+	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid file",
+			"message": "Error while uploading file",
 		})
 	}
 
@@ -180,6 +202,9 @@ func CreateUser(c *fiber.Ctx) error {
 			"message": "Error while uploading file",
 		})
 	}
+
+	// set the avatar link
+	user.Avatar = link
 
 	if err := db.Create(&user).Error; err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Couldn't create user", "data": err})

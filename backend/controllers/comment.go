@@ -8,7 +8,6 @@ import (
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
 )
 
 type CommentResponse struct {
@@ -68,14 +67,7 @@ func Comment(c *fiber.Ctx) error {
 	}
 
 	// get user id
-	user_id := c.Params("user_id")
-	token := c.Locals("user").(*jwt.Token)
-
-	if !ValidToken(token, user_id) {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Invalid token",
-		})
-	}
+	user_id := GetUserID(c)
 
 	// get post id
 	id := c.Params("post_id")
@@ -92,13 +84,11 @@ func Comment(c *fiber.Ctx) error {
 	// upload file in comment
 	file, er := c.FormFile("file")
 	if er != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid file",
-		})
+		return c.Next()
 	}
 
 	// filename
-	filename := fmt.Sprintf("Post%d_User%s-%s", post_id, user_id, file.Filename)
+	filename := fmt.Sprintf("Post%d_User%d-%s", post_id, user_id, file.Filename)
 
 	// file path
 	path := fmt.Sprintf("public/comment/%s", filename)
@@ -123,14 +113,11 @@ func Comment(c *fiber.Ctx) error {
 		})
 	}
 
-	// convert user id to uint
-	us_id, _ := strconv.Atoi(user_id)
-
 	// create comment
 	comment := models.Comment{
 		Content:  body.Content,
-		AuthorID: uint(us_id),
-		PostID:   uint(us_id),
+		AuthorID: user_id,
+		PostID:   user_id,
 		File:     path,
 	}
 
@@ -158,20 +145,7 @@ func DeleteComment(c *fiber.Ctx) error {
 	}
 
 	// get user id
-	user_id := c.Params("user_id")
-	token := c.Locals("user").(*jwt.Token)
-
-	if !ValidToken(token, user_id) {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Invalid token",
-		})
-	}
-
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
-		})
-	}
+	user_id := GetUserID(c)
 
 	// database
 	db := database.Database.DB
@@ -191,7 +165,7 @@ func DeleteComment(c *fiber.Ctx) error {
 	}
 
 	// check if the user is the author
-	if comment.AuthorID != uint(id) {
+	if comment.AuthorID != user_id {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
 		})

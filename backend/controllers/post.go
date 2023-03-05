@@ -7,7 +7,6 @@ import (
 
 	"github.com/Codeo23/DevHunt2023/backend/database"
 	"github.com/Codeo23/DevHunt2023/backend/models"
-	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -26,94 +25,83 @@ func GetAllPosts(c *fiber.Ctx) error {
 
 // publish post and add it to a topic
 func Publish(c *fiber.Ctx) error {
+	// database
+	db := database.Database.DB
+
 	// get user id
-	user_id := c.Locals("user").(*jwt.Token).Claims.(jwt.MapClaims)["user_id"].(string)
+	// user_id := GetUserID(c)
+	user_id := uint(1)
 
-	// get input
-	title := c.FormValue("title")
-	content := c.FormValue("content")
-	topics := c.FormValue("topic")
-
-	// upload file with post
-	file, er := c.FormFile("file")
-	if er != nil {
+	// get new post
+	newPost := new(models.Post)
+	if err := c.BodyParser(newPost); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid file",
+			"message": "Error while parsing post",
 		})
 	}
 
-	// database
-	db := database.Database.DB
+	// upload file
+	file, err := c.FormFile("file")
+	if err != nil {
+		return c.Next()
+	}
+	fileName := fmt.Sprintf("%d%s", user_id, file.Filename)
+	path := fmt.Sprintf("public/posts/%s", fileName)
 
 	// create directory if not exists
 	if _, err := os.Stat("public/posts"); os.IsNotExist(err) {
 		os.MkdirAll("public/posts", 0755)
 	}
 
-	fileName := fmt.Sprintf("%s_%s", user_id, file.Filename)
-	link := fmt.Sprintf("public/posts/%s", fileName)
-
 	// upload file
-	if err := c.SaveFile(file, link); err != nil {
+	if err := c.SaveFile(file, path); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Error while uploading file",
 		})
 	}
-	// convert user_id to uint
-	id, _ := strconv.Atoi(user_id)
 
-	// get user
+	// create topic for all topic in topics if not exists
+	for _, topic := range newPost.Topics {
+		// check if topic exists
+		var topicExists models.Topic
+		if err := db.Where("content = ?", topic.Content).Find(&topicExists).Error; err != nil {
+			// create topic
+			if err := db.Create(&topic).Error; err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"message": "Error while creating topic",
+				})
+			}
+		}
+	}
+
+	// get user from user id
 	var user models.User
-	if err := db.Where(&models.User{ID: uint(id)}).Find(&user).Error; err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "User not found",
+	if err := db.Where("id = ?", user_id).Find(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error while getting user",
 		})
 	}
 
-	// don't create topic if already exists
-	var topic models.Topic
-	if err := db.Where("content = ?", topics).First(&topic).Error; err != nil {
-		// create post
-		post := models.Post{
-			AuthorID: uint(id),
-			Title:    title,
-			Content:  content,
-			Author:   user,
-			File:     link,
-			Topics: []*models.Topic{
-				{Content: topics},
-			},
-		}
-		if err := db.Create(&post).Error; err != nil {
+	// add post to database
+	newPost.File = path
+	newPost.AuthorID = user_id
+	newPost.Author = user
+	if err := db.Create(&newPost).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error while creating post",
+		})
+	}
+
+	// add topics to post
+	for _, topic := range newPost.Topics {
+		if err := db.Model(&newPost).Association("Topics").Append(&topic); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Error while creating post",
-			})
-		}
-	} else {
-		// create post
-		post := models.Post{
-			AuthorID: uint(id),
-			Title:    title,
-			Content:  content,
-			Author:   user,
-			File:     link,
-		}
-		// add topic to post
-		if err := db.Model(&post).Association("Topics").Append(&topic); err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Error while adding topic to post",
-			})
-		}
-		if err := db.Create(&post).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Error while creating post",
+				"message": "Error while adding topics to post",
 			})
 		}
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Post published",
-	})
+	return c.Status(fiber.StatusCreated).JSON(newPost)
 }
 
 // get all posts from a topic

@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/Codeo23/DevHunt2023/backend/config"
@@ -53,4 +55,13 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{"status": "success", "message": "Success login", "token": t})
+}
+
+// get user id from token
+func GetUserID(c *fiber.Ctx) uint {
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(jwt.MapClaims)
+	user_id := fmt.Sprintf("%v", claims["user_id"])
+	id, _ := strconv.Atoi(user_id)
+	return uint(id)
 }

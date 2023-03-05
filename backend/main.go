@@ -4,6 +4,7 @@ import (
 	"github.com/Codeo23/DevHunt2023/backend/config"
 	"github.com/Codeo23/DevHunt2023/backend/router"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	"github.com/Codeo23/DevHunt2023/backend/database"
 )
@@ -20,6 +21,9 @@ func main() {
 			AppName:       "DevHunt 2023",
 		},
 	)
+
+	// use cors
+	app.Use(cors.New())
 
 	// Setup routes
 	router.SetupRoutes(app)

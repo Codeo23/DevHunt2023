@@ -20,7 +20,8 @@ func SetupRoutes(app *fiber.App) {
 	// user routes
 	user := api.Group("/users")
 	user.Get("/", controllers.GetUsers)
-	user.Get("/:id<int>", middleware.Protected(), controllers.GetUser)
+	user.Get("/:id<int>", controllers.GetUser)
+	user.Get("/me", middleware.Protected(), controllers.GetMe)
 	user.Get("/search", controllers.GetUserByEmail)
 	user.Get("/:user_id<int>/avatar", controllers.GetAvatar)
 
@@ -34,13 +35,13 @@ func SetupRoutes(app *fiber.App) {
 	post.Get("/:topic<string>", controllers.GetPostsFromTopic)
 	post.Get("/:id<int>/file", controllers.GetPostFile)
 
-	post.Post("/publish", middleware.Protected(), controllers.Publish)
+	post.Post("/publish", controllers.Publish)
 
 	// comment routes
 	comment := api.Group("/comments")
 	comment.Get("/:post_id<int>", controllers.GetComments)
 
-	comment.Post("/user_:user_id<int>/post_:post_id<int>/comment", middleware.Protected(), controllers.Comment)
+	comment.Post("/:post_id<int>/comment", middleware.Protected(), controllers.Comment)
 
 	comment.Delete("/user_:user_id<int>/:id<int>", middleware.Protected(), controllers.DeleteComment)
 
