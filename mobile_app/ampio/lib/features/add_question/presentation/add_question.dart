@@ -7,8 +7,34 @@ import '../../../../features/add_question/presentation/widget/available_choice_c
 import '../../../../core/presentation/widgets/gradient_button.dart';
 import '../../../../core/utils/colors/app_colors.dart';
 
-class AddQuestion extends StatelessWidget {
+class AddQuestion extends StatefulWidget {
   const AddQuestion({Key? key}) : super(key: key);
+
+  @override
+  State<AddQuestion> createState() => _AddQuestionState();
+}
+
+class _AddQuestionState extends State<AddQuestion> {
+
+  late final TextEditingController _topicController;
+  late final TextEditingController _questionController;
+  late final TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    _topicController = TextEditingController();
+    _questionController = TextEditingController();
+    _descriptionController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _topicController.dispose();
+    _questionController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +55,20 @@ class AddQuestion extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const QuestionItem(
+          QuestionItem(
             titleField: 'Topiques',
             hintText: 'ex : typescript',
+            controller: _topicController,
           ),
-          const QuestionItem(
+          QuestionItem(
             titleField: 'Question',
-            hintText: 'Poser votre question',
+            hintText: 'Posez votre question',
+            controller: _questionController,
           ),
-          const QuestionItem(
+          QuestionItem(
             titleField: 'Description',
             hintText: 'Description du problème',
+            controller: _descriptionController,
           ),
           Expanded(
             child: ListView(
