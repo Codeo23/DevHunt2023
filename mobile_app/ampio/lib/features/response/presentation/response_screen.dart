@@ -122,7 +122,7 @@ class ResponseScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 color: Colors.white,
-                child: Coms()
+                child: const Coms()
               ),
             )
           ],

@@ -51,14 +51,14 @@ class AllQuestionsScreen extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black),
+                            color: Colors.black
+                        ),
                       ),
+                    ],
                     ),
                   ],
                 ),
-                SizedBox(height: 12.h),
-                const TopQuestions()
-              ]),
+              ),
             ),
           ],
         ),
