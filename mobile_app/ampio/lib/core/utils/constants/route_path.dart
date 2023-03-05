@@ -4,5 +4,6 @@ abstract class RoutePath {
   static const String homePath = '/';
   static const String scanPath = '/scan';
   static const String responsePath = '/response';
+  static const String allQuestionsPath = '/all_questions';
   static const String settingsPath = '/settings';
 }

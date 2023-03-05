@@ -21,8 +21,7 @@ class _HomeState extends State<Home> {
   int index = 0;
   static const List<Widget> pages = [
     HomeScreen(),
-    ProfileScreen(),
-    AllQuestionsScreen()
+    ProfileScreen()
   ];
 
   @override
@@ -30,7 +29,7 @@ class _HomeState extends State<Home> {
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: index == 0 || index == 2 ? const CustomizedAppBar() : null,
+        appBar: index == 0 ? const CustomizedAppBar() : null,
         floatingActionButton: FloatingActionButton(
           elevation: 5.0,
           backgroundColor: AppColors.yellowPrimary,
@@ -77,8 +76,8 @@ class _HomeState extends State<Home> {
               ),
               BottomNavBarItem(
                 icon: Icons.person,
-                onTap: () => setState(() => index = 2),
-                borderSide: index == 2
+                onTap: () => setState(() => index = 1),
+                borderSide: index == 1
                     ? BorderSide(
                         color: AppColors.greenSecondary,
                         width: 3.5,

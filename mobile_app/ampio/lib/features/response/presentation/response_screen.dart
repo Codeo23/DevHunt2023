@@ -1,4 +1,3 @@
-import 'package:ampio/core/utils/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../features/response/presentation/widget/response_item.dart';
 import '../../../../core/presentation/widgets/blurred_container.dart';
 import '../../../../features/response/presentation/widget/coms.dart';
+import '../../../../features/response/presentation/widget/play_audio.dart';
+
 
 class ResponseScreen extends StatelessWidget {
   const ResponseScreen({Key? key}) : super(key: key);
@@ -107,7 +108,10 @@ class ResponseScreen extends StatelessWidget {
                   const SizedBox(height: 5),
                   ResponseItem(),
                   const SizedBox(height: 5),
-                  ResponseItem()
+                  ResponseItem(),
+                  const SizedBox(height: 5,),
+                  PlayAudio(),
+                  const SizedBox(height: 150)
                 ],
               ),
             ),
