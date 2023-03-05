@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/presentation/bloc/user/user_bloc.dart';
 import '../../../../core/presentation/widgets/custom_textfield.dart';
 import '../../../../core/presentation/widgets/custom_button.dart';
+import '../../../../core/utils/colors/app_colors.dart';
 import '../../../../core/utils/constants/route_path.dart';
 import '../bloc/authenticate_with_form_event.dart';
 
@@ -46,8 +47,17 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
           context.go(RoutePath.homePath);
         } else if (state.status == AuthStatus.unauthenticated) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Echec de la connexion'),
+            SnackBar(
+              content: Text(
+                'Echec de la connexion',
+                style: GoogleFonts.poppins(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
+              backgroundColor: AppColors.greenPrimary,
+              dismissDirection: DismissDirection.horizontal,
             ),
           );
         }
@@ -55,12 +65,13 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
       child: Form(
         child: Column(
           children: [
-            const CustomTextField(
+            CustomTextField(
+              controller: _identityController,
               hintText: 'Votre e-mail',
             ),
             SizedBox(height: 35.h,),
             CustomTextField(
-              controller: _identityController,
+              controller: _passwordController,
               hintText: 'Votre mot de passe',
             ),
             SizedBox(height: 35.h,),
@@ -103,7 +114,7 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
                     )
                   ],
                 ),
-                onPressed: () => context.go(RoutePath.scanPath),
+                onPressed: () => context.push(RoutePath.scanPath),
               ),
             ),
           ],
