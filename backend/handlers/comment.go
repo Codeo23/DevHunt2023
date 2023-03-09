@@ -11,15 +11,17 @@ import (
 )
 
 type CommentResponse struct {
-	Content string `json:"content"`
-	File    string `json:"file"`
+	Content  string `json:"content"`
+	File     string `json:"file"`
+	Reaction uint   `json:"reaction"`
 }
 
 // func to create a comment response
 func CommentRep(comment models.Comment) CommentResponse {
 	return CommentResponse{
-		Content: comment.Content,
-		File:    comment.File,
+		Content:  comment.Content,
+		File:     comment.File,
+		Reaction: comment.Reaction,
 	}
 }
 
@@ -27,12 +29,7 @@ func CommentRep(comment models.Comment) CommentResponse {
 func GetComments(c *fiber.Ctx) error {
 	// get post id
 	id := c.Params("post_id")
-	post_id, err := strconv.Atoi(id)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid post id",
-		})
-	}
+	post_id, _ := strconv.Atoi(id)
 
 	// database
 	db := database.DB
@@ -48,6 +45,7 @@ func GetComments(c *fiber.Ctx) error {
 	// return
 	var response []CommentResponse
 	for _, comment := range comments {
+		comment.Reaction = uint(len(comment.Reacts))
 		response = append(response, CommentRep(comment))
 	}
 	return c.Status(fiber.StatusOK).JSON(response)
@@ -68,6 +66,12 @@ func Comment(c *fiber.Ctx) error {
 
 	// get user id
 	user_id := GetUserID(c)
+	var user models.User
+	if err := database.DB.Where("id = ?", user_id).First(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error getting user",
+		})
+	}
 
 	// get post id
 	id := c.Params("post_id")
@@ -122,8 +126,10 @@ func Comment(c *fiber.Ctx) error {
 	comment := models.Comment{
 		Content:  body.Content,
 		AuthorID: user_id,
+		Author:   user,
 		PostID:   user_id,
 		File:     link,
+		Reaction: 0,
 	}
 
 	// save comment
@@ -186,5 +192,82 @@ func DeleteComment(c *fiber.Ctx) error {
 	// return
 	return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 		"message": "Comment deleted",
+	})
+}
+
+// react to comment
+func ReactToComment(c *fiber.Ctx) error {
+	// get comment id
+	comment_id := c.Params("id")
+	post_id := c.Params("post_id")
+	id, _ := strconv.Atoi(comment_id)
+
+	// get user id
+	user_id := GetUserID(c)
+	var user models.User
+	if err := database.DB.Where("id = ?", user_id).First(&user).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Error getting user",
+		})
+	}
+
+	// check the post
+	var post models.Post
+	if err := database.DB.Where("id = ?", post_id).First(&post).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Post not found",
+		})
+	}
+
+	// database
+	db := database.DB
+
+	// check if the comment exist
+	var comment models.Comment
+	if err := db.Where("id = ? AND post_id = ?", uint(id), post_id).Find(&comment).Error; err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "Comment not found",
+		})
+	}
+
+	// check if the user already reacted to the comment
+	var reaction models.React
+	if err := db.Where("author_id = ? AND comment_id = ?", user_id, id).Find(&reaction).Error; err != nil {
+		// create reaction
+		reaction := models.React{
+			AuthorID:  user_id,
+			Author:    user,
+			CommentID: uint(id),
+			Comment:   comment,
+			PostID:    post.ID,
+			Post:      post,
+			Value:     1,
+		}
+		// save reaction
+		if err := db.Create(&reaction).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error saving reaction",
+			})
+		}
+	} else {
+		// remove reaction
+		if err := db.Delete(&reaction).Error; err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"message": "Error deleting reaction",
+			})
+		}
+	}
+
+	// update comment reaction
+	comment.Reaction = uint(len(comment.Reacts))
+	if err := db.Save(&comment).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error updating comment reaction",
+		})
+	}
+
+	// return
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Reaction updated",
 	})
 }
