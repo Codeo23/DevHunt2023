@@ -29,6 +29,7 @@ dependencies:
   audioplayers: ^3.0.1
   permission_handler: ^10.2.0
   webview_flutter: ^4.0.6
+  flutter_secure_storage: ^8.0.0
 
 dev_dependencies:
   flutter_test:
