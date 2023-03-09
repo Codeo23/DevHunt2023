@@ -176,7 +176,7 @@ Go to <http://localhost:3000>:
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `bearer`      | `jwt` | **Required**. The user's token |
+| `bearer`      | `jwt` | **Required**. The user's token for the jwt |
 
 ### Comments
 
@@ -209,7 +209,7 @@ Go to <http://localhost:3000>:
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `jwt`      | `bearer` | **Required**. The user's token |
+| `bearer`      | `jwt` | **Required**. The user's token for the jwt |
 
 #### Delete comment
 
@@ -225,7 +225,7 @@ If the connected user is the author of the comment, delete is possible
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `jwt`      | `bearer` | **Required**. The user's token |
+| `bearer`      | `jwt` | **Required**. The user's token for the jwt |
 
 ### Topics
 
