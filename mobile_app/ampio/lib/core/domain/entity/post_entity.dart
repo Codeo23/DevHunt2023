@@ -1,7 +1,7 @@
 import 'user_entity.dart';
 
 class PostEntity {
-  final String id;
+  final String? id;
   final String title;
   final String content;
   final String? file;
@@ -9,7 +9,7 @@ class PostEntity {
   final String? createdAt;
 
   PostEntity({
-    required this.id,
+    this.id,
     required this.title,
     required this.content,
     this.file,

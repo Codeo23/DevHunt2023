@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/colors/app_colors.dart';
 
@@ -35,9 +36,16 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       keyboardType: textInputType,
       obscureText: obscureText,
+      style: GoogleFonts.poppins(
+        fontSize: 14.sp,
+        color: Colors.white
+      ),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: hintStyle ?? TextStyle(color: Colors.white, fontSize: 14.sp),
+        hintStyle: hintStyle ?? GoogleFonts.poppins(
+          color: Colors.white,
+          fontSize: 14.sp
+        ),
         border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(borderRadius)

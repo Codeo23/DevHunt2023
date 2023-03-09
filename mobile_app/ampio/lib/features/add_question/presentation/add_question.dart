@@ -112,6 +112,7 @@ class _AddQuestionState extends State<AddQuestion> {
               ],
             ),
             width: double.infinity,
+            onPressed: () {},
           )
         ],
       ),

@@ -11,11 +11,11 @@ class NetworkService {
     _dio.options.receiveTimeout = const Duration(milliseconds: NetworkConfig.receiveTimeout);
   }
 
-  Future<Response> get({required String path}) async {
-    return await _dio.get(path);
+  Future<Response> get({required String path, Options? options}) async {
+    return await _dio.get(path, options: options);
   }
 
-  Future<Response> post({required String path, dynamic data}) async {
-    return await _dio.post(path, data: data);
+  Future<Response> post({required String path, dynamic data, Options? options}) async {
+    return await _dio.post(path, data: data, options: options);
   }
 }

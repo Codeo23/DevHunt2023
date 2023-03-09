@@ -44,7 +44,6 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
     return BlocListener<UserBloc, AuthState>(
       listener: (context, state) {
         if (state.status == AuthStatus.authenticated) {
-          print(state.user);
           context.go(RoutePath.homePath);
         } else if (state.status == AuthStatus.unauthenticated) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -68,12 +67,13 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
           children: [
             CustomTextField(
               controller: _identityController,
-              hintText: 'Votre e-mail',
+              hintText: 'Votre email ou nom d\'utilisateur',
             ),
             SizedBox(height: 35.h,),
             CustomTextField(
               controller: _passwordController,
               hintText: 'Votre mot de passe',
+              obscureText: true,
             ),
             SizedBox(height: 35.h,),
             SizedBox(
