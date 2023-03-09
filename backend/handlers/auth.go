@@ -34,12 +34,18 @@ func Login(c *fiber.Ctx) error {
 		&models.User{Email: identity}).Or(
 		&models.User{Username: identity},
 	).First(&u); res.RowsAffected <= 0 {
-		return c.JSON(fiber.Map{"error": true, "general": "Invalid Credentials."})
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error":   true,
+			"message": "User not found",
+		})
 	}
 
 	// Check if password is correct
 	if !CheckPasswordHash(password, u.Password) {
-		return c.JSON(fiber.Map{"error": true, "general": "Invalid Credentials."})
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error":   true,
+			"message": "Incorrect password",
+		})
 	}
 
 	token := jwt.New(jwt.SigningMethodHS256)

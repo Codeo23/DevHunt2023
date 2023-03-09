@@ -19,6 +19,7 @@ func main() {
 		fiber.Config{
 			CaseSensitive: true,
 			AppName:       "DevHunt 2023",
+			BodyLimit:     1024 * 1024 * 50,
 		},
 	)
 

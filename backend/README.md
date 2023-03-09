@@ -52,8 +52,6 @@ PORT should be replaced with the one in .env file
 
 Go to <http://localhost:PORT>:
 
-![Go Fiber Docker Boilerplate](./go_fiber_boilerplate.gif)
-
 ## API Reference
 
 ![image](routes.png)
