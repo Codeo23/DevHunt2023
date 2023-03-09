@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -5,12 +6,26 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../features/response/presentation/widget/response_item.dart';
 import '../../../../core/presentation/widgets/blurred_container.dart';
-import '../../../../features/response/presentation/widget/coms.dart';
-import '../../../../features/response/presentation/widget/play_audio.dart';
+import '../../../core/utils/colors/app_colors.dart';
+import '../../../../features/response/presentation/widget/audio_player.dart';
+import '../../../../features/response/presentation/widget/audio_recorder.dart';
 
-
-class ResponseScreen extends StatelessWidget {
+class ResponseScreen extends StatefulWidget {
   const ResponseScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ResponseScreen> createState() => _ResponseScreenState();
+}
+
+class _ResponseScreenState extends State<ResponseScreen> {
+  bool showPlayer = false;
+  String? audioPath;
+
+  @override
+  void initState() {
+    showPlayer = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,10 +122,6 @@ class ResponseScreen extends StatelessWidget {
                   ResponseItem(),
                   const SizedBox(height: 5),
                   ResponseItem(),
-                  const SizedBox(height: 5),
-                  ResponseItem(),
-                  const SizedBox(height: 5,),
-                  PlayAudio(),
                   const SizedBox(height: 150)
                 ],
               ),
@@ -122,9 +133,91 @@ class ResponseScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 color: Colors.white,
-                child: const Coms()
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            'assets/images/avatar.jpg',
+                            height: 40,
+                            width: 40,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            child: Container(
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1, color: AppColors.greyPrimary),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                children: [
+                                  const Expanded(
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                  AudioRecorder(
+                                    onStop: (path) {
+                                      if (kDebugMode)
+                                        print('Recorded file path: $path');
+                                      setState(() {
+                                        audioPath = path;
+                                      });
+                                    },
+                                  ),
+                                  IconButton(
+                                    padding: EdgeInsets.all(0),
+                                    onPressed: () => {},
+                                    icon: const Icon(
+                                      Icons.attach_file,
+                                    ),
+                                    visualDensity: VisualDensity.compact,
+                                  ),
+                                  IconButton(
+                                    padding: EdgeInsets.all(0),
+                                    onPressed: () => {},
+                                    icon: const Icon(
+                                      Icons.image,
+                                    ),
+                                    visualDensity: VisualDensity.compact,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(colors: [
+                                        AppColors.greenSecondary,
+                                        AppColors.greenAccentThirdly
+                                      ]),
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.send,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
