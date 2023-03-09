@@ -45,10 +45,12 @@ make start
 
 ```bash
 docker build -t gofiber .
-docker run -d -p 3000:3000 gofiber ./app -prod
+docker run -d -p 3000:${PORT} gofiber ./app -prod
 ```
 
-Go to <http://localhost:3000>:
+PORT should be replaced with the one in .env file
+
+Go to <http://localhost:${PORT}>:
 
 ![Go Fiber Docker Boilerplate](./go_fiber_boilerplate.gif)
 
