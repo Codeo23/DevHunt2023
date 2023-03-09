@@ -1,5 +1,5 @@
 class UserEntity {
-  final String matriculate;
+  final int matriculate;
   final String username;
   final String? password;
   final String? email;
@@ -14,7 +14,7 @@ class UserEntity {
   });
 
   UserEntity.fromJson(Map<String, dynamic> json)
-      : matriculate = json['matriculate'] as String,
+      : matriculate = json['matricule'] as int,
         username = json['username'] as String,
         password = json['password'] ?? '',
         email = json['email'] ?? '',
