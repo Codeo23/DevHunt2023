@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/Codeo23/DevHunt2023/backend/controllers"
+	"github.com/Codeo23/DevHunt2023/backend/handlers"
 	"github.com/Codeo23/DevHunt2023/backend/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -11,41 +11,48 @@ import (
 func SetupRoutes(app *fiber.App) {
 	app.Use(logger.New())
 	api := app.Group("/api", logger.New())
-	api.Get("/", controllers.Hello)
+	api.Get("/", handlers.Hello)
 
 	// auth routes
 	auth := api.Group("/auth")
-	auth.Post("/login", controllers.Login)
+	auth.Post("/login", handlers.Login)
 
 	// user routes
 	user := api.Group("/users")
-	user.Get("/", controllers.GetUsers)
-	user.Get("/:id<int>", controllers.GetUser)
-	user.Get("/me", middleware.Protected(), controllers.GetMe)
-	user.Get("/search", controllers.GetUserByEmail)
-	user.Get("/:user_id<int>/avatar", controllers.GetAvatar)
+	user.Static("/avatar", "./static/public/avatars")
 
-	user.Post("/signup", controllers.CreateUser)
-	user.Put("/me/password", middleware.Protected(), controllers.UpdateUser)
-	user.Delete("/delete", middleware.Protected(), controllers.DeleteUser)
+	user.Get("/", handlers.GetUsers)
+	user.Get("/:id<int>", handlers.GetUser)
+	user.Get("/me", middleware.Protected(), handlers.GetMe)
+	user.Get("/search", handlers.GetUserByEmail)
+
+	user.Post("/signup", handlers.CreateUser)
+	user.Put("/me/password", middleware.Protected(), handlers.UpdateUser)
+	user.Delete("/delete", middleware.Protected(), handlers.DeleteUser)
 
 	// post routes
 	post := api.Group("/posts")
-	post.Get("/", controllers.GetAllPosts)
-	post.Get("/:topic<string>", controllers.GetPostsFromTopic)
-	post.Get("/:id<int>/file", controllers.GetPostFile)
+	post.Static("/file", "./static/public/posts")
 
-	post.Post("/publish", middleware.Protected(), controllers.Publish)
+	post.Get("/", handlers.GetAllPosts)
+	post.Get("/:topic<string>", handlers.GetPostsFromTopic)
+	post.Get("/:id<int>/file", handlers.GetPostFile)
+
+	post.Post("/publish", middleware.Protected(), handlers.Publish)
 
 	// comment routes
 	comment := api.Group("/comments")
-	comment.Get("/:post_id<int>", controllers.GetComments)
+	comment.Static("/file", "./static/public/comments")
 
-	comment.Post("/:post_id<int>/comment", middleware.Protected(), controllers.Comment)
+	comment.Get("/:post_id<int>", handlers.GetComments)
 
-	comment.Delete("/user_:user_id<int>/:id<int>", middleware.Protected(), controllers.DeleteComment)
+	comment.Post("/:post_id<int>/comment", middleware.Protected(), handlers.Comment)
+
+	comment.Delete("/user_:user_id<int>/:id<int>", middleware.Protected(), handlers.DeleteComment)
 
 	// topic routes
 	topic := api.Group("/topics")
-	topic.Get("/", controllers.GetTopics)
+	topic.Static("/logo", "./static/public/topics")
+
+	topic.Get("/", handlers.GetTopics)
 }

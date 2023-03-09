@@ -1,7 +1,58 @@
-
 # Backend Ampio
 
 This is the backend of the application Ampio that will be presented on the 2nd Edition of the DevHunt organised by ENI Fianarantsoa.
+
+## Development
+
+### Start the application
+
+```bash
+go run app.go
+```
+
+### Use local container
+
+```
+# Clean packages
+make clean-packages
+
+# Generate go.mod & go.sum files
+make requirements
+
+# Generate docker image
+make build
+
+# Generate docker image with no cache
+make build-no-cache
+
+# Run the projec in a local container
+make up
+
+# Run local container in background
+make up-silent
+
+# Run local container in background with prefork
+make up-silent-prefork
+
+# Stop container
+make stop
+
+# Start container
+make start
+```
+
+## Production
+
+```bash
+docker build -t gofiber .
+docker run -d -p 3000:PORT gofiber ./app -prod
+```
+
+PORT should be replaced with the one in .env file
+
+Go to <http://localhost:PORT>:
+
+![Go Fiber Docker Boilerplate](./go_fiber_boilerplate.gif)
 
 ## API Reference
 
@@ -127,7 +178,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `bearer`      | `jwt` | **Required**. The user's token |
+| `bearer`      | `jwt` | **Required**. The user's token for the jwt |
 
 ### Comments
 
@@ -160,7 +211,7 @@ This is the backend of the application Ampio that will be presented on the 2nd E
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `cookie`      | `string` | **Required**. The user's token as a cookie |
+| `bearer`      | `jwt` | **Required**. The user's token for the jwt |
 
 #### Delete comment
 
@@ -176,7 +227,7 @@ If the connected user is the author of the comment, delete is possible
 
 | Auth | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `cookie`      | `string` | **Required**. The user's token as a cookie |
+| `bearer`      | `jwt` | **Required**. The user's token for the jwt |
 
 ### Topics
 
