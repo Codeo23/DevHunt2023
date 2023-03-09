@@ -32,6 +32,7 @@ class QuestionItem extends StatelessWidget {
         ),
         const SizedBox(height: 5,),
         CustomTextField(
+          controller: controller,
           hintText: hintText,
           hintStyle: GoogleFonts.poppins(
               color: Colors.grey,
