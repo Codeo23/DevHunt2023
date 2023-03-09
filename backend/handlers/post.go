@@ -44,12 +44,13 @@ func Publish(c *fiber.Ctx) error {
 
 	if file != nil {
 		fileName := fmt.Sprintf("%d%s", user_id, file.Filename)
-		path := fmt.Sprintf("public/posts/%s", fileName)
-		newPost.File = path
+		path := fmt.Sprintf("static/public/posts/%s", fileName)
+		link := fmt.Sprintf("file/%s", fileName)
+		newPost.File = link
 
 		// create directory if not exists
-		if _, err := os.Stat("public/posts"); os.IsNotExist(err) {
-			os.MkdirAll("public/posts", 0755)
+		if _, err := os.Stat("static/public/posts"); os.IsNotExist(err) {
+			os.MkdirAll("static/public/posts", 0755)
 		}
 
 		// upload file

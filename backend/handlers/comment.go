@@ -83,7 +83,10 @@ func Comment(c *fiber.Ctx) error {
 
 	// upload file in comment
 	file, _ := c.FormFile("file")
-	path := ""
+	var (
+		path string
+		link string
+	)
 
 	if file != nil {
 
@@ -91,11 +94,12 @@ func Comment(c *fiber.Ctx) error {
 		filename := fmt.Sprintf("Post%d_User%d-%s", post_id, user_id, file.Filename)
 
 		// file path
-		path = fmt.Sprintf("public/comment/%s", filename)
+		path = fmt.Sprintf("static/public/comments/%s", filename)
+		link = fmt.Sprintf("file/%s", filename)
 
 		// create directory if not exists
-		if _, err := os.Stat("public/comment"); os.IsNotExist(err) {
-			os.MkdirAll("public/comment", 0755)
+		if _, err := os.Stat("static/public/comments"); os.IsNotExist(err) {
+			os.MkdirAll("static/public/comments", 0755)
 		}
 
 		// save file
@@ -119,7 +123,7 @@ func Comment(c *fiber.Ctx) error {
 		Content:  body.Content,
 		AuthorID: user_id,
 		PostID:   user_id,
-		File:     path,
+		File:     link,
 	}
 
 	// save comment

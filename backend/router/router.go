@@ -25,7 +25,6 @@ func SetupRoutes(app *fiber.App) {
 	user.Get("/:id<int>", handlers.GetUser)
 	user.Get("/me", middleware.Protected(), handlers.GetMe)
 	user.Get("/search", handlers.GetUserByEmail)
-	user.Get("/:user_id<int>/avatar", handlers.GetAvatar)
 
 	user.Post("/signup", handlers.CreateUser)
 	user.Put("/me/password", middleware.Protected(), handlers.UpdateUser)

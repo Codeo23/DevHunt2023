@@ -135,23 +135,6 @@ func GetUserByEmail(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"status": "success", "message": "User found", "data": respUser})
 }
 
-// Get Avatar from file
-func GetAvatar(c *fiber.Ctx) error {
-	// get the user id
-	id := c.Params("user_id")
-	// get the user
-	db := database.DB
-	var user models.User
-	db.Find(&user, id)
-	if user.Username == "" {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "error", "message": "No user found with ID", "data": nil})
-	}
-	// get the avatar
-	avatar := user.Avatar
-	// return the avatar
-	return c.SendFile(avatar)
-}
-
 // CreateUser new user
 func CreateUser(c *fiber.Ctx) error {
 	db := database.DB
@@ -173,8 +156,8 @@ func CreateUser(c *fiber.Ctx) error {
 
 	if file != nil {
 		// create directory if not exists
-		if _, err := os.Stat("public/avatar"); os.IsNotExist(err) {
-			os.MkdirAll("public/avatar", 0755)
+		if _, err := os.Stat("static/public/avatars"); os.IsNotExist(err) {
+			os.MkdirAll("static/public/avatars", 0755)
 		}
 
 		// create random filename with 4 caracter
@@ -182,7 +165,7 @@ func CreateUser(c *fiber.Ctx) error {
 		fileName := fmt.Sprintf("%d%s", user.Matricule, file.Filename)
 
 		// check if the file already exists
-		if _, err := os.Stat("public/avatar/" + fileName); err == nil {
+		if _, err := os.Stat("static/public/avatars" + fileName); err == nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"message": "File already exists",
 			})
@@ -190,10 +173,11 @@ func CreateUser(c *fiber.Ctx) error {
 
 		// random filename using random string
 
-		link := fmt.Sprintf("public/avatar/%s", fileName)
+		path := fmt.Sprintf("static/public/avatar/%s", fileName)
+		link := fmt.Sprintf("avatar/%s", fileName)
 
 		// upload file
-		if err := c.SaveFile(file, link); err != nil {
+		if err := c.SaveFile(file, path); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"message": "Error while uploading file",
 			})
