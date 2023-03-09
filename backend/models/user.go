@@ -15,4 +15,5 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 	Posts     []Post    `json:"posts" gorm:"foreignKey:AuthorID; references:ID;"`
 	Comments  []Comment `json:"comments" gorm:"foreignKey:AuthorID; references:ID;"`
+	Reacts    []React   `json:"reacts" gorm:"foreignKey:AuthorID; references:ID;"`
 }
