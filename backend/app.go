@@ -29,5 +29,11 @@ func main() {
 	// Setup routes
 	router.SetupRoutes(app)
 
+	// 404 handler
+	app.Use(func(c *fiber.Ctx) error {
+		c.Status(fiber.StatusNotFound)
+		return c.SendFile("./static/private/404.html")
+	})
+
 	app.Listen(":" + config.Config("PORT"))
 }
