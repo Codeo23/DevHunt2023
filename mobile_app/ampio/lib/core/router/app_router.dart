@@ -1,6 +1,6 @@
-
 import 'package:ampio/features/home/presentation/all_questions_screen.dart';
 import 'package:ampio/features/response/presentation/widget/code_editor.dart';
+import 'package:ampio/features/topics/presentation/topics_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/constants/route_path.dart';
@@ -32,20 +32,31 @@ abstract class AppRouter {
         builder: (context, state) => const ScanScreen(),
       ),
       GoRoute(
-          path: RoutePath.responsePath,
-          builder: (context, state) => const ResponseScreen()),
+          path: '${RoutePath.responsePath}/:post_id',
+          builder: (context, state) {
+            return ResponseScreen(
+              postId: state.params["post_id"]!,
+            );
+          }),
       GoRoute(
         path: RoutePath.settingsPath,
         builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(
         path: RoutePath.allQuestionsPath,
-        builder: (context,state) => const AllQuestionsScreen(),
+        builder: (context, state) => const AllQuestionsScreen(),
       ),
       GoRoute(
-        path: RoutePath.codeEditor,
-        builder: (context,state) =>  const CodeEditor(),
-      )
+        path: '${RoutePath.codeEditor}/:post_id',
+        builder: (context, state){
+          return CodeEditor(
+            postId: state.params["post_id"]!,
+          );
+        },
+      ),
+      GoRoute(path: RoutePath.topics, builder: (context,state) {
+        return TopicsScreen();
+      })
     ],
   );
 }

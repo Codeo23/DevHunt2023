@@ -4,7 +4,6 @@ abstract class ApiEndPoint {
   static const getPosts = '/posts';
   static const addPost = '/posts/publish';
   static const getUserById = '/users/';
-
-  static const getComments = '/comments';
-  static const postComments = '/comments/1/comment';
+  static const comments = '/comments';
+  static const topics = '/topics';
 }

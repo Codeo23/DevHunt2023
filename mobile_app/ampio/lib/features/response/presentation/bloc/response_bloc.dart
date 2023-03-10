@@ -4,12 +4,15 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/utils/Enums/loading_status.dart';
 import '../../../../core/domain/data/remote/repository/response_repository.dart';
+import '../../../../core/domain/usecase/response_usecase.dart';
 
 part 'response_event.dart';
+
 part 'response_state.dart';
 
 class ResponseBloc extends Bloc<ResponseEvent, ResponseState> {
   final ResponseRepository responseRepository;
+  final ResponseUseCase responseUseCase = ResponseUseCase();
 
   ResponseBloc(this.responseRepository) : super(const ResponseState()) {
     on<ResponseGetsEvent>(_responseGets);
@@ -24,11 +27,11 @@ class ResponseBloc extends Bloc<ResponseEvent, ResponseState> {
       emit(
         state.copyWith(status: LoadingStatus.loading),
       );
-      final data =
-          await responseRepository.getAllComments(post_id: event.post_id);
-      print(data);
+      final responses = await responseUseCase
+          .convertResponseDataToResponseEntity(postId: event.postId);
+      print(responses);
       emit(
-        state.copyWith(status: LoadingStatus.success),
+        state.copyWith(status: LoadingStatus.success, responses: responses),
       );
     } catch (e) {
       print("Error $e");
@@ -44,10 +47,13 @@ class ResponseBloc extends Bloc<ResponseEvent, ResponseState> {
         state.copyWith(status: LoadingStatus.loading),
       );
       final data = await responseRepository.addComment(
-          content: event.content, filePath: event.filePath);
+        content: event.content,
+        filePath: event.filePath,
+        postId: event.postId,
+      );
       print(data);
       emit(
-        state.copyWith(status: LoadingStatus.success,responses: data),
+        state.copyWith(status: LoadingStatus.success),
       );
     } catch (_) {
       emit(state.copyWith(status: LoadingStatus.error));

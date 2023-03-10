@@ -88,9 +88,9 @@ class _AudioRecorderState extends State<AudioRecorder> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         _buildRecordStopControl(),
-        const SizedBox(width: 20),
+        const SizedBox(width: 5),
         _buildPauseResumeControl(),
-        const SizedBox(width: 20),
+        const SizedBox(width: 5),
         _buildText(),
       ],
     );
@@ -115,24 +115,19 @@ class _AudioRecorderState extends State<AudioRecorder> {
     late Color color;
 
     if (_recordState != RecordState.stop) {
-      icon = const Icon(Icons.stop, color: Colors.red, size: 30);
+      icon = const Icon(Icons.stop, color: Colors.red, size: 25);
       color = Colors.red.withOpacity(0.1);
     } else {
       final theme = Theme.of(context);
-      icon = Icon(Icons.mic, color: theme.primaryColor, size: 30);
+      icon = Icon(Icons.mic, color: theme.primaryColor, size: 25);
       color = theme.primaryColor.withOpacity(0.1);
     }
 
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child: SizedBox(width: 56, height: 56, child: icon),
-          onTap: () {
-            (_recordState != RecordState.stop) ? _stop() : _start();
-          },
-        ),
-      ),
+    return InkWell(
+      child: SizedBox(width: 25, height: 25, child: icon),
+      onTap: () {
+        (_recordState != RecordState.stop) ? _stop() : _start();
+      },
     );
   }
 
@@ -145,24 +140,19 @@ class _AudioRecorderState extends State<AudioRecorder> {
     late Color color;
 
     if (_recordState == RecordState.record) {
-      icon = const Icon(Icons.pause, color: Colors.red, size: 30);
+      icon = const Icon(Icons.pause, color: Colors.red, size: 25);
       color = Colors.red.withOpacity(0.1);
     } else {
       final theme = Theme.of(context);
-      icon = const Icon(Icons.play_arrow, color: Colors.red, size: 30);
+      icon = const Icon(Icons.play_arrow, color: Colors.red, size: 25);
       color = theme.primaryColor.withOpacity(0.1);
     }
 
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child: SizedBox(width: 56, height: 56, child: icon),
-          onTap: () {
-            (_recordState == RecordState.pause) ? _resume() : _pause();
-          },
-        ),
-      ),
+    return InkWell(
+      child: SizedBox(width: 25, height: 25, child: icon),
+      onTap: () {
+        (_recordState == RecordState.pause) ? _resume() : _pause();
+      },
     );
   }
 
