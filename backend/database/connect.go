@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/Codeo23/DevHunt2023/backend/config"
-	"github.com/Codeo23/DevHunt2023/backend/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -26,12 +25,12 @@ func ConnectDB() {
 	DB.Logger = logger.Default.LogMode(logger.Info)
 
 	fmt.Println("Connection Opened to Database")
-	DB.AutoMigrate(
-		&models.Post{},
-		&models.User{},
-		&models.Comment{},
-		&models.Topic{},
-		&models.React{},
-	)
+	// DB.AutoMigrate(
+	// 	&models.Post{},
+	// 	&models.User{},
+	// 	&models.Comment{},
+	// 	&models.Topic{},
+	// 	&models.React{},
+	// )
 	fmt.Println("Database Migrated")
 }

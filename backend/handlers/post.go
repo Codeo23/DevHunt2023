@@ -39,8 +39,11 @@ func Publish(c *fiber.Ctx) error {
 		})
 	}
 
+	topics := c.FormValue("topics")
+
 	// upload file
 	file, _ := c.FormFile("file")
+	var link string
 
 	if file != nil {
 		fileName := fmt.Sprintf("%d%s", user_id, file.Filename)
@@ -61,33 +64,52 @@ func Publish(c *fiber.Ctx) error {
 		}
 	}
 
-	var topic models.Topic
-	if err := db.First(&topic, "content = ?", newPost.Topic).Error; err != nil {
-		// create topic
-		if err := db.Create(&newPost.Topic).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Error while creating topic",
-			})
-		}
-	}
-
 	// get user from user id
 	var user models.User
 	db.First(&user, user_id)
 
-	// add topic to post with where condition
-	if err := db.Model(&newPost).Where("topic = ?", newPost.Topic.Topic).Association("Topic").Append(&newPost.Topic); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error while adding topic to post",
-		})
+	var topic models.Topic
+	if err := db.First(&topic, "topic = ?", topics).Error; err != nil {
+		// create post with the new topic
+		post := models.Post{
+			Title:    newPost.Title,
+			Content:  newPost.Content,
+			File:     link,
+			AuthorID: user_id,
+			Author:   user,
+			TopicID:  newPost.Topic.ID,
+			Topic: models.Topic{
+				Topic: topics,
+				Image: "https://ui-avatars.com/api/?name=" + topics + "&background=random",
+			},
+		}
+		if err := db.Create(&post).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error while creating post",
+			})
+		}
+	} else {
+		// create post with the existing topic
+		post := models.Post{
+			Title:    newPost.Title,
+			Content:  newPost.Content,
+			File:     link,
+			AuthorID: user_id,
+			Author:   user,
+			TopicID:  topic.ID,
+			Topic:    topic,
+		}
+		if err := db.Create(&post).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error while creating post",
+			})
+		}
 	}
 
-	// add post to database
-	newPost.AuthorID = user_id
-	newPost.Author = user
-	if err := db.Create(&newPost).Error; err != nil {
+	// add topic to post with where condition
+	if err := db.Model(&newPost).Where("topic_id = ?", newPost.Topic.ID).Association("Topic").Append(&newPost.Topic); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error while creating post",
+			"message": "Error while adding topic to post",
 		})
 	}
 
@@ -104,7 +126,7 @@ func GetPostsFromTopic(c *fiber.Ctx) error {
 
 	// preload topics
 	var posts []models.Post
-	if err := db.Preload("Topics").Where("content = ?", topicContent).Find(&posts).Error; err != nil {
+	if err := db.Preload("Topic").Where("topic = ?", topicContent).Find(&posts).Error; err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "Topic not found",
 		})
