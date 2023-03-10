@@ -15,7 +15,7 @@ import (
 func GetAllPosts(c *fiber.Ctx) error {
 	db := database.DB
 	var posts []models.Post
-	if err := db.Find(&posts).Error; err != nil {
+	if err := db.Model(&models.Post{}).Preload("Author").Preload("Comments").Preload("Topic").Preload("Reacts").Find(&posts).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Error while getting posts",
 		})
@@ -61,23 +61,26 @@ func Publish(c *fiber.Ctx) error {
 		}
 	}
 
-	// create topic for all topic in topics if not exists
-	for _, topic := range newPost.Topics {
-		// check if topic exists
-		var topicExists models.Topic
-		if err := db.Where("content = ?", topic.Content).Find(&topicExists).Error; err != nil {
-			// create topic
-			if err := db.Create(&topic).Error; err != nil {
-				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-					"message": "Error while creating topic",
-				})
-			}
+	var topic models.Topic
+	if err := db.First(&topic, "content = ?", newPost.Topic).Error; err != nil {
+		// create topic
+		if err := db.Create(&newPost.Topic).Error; err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error while creating topic",
+			})
 		}
 	}
 
 	// get user from user id
 	var user models.User
 	db.First(&user, user_id)
+
+	// add topic to post with where condition
+	if err := db.Model(&newPost).Where("topics = ?", newPost.Topic).Association("Topic").Append(&newPost.Topic); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error while adding topic to post",
+		})
+	}
 
 	// add post to database
 	newPost.AuthorID = user_id
@@ -86,15 +89,6 @@ func Publish(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Error while creating post",
 		})
-	}
-
-	// add topics to post
-	for _, topic := range newPost.Topics {
-		if err := db.Model(&newPost).Association("Topics").Append(&topic); err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Error while adding topics to post",
-			})
-		}
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(newPost)

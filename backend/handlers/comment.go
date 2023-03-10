@@ -10,21 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type CommentResponse struct {
-	Content  string `json:"content"`
-	File     string `json:"file"`
-	Reaction uint   `json:"reaction"`
-}
-
-// func to create a comment response
-func CommentRep(comment models.Comment) CommentResponse {
-	return CommentResponse{
-		Content:  comment.Content,
-		File:     comment.File,
-		Reaction: comment.Reaction,
-	}
-}
-
 // get all comments from a post
 func GetComments(c *fiber.Ctx) error {
 	// get post id
@@ -36,19 +21,14 @@ func GetComments(c *fiber.Ctx) error {
 
 	// get comments and order by reaction number
 	var comments []models.Comment
-	if err := db.Where("post_id = ?", uint(post_id)).Order("reaction desc").Find(&comments).Error; err != nil {
+	if err := db.Model(&models.Comment{}).Where("post_id = ?", uint(post_id)).Preload("Author").Preload("Post").Preload("Reacts").Order("reaction desc").Find(&comments).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Error getting comments",
 		})
 	}
 
 	// return
-	var response []CommentResponse
-	for _, comment := range comments {
-		comment.Reaction = uint(len(comment.Reacts))
-		response = append(response, CommentRep(comment))
-	}
-	return c.Status(fiber.StatusOK).JSON(response)
+	return c.Status(fiber.StatusOK).JSON(comments)
 }
 
 // comment a post
@@ -140,8 +120,7 @@ func Comment(c *fiber.Ctx) error {
 	}
 
 	// return
-	response := CommentRep(comment)
-	return c.Status(fiber.StatusCreated).JSON(response)
+	return c.Status(fiber.StatusCreated).JSON(comment)
 }
 
 // delete a comment
