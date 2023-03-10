@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/router/app_router.dart';
+import 'core/router/app_router.dart';
 import 'core/domain/data/remote/repository/auth_repository.dart';
 import 'core/domain/data/remote/repository/post_repository.dart';
 import 'core/presentation/bloc/post/post_bloc.dart';
-import '../../../core/domain/data/remote/repository/response_repository.dart';
-import '../../../../features/response/presentation/bloc/response_add_bloc.dart';
 import 'core/presentation/bloc/user/user_bloc.dart';
+import 'core/domain/data/remote/repository/response_repository.dart';
+import 'features/response/presentation/bloc/response_bloc.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +25,7 @@ class AmpioApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => UserBloc(AuthRepository())),
-        BlocProvider(create: (context) => PostBloc(PostRepository()))
-        BlocProvider(create: (context) => ResponseBloc(ResponseRepository()),),
+        BlocProvider(create: (context) => PostBloc(PostRepository())),
       ],
       child: ScreenUtilInit(
         builder: (context,child) {

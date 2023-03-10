@@ -8,6 +8,13 @@ class ResponseRepository {
   final NetworkService _networkService = NetworkService();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
+  Future<dynamic> getAllComments({required int post_id}) async {
+    final response = await _networkService.get(
+      path: '/comments/1',
+    );
+    return response.data;
+  }
+
   Future<dynamic> addComment({
     String? content,
     String? filePath,
@@ -17,7 +24,8 @@ class ResponseRepository {
       path: ApiEndPoint.postComments,
       data: FormData.fromMap({
         "content": content,
-        "file": filePath != null ? await MultipartFile.fromFile(filePath) : null,
+        "file":
+            filePath != null ? await MultipartFile.fromFile(filePath) : null,
       }),
       options: Options(
         headers: {
