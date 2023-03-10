@@ -269,7 +269,6 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                   ),
                                   AudioRecorder(
                                     onStop: (path) {
-                                      print(path);
                                       setState(() {
                                         audioPath = path;
                                       });
@@ -288,7 +287,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                   IconButton(
                                     padding: EdgeInsets.all(0),
                                     onPressed: () => {
-                                      context.push(RoutePath.codeEditor),
+                                      context.push('${RoutePath.codeEditor}/${widget.postId}'),
                                     },
                                     icon: const Icon(
                                       Icons.code,

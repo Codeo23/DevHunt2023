@@ -1,5 +1,6 @@
 import 'package:ampio/features/home/presentation/all_questions_screen.dart';
 import 'package:ampio/features/response/presentation/widget/code_editor.dart';
+import 'package:ampio/features/topics/presentation/topics_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/constants/route_path.dart';
@@ -52,7 +53,10 @@ abstract class AppRouter {
             postId: state.params["post_id"]!,
           );
         },
-      )
+      ),
+      GoRoute(path: RoutePath.topics, builder: (context,state) {
+        return TopicsScreen();
+      })
     ],
   );
 }

@@ -64,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.black),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(RoutePath.topics);
+                        },
                         child: Text(
                           'Voir tout',
                           style: GoogleFonts.poppins(
