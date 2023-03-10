@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import '../../../../features/add_question/presentation/bloc/post_add_event.dart';
 import '../../../domain/data/remote/repository/post_repository.dart';
 import '../../../domain/usecase/post_usecase.dart';
+import '../../../services/push_notification_service.dart';
 import '../load_event.dart';
 import '../../../domain/entity/post_entity.dart';
 import '../../../utils/Enums/loading_status.dart';
@@ -36,10 +37,11 @@ class PostBloc extends Bloc<LoadPostEvent, LoadPostState> {
     emit(state.copyWith(status: LoadingStatus.loading));
     try {
       await postRepository.addPost(
-          topic: event.topic,
-          question: event.question,
-          description: event.description
+        question: event.question,
+        description: event.description,
+        topic: event.topic,
       );
+      await PushNotificationService.sendPushNotification(event.question, event.description);
       emit(state.copyWith(status: LoadingStatus.success));
     } catch (e) {
       emit(state.copyWith(status: LoadingStatus.error));

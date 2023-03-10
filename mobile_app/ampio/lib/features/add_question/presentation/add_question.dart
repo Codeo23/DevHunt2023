@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../features/add_question/presentation/widget/question_item.dart';
@@ -167,7 +166,6 @@ class _AddQuestionState extends State<AddQuestion> {
                       description: _descriptionController.text
                     )
                   );
-                  context.pop();
                 },
               )
             ],
