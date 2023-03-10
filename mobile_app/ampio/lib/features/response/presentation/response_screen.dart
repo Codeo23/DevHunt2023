@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +12,7 @@ import '../../../../core/presentation/widgets/blurred_container.dart';
 import '../../../core/utils/colors/app_colors.dart';
 import '../../../../features/response/presentation/widget/audio_recorder.dart';
 import '../../../../features/response/presentation/bloc/response_add_bloc.dart';
-import '../../../../core/domain/data/remote/repository/response_repository.dart';
+import '../../../core/utils/constants/route_path.dart';
 
 class ResponseScreen extends StatefulWidget {
   const ResponseScreen({Key? key}) : super(key: key);
@@ -20,6 +23,12 @@ class ResponseScreen extends StatefulWidget {
 
 class _ResponseScreenState extends State<ResponseScreen> {
   late final TextEditingController _textCommentController;
+  FilePickerResult? resultFile;
+  String? _fileName;
+  PlatformFile? pickedFile;
+  bool isLoading = false;
+  File? fileToDisplay;
+
   String? audioPath;
 
   @override
@@ -32,6 +41,25 @@ class _ResponseScreenState extends State<ResponseScreen> {
   void dispose() {
     _textCommentController.dispose();
     super.dispose();
+  }
+
+  void _pickFile() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      resultFile = await FilePicker.platform.pickFiles();
+      print(resultFile);
+      if (resultFile != null) {
+        _fileName = resultFile!.files.first.name;
+        pickedFile = resultFile!.files.first;
+        fileToDisplay = File(pickedFile!.path.toString());
+        print('File name $_fileName');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -186,7 +214,9 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                   ),
                                   IconButton(
                                     padding: EdgeInsets.all(0),
-                                    onPressed: () => {},
+                                    onPressed: ()  {
+                                      _pickFile();
+                                    },
                                     icon: const Icon(
                                       Icons.attach_file,
                                     ),
@@ -194,9 +224,11 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                   ),
                                   IconButton(
                                     padding: EdgeInsets.all(0),
-                                    onPressed: () => {},
+                                    onPressed: () => {
+                                      context.push(RoutePath.codeEditor),
+                                    },
                                     icon: const Icon(
-                                      Icons.image,
+                                      Icons.code,
                                     ),
                                     visualDensity: VisualDensity.compact,
                                   ),
@@ -212,7 +244,8 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                       onPressed: () {
                                         context.read<ResponseBloc>().add(
                                               ResponseAddEvent(
-                                                content: _textCommentController.text,
+                                                content:
+                                                    _textCommentController.text,
                                                 filePath: audioPath,
                                               ),
                                             );
