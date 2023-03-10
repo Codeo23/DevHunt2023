@@ -1,6 +1,6 @@
 
 import 'package:ampio/features/home/presentation/all_questions_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:ampio/features/response/presentation/widget/code_editor.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/constants/route_path.dart';
@@ -41,6 +41,10 @@ abstract class AppRouter {
       GoRoute(
         path: RoutePath.allQuestionsPath,
         builder: (context,state) => const AllQuestionsScreen(),
+      ),
+      GoRoute(
+        path: RoutePath.codeEditor,
+        builder: (context,state) =>  const CodeEditor(),
       )
     ],
   );
