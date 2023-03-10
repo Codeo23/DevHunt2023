@@ -1,11 +1,11 @@
-import 'package:equatable/equatable.dart';
+import '../../../../core/presentation/bloc/post/post_bloc.dart';
 
-class PostAddEvent extends Equatable {
+class PostAddEvent extends LoadPostEvent {
   final String topic;
   final String question;
   final String description;
 
-  const PostAddEvent({
+  PostAddEvent({
     required this.topic,
     required this.question,
     required this.description
