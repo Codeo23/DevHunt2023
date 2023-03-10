@@ -1,15 +1,15 @@
-class CommentEntity {
+class ResponseEntity {
   final String content;
   final String? filePath;
   final int? reaction;
 
-  CommentEntity({
+  ResponseEntity({
     required this.content,
     this.filePath,
     this.reaction,
   });
 
-  CommentEntity.fromJson(Map<String, dynamic> json)
+  ResponseEntity.fromJson(Map<String, dynamic> json)
       : content = json['content'] as String,
         filePath = json['file'] as String,
         reaction = json['reaction'] as int;
