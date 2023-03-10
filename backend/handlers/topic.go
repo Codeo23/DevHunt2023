@@ -26,7 +26,7 @@ func GetTopics(c *fiber.Ctx) error {
 
 	// preload posts
 	var topics []models.Topic
-	if err := db.Preload("Posts").Find(&topics).Error; err != nil {
+	if err := db.Model(&models.Topic{}).Preload("Post").Find(&topics).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Error while getting topics",
 		})

@@ -44,15 +44,6 @@ func Comment(c *fiber.Ctx) error {
 		})
 	}
 
-	// get user id
-	user_id := GetUserID(c)
-	var user models.User
-	if err := database.DB.Where("id = ?", user_id).First(&user).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error getting user",
-		})
-	}
-
 	// get post id
 	id := c.Params("post_id")
 	post_id, er := strconv.Atoi(id)
@@ -64,6 +55,15 @@ func Comment(c *fiber.Ctx) error {
 
 	// database
 	db := database.DB
+
+	// get user id
+	user_id := GetUserID(c)
+	var user models.User
+	if err := db.Where("id = ?", user_id).First(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error getting user",
+		})
+	}
 
 	// upload file in comment
 	file, _ := c.FormFile("file")
@@ -107,7 +107,7 @@ func Comment(c *fiber.Ctx) error {
 		Content:  body.Content,
 		AuthorID: user_id,
 		Author:   user,
-		PostID:   user_id,
+		PostID:   uint(post_id),
 		File:     link,
 		Reaction: 0,
 	}
