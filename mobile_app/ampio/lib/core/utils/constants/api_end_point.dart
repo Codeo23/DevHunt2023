@@ -3,8 +3,8 @@ abstract class ApiEndPoint {
   static const currentUser = '/users/me';
   static const getPosts = '/posts';
   static const addPost = '/posts/publish';
+  static const getUserById = '/users/';
 
   static const getComments = '/comments';
-  // TODO : Dynamics 1
   static const postComments = '/comments/1/comment';
 }

@@ -30,6 +30,7 @@ dependencies:
   webview_flutter: ^4.0.6
   flutter_secure_storage: ^8.0.0
   record: ^4.4.4
+  firebase_messaging: ^14.2.6
   file_picker: ^5.2.5
   code_text_field: ^1.0.2
   highlight: ^0.7.0
