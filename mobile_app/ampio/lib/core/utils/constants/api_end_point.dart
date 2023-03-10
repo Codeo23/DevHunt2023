@@ -3,4 +3,5 @@ abstract class ApiEndPoint {
   static const currentUser = '/users/me';
   static const getPosts = '/posts';
   static const addPost = '/posts/publish';
+  static const getUserById = '/users/';
 }
