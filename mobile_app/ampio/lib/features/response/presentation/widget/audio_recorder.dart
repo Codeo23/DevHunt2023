@@ -40,10 +40,10 @@ class _AudioRecorderState extends State<AudioRecorder> {
       if (await _audioRecorder.hasPermission()) {
         // We don't do anything with this but printing
         final isSupported = await _audioRecorder.isEncoderSupported(
-          AudioEncoder.aacLc,
+          AudioEncoder.wav,
         );
         if (kDebugMode) {
-          print('${AudioEncoder.aacLc.name} supported: $isSupported');
+          print('${AudioEncoder.wav.name} supported: $isSupported');
         }
 
         // final devs = await _audioRecorder.listInputDevices();

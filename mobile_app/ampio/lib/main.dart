@@ -7,6 +7,8 @@ import '../../../core/router/app_router.dart';
 import 'core/domain/data/remote/repository/auth_repository.dart';
 import 'core/domain/data/remote/repository/post_repository.dart';
 import 'core/presentation/bloc/post/post_bloc.dart';
+import '../../../core/domain/data/remote/repository/response_repository.dart';
+import '../../../../features/response/presentation/bloc/response_add_bloc.dart';
 import 'core/presentation/bloc/user/user_bloc.dart';
 
 void main() async {
@@ -23,6 +25,7 @@ class AmpioApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => UserBloc(AuthRepository())),
         BlocProvider(create: (context) => PostBloc(PostRepository()))
+        BlocProvider(create: (context) => ResponseBloc(ResponseRepository()),),
       ],
       child: ScreenUtilInit(
         builder: (context,child) {
