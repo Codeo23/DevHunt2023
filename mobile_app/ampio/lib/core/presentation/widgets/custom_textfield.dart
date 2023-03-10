@@ -38,7 +38,7 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       style: GoogleFonts.poppins(
         fontSize: 14.sp,
-        color: Colors.white
+        color: Colors.black
       ),
       decoration: InputDecoration(
         hintText: hintText,

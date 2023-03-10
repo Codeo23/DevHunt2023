@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 
 import '../../../../features/add_question/presentation/bloc/post_add_event.dart';
-import '../../../../features/add_question/presentation/bloc/post_add_state.dart';
 import '../../../domain/data/remote/repository/post_repository.dart';
 import '../load_event.dart';
 import '../../../domain/entity/post_entity.dart';
@@ -16,6 +15,7 @@ class PostBloc extends Bloc<LoadPostEvent, LoadPostState> {
 
   PostBloc(this.postRepository) : super(const LoadPostState()) {
     on<LoadPostEvent>((event, emit) => mapLoadPostEventToState(event, emit));
+    on<PostAddEvent>((event, emit) => mapPostAddEventToState(event, emit));
   }
 
   void mapLoadPostEventToState(LoadPostEvent event, Emitter<LoadPostState> emit) async {
@@ -29,11 +29,16 @@ class PostBloc extends Bloc<LoadPostEvent, LoadPostState> {
     }
   }
 
-  void mapPostAddEventToState(PostAddEvent event, Emitter<PostAddState> emit) {
-    emit(state.)
+  void mapPostAddEventToState(PostAddEvent event, Emitter<LoadPostState> emit) async {
+
+    emit(state.copyWith(status: LoadingStatus.loading));
     try {
-      final posts = await postRepository.getPosts();
-      emit(state.copyWith(posts: posts, status: LoadingStatus.success));
+      await postRepository.addPost(
+          topic: event.topic,
+          question: event.question,
+          description: event.description
+      );
+      emit(state.copyWith(status: LoadingStatus.success));
     } catch (e) {
       emit(state.copyWith(status: LoadingStatus.error));
     }
