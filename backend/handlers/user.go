@@ -173,7 +173,7 @@ func CreateUser(c *fiber.Ctx) error {
 
 		// random filename using random string
 
-		path := fmt.Sprintf("static/public/avatar/%s", fileName)
+		path := fmt.Sprintf("static/public/avatars/%s", fileName)
 		link := fmt.Sprintf("avatar/%s", fileName)
 
 		// upload file
