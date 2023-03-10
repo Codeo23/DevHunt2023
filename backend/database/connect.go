@@ -31,6 +31,7 @@ func ConnectDB() {
 		&models.User{},
 		&models.Comment{},
 		&models.Topic{},
+		&models.React{},
 	)
 	fmt.Println("Database Migrated")
 }
