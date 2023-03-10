@@ -29,13 +29,12 @@ class PostBloc extends Bloc<LoadPostEvent, LoadPostState> {
     }
   }
 
-  void mapPostAddEventToState(PostAddEvent event, Emitter<PostAddState> emit) {
-    emit(state.)
-    try {
+  void mapPostAddEventToState(PostAddEvent event, Emitter<PostAddState> emit)  async {
+    /*try {
       final posts = await postRepository.getPosts();
       emit(state.copyWith(posts: posts, status: LoadingStatus.success));
     } catch (e) {
       emit(state.copyWith(status: LoadingStatus.error));
-    }
+    }*/
   }
 }

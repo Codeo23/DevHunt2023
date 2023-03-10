@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../features/response/presentation/widget/response_item.dart';
 import '../../../../core/presentation/widgets/blurred_container.dart';
 import '../../../core/utils/colors/app_colors.dart';
-import '../../../../features/response/presentation/widget/audio_player.dart';
 import '../../../../features/response/presentation/widget/audio_recorder.dart';
+import '../../../../features/response/presentation/bloc/response_add_bloc.dart';
+import '../../../../core/domain/data/remote/repository/response_repository.dart';
 
 class ResponseScreen extends StatefulWidget {
   const ResponseScreen({Key? key}) : super(key: key);
@@ -18,13 +19,19 @@ class ResponseScreen extends StatefulWidget {
 }
 
 class _ResponseScreenState extends State<ResponseScreen> {
-  bool showPlayer = false;
+  late final TextEditingController _textCommentController;
   String? audioPath;
 
   @override
   void initState() {
-    showPlayer = false;
+    _textCommentController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textCommentController.dispose();
+    super.dispose();
   }
 
   @override
@@ -119,10 +126,12 @@ class _ResponseScreenState extends State<ResponseScreen> {
                       )
                     ],
                   ),
-                  ResponseItem(),
-                  const SizedBox(height: 5),
-                  ResponseItem(),
-                  const SizedBox(height: 150)
+                  BlocBuilder<ResponseBloc, ResponseAddState>(
+                      builder: (context, state) {
+                    return const SizedBox(
+                      height: 150,
+                    );
+                  })
                 ],
               ),
             ),
@@ -150,7 +159,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                           width: 10,
                         ),
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             child: Container(
                               padding: const EdgeInsets.all(3),
                               decoration: BoxDecoration(
@@ -159,17 +168,17 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Row(
                                 children: [
-                                  const Expanded(
+                                  Expanded(
                                     child: TextField(
-                                      decoration: InputDecoration(
+                                      controller: _textCommentController,
+                                      decoration: const InputDecoration(
                                         border: InputBorder.none,
                                       ),
                                     ),
                                   ),
                                   AudioRecorder(
                                     onStop: (path) {
-                                      if (kDebugMode)
-                                        print('Recorded file path: $path');
+                                      print(path);
                                       setState(() {
                                         audioPath = path;
                                       });
@@ -200,7 +209,18 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        context.read<ResponseBloc>().add(
+                                              ResponseAddEvent(
+                                                content: _textCommentController.text,
+                                                filePath: audioPath,
+                                              ),
+                                            );
+                                        _textCommentController.text = '';
+                                        setState(() {
+                                          audioPath = '';
+                                        });
+                                      },
                                       icon: const Icon(
                                         Icons.send,
                                         color: Colors.white,
