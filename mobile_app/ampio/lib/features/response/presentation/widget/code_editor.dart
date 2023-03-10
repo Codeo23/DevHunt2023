@@ -1,8 +1,8 @@
-import 'package:ampio/features/response/presentation/bloc/response_add_bloc.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:ampio/core/domain/data/remote/repository/response_repository.dart';
 import 'package:ampio/features/response/presentation/bloc/response_bloc.dart';
 import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 class CodeEditor extends StatefulWidget {
-  const CodeEditor({Key? key}) : super(key: key);
+  const CodeEditor({Key? key, required this.postId}) : super(key: key);
+
+  final String postId;
 
   @override
   _CodeEditorState createState() => _CodeEditorState();
@@ -27,8 +29,8 @@ class CodeEditor extends StatefulWidget {
 class _CodeEditorState extends State<CodeEditor> {
   CodeController? _codeController;
   Map<String, TextStyle>? theme = monokaiSublimeTheme;
- // Uint8List _imageFile;
 
+  // Uint8List _imageFile;
 
   //Create an instance of ScreenshotController
   ScreenshotController screenshotController = ScreenshotController();
@@ -46,9 +48,7 @@ class _CodeEditorState extends State<CodeEditor> {
       text: source,
       language: python,
     );
-    return Screenshot(
-      controller: screenshotController,
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text("Code Editor"),
           backgroundColor: Colors.teal,
@@ -87,39 +87,41 @@ class _CodeEditorState extends State<CodeEditor> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            child: CodeField(
-              controller: _codeController!,
-              textStyle: const TextStyle(fontFamily: 'SourceCode', fontSize: 20),
+        body: Screenshot(
+          controller: screenshotController,
+          child: SingleChildScrollView(
+            child: Container(
+              child: CodeField(
+                controller: _codeController!,
+                textStyle:
+                    const TextStyle(fontFamily: 'SourceCode', fontSize: 20),
+              ),
             ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.teal,
           onPressed: () async {
-            final directory = (await getApplicationDocumentsDirectory ()).path; //from path_provide package
+            final directory = (await getApplicationDocumentsDirectory())
+                .path; //from path_provide package
             String fileName = 'screenshot_test' + DateTime.now().toString();
             final path = '$directory';
             print(path);
-            final result = await screenshotController.captureAndSave(
-                path ,
-                fileName:fileName
-            );
-           context.read<ResponseBloc>().add(
-              ResponseAddEvent(
-                content: 'Hey via code editor 8',
-                filePath: result
-              ),
-            );
-           context.pop();
+            final result = await screenshotController.captureAndSave(path,
+                fileName: fileName);
+            context.read<ResponseBloc>().add(
+                  ResponseAddEvent(
+                    content: '',
+                    filePath: result,
+                    postId: widget.postId,
+                  ),
+                );
+            context.pop();
           },
           child: const Icon(
             Icons.send,
             color: Colors.white,
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

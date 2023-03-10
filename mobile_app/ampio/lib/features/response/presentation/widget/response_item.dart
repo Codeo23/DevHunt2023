@@ -1,3 +1,4 @@
+import 'package:ampio/core/config/network_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,17 +6,20 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/colors/app_colors.dart';
 
 class ResponseItem extends StatelessWidget {
-  const ResponseItem({super.key});
+  const ResponseItem({super.key, this.content, this.filePath});
+
+  final String? content;
+  final String? filePath;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        color: AppColors.greyPrimary,
-        borderRadius: BorderRadius.circular(10)
-      ),
+          color: AppColors.greyPrimary,
+          borderRadius: BorderRadius.circular(10)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -50,17 +54,20 @@ class ResponseItem extends StatelessWidget {
               )
             ],
           ),
+          const SizedBox(height: 10,),
           Text(
-            'To start with, you can create a JSONObject first using a json string and then a JSONArray object.'
-            'Then iterate over this array and manipulate with nested objects.',
+            content ?? '',
             style: GoogleFonts.poppins(
               fontSize: 14.sp,
             ),
           ),
-          const Image(
-            image: AssetImage('assets/images/code.png'),
-            fit: BoxFit.cover,
-          ),
+          SizedBox(height: content != '' ? 10 : 0,),
+          filePath != null
+              ? Image.network(
+                  '${NetworkConfig.baseUrl}/comments/${filePath!}',
+                  fit: BoxFit.cover,
+                )
+              : const SizedBox(),
           const SizedBox(
             height: 10,
           ),

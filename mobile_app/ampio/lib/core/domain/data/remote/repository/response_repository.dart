@@ -8,9 +8,9 @@ class ResponseRepository {
   final NetworkService _networkService = NetworkService();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  Future<dynamic> getAllComments({required int post_id}) async {
+  Future<dynamic> getAllComments({required String postId}) async {
     final response = await _networkService.get(
-      path: '/comments/1',
+      path: '${ApiEndPoint.comments}/$postId',
     );
     return response.data;
   }
@@ -18,10 +18,11 @@ class ResponseRepository {
   Future<dynamic> addComment({
     String? content,
     String? filePath,
+    required String postId
   }) async {
     final token = await _secureStorage.read(key: 'token');
     final response = await _networkService.post(
-      path: ApiEndPoint.postComments,
+      path: '${ApiEndPoint.comments}/$postId/comment',
       data: FormData.fromMap({
         "content": content,
         "file":
