@@ -2,7 +2,7 @@ project_name = Ampio
 image_name = gofiber:latest
 
 run-local:
-	go run app.go
+	air
 
 requirements:
 	go mod tidy

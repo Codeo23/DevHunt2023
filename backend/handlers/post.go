@@ -77,11 +77,7 @@ func Publish(c *fiber.Ctx) error {
 
 	// get user from user id
 	var user models.User
-	if err := db.Where("id = ?", user_id).Find(&user).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error while getting user",
-		})
-	}
+	db.First(&user, user_id)
 
 	// add post to database
 	newPost.AuthorID = user_id
