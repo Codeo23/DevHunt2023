@@ -34,9 +34,9 @@ func GetComments(c *fiber.Ctx) error {
 	// database
 	db := database.DB
 
-	// get comments
+	// get comments and order by reaction number
 	var comments []models.Comment
-	if err := db.Where("post_id = ?", uint(post_id)).Find(&comments).Error; err != nil {
+	if err := db.Where("post_id = ?", uint(post_id)).Order("reaction desc").Find(&comments).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Error getting comments",
 		})
