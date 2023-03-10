@@ -30,6 +30,7 @@ dependencies:
   webview_flutter: ^4.0.6
   flutter_secure_storage: ^8.0.0
   record: ^4.4.4
+  firebase_messaging: ^14.2.6
 
 dev_dependencies:
   flutter_test:

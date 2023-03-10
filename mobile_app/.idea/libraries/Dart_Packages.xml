@@ -2,6 +2,13 @@
   <library name="Dart Packages" type="DartPackagesLibraryType">
     <properties>
       <option name="packageNameToDirsMap">
+        <entry key="_flutterfire_internals">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/_flutterfire_internals-1.0.17/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="async">
           <value>
             <list>
@@ -160,6 +167,27 @@
           <value>
             <list>
               <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-2.2.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="firebase_messaging">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-14.2.6/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="firebase_messaging_platform_interface">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_platform_interface-4.2.15/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="firebase_messaging_web">
+          <value>
+            <list>
+              <option value="/media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_web-3.2.16/lib" />
             </list>
           </value>
         </entry>
@@ -649,6 +677,7 @@
       </option>
     </properties>
     <CLASSES>
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/_flutterfire_internals-1.0.17/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.9.0/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/audioplayers-3.0.1/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/audioplayers_android-2.0.0/lib" />
@@ -672,6 +701,9 @@
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-2.7.1/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.5.3/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-2.2.2/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-14.2.6/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_platform_interface-4.2.15/lib" />
+      <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_web-3.2.16/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.1.2/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-2.0.1/lib" />
       <root url="file:///media/aina/131fe9ea-b520-4c5f-b4f7-d23159bd3468/aina/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_screenutil-5.7.0/lib" />
