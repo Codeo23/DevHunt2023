@@ -14,5 +14,5 @@ type Post struct {
 	Author   User      `json:"author" gorm:"foreignKey:AuthorID"`
 	Comments []Comment `gorm:"foreignKey:PostID"`
 	Reacts   []React   `gorm:"foreignKey:PostID"`
-	Topic    Topic     `json:"topic" gorm:"foreignKey:Content;references:Content;"`
+	Topic    Topic     `json:"topic" gorm:"foreignKey:Topic;references:Content;"`
 }

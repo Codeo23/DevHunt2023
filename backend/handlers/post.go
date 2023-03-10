@@ -76,7 +76,7 @@ func Publish(c *fiber.Ctx) error {
 	db.First(&user, user_id)
 
 	// add topic to post with where condition
-	if err := db.Model(&newPost).Where("topics = ?", newPost.Topic).Association("Topic").Append(&newPost.Topic); err != nil {
+	if err := db.Model(&newPost).Where("topic = ?", newPost.Topic.Topic).Association("Topic").Append(&newPost.Topic); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Error while adding topic to post",
 		})
