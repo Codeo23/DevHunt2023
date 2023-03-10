@@ -77,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        'Veuillez insérer votre numéro matricule et',
+                        'Veuillez insérer votre identité et',
                         style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 14.sp,
