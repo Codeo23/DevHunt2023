@@ -7,15 +7,15 @@ import (
 )
 
 type TopicResponse struct {
-	Content string `json:"content"`
-	Image   string `json:"image"`
+	Topic string `json:"topic"`
+	Image string `json:"image"`
 }
 
 // func to create a topic response
 func TopicResp(topic models.Topic) TopicResponse {
 	return TopicResponse{
-		Content: topic.Content,
-		Image:   topic.Image,
+		Topic: topic.Topic,
+		Image: topic.Image,
 	}
 }
 
