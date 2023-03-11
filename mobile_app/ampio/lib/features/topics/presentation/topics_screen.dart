@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ampio/core/domain/entity/topic_entity.dart';
 import 'package:ampio/features/topics/presentation/bloc/topic_bloc.dart';
 import 'package:ampio/features/topics/presentation/widget/topic_item.dart';
@@ -73,8 +75,12 @@ class TopicsScreen extends StatelessWidget {
                             ),
                             itemCount: state.topics.length,
                             itemBuilder: (context, index) {
+                              final random = Random();
+                              final options = ['C#.jpg', 'JAVA.jpg', 'JS.png', 'uml.jpg'];
+                              final randomIndex = random.nextInt(options.length);
+                              final randomOption = options[randomIndex];
                               final TopicEntity topic = state.topics[index];
-                              return TopicItem(titleTopic: topic.topic,);
+                              return TopicItem(titleTopic: topic.topic,randomOption: randomOption,);
                             }))
                   ],
                 ),

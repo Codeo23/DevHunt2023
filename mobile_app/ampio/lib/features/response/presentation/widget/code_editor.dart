@@ -114,10 +114,10 @@ class _CodeEditorState extends State<CodeEditor> {
                 ResponseAddEvent(
                   content: '',
                   filePath: result,
-                  postId: '18',
+                  postId: '1',
                 ),
               )
-              ..add(ResponseGetsEvent(postId: '18'));
+              ..add(ResponseGetsEvent(postId: '1'));
             context.pop();
           },
           child: const Icon(
