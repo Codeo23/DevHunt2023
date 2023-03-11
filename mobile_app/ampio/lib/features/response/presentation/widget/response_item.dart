@@ -1,4 +1,5 @@
 import 'package:ampio/core/config/network_config.dart';
+import 'package:ampio/core/domain/entity/user_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,13 +7,15 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/colors/app_colors.dart';
 
 class ResponseItem extends StatelessWidget {
-  const ResponseItem({super.key, this.content, this.filePath});
+  const ResponseItem({super.key, this.content, this.filePath,this.user});
 
   final String? content;
   final String? filePath;
+  final UserEntity? user;
 
   @override
   Widget build(BuildContext context) {
+    print(user);
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
@@ -25,8 +28,8 @@ class ResponseItem extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.5),
-                child: Image.asset(
-                  'assets/images/avatar.jpg',
+                child: Image.network(
+                  '${NetworkConfig.baseUrl}/users/${user!.avatar!}',
                   height: 25,
                   width: 25,
                   fit: BoxFit.cover,
@@ -39,7 +42,7 @@ class ResponseItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hasina BG',
+                    user!.username ?? '',
                     style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w600, fontSize: 12.sp),
                   ),
@@ -62,7 +65,7 @@ class ResponseItem extends StatelessWidget {
             ),
           ),
           SizedBox(height: content != '' ? 10 : 0,),
-          filePath != null
+          filePath != ''
               ? Image.network(
                   '${NetworkConfig.baseUrl}/comments/${filePath!}',
                   fit: BoxFit.cover,
