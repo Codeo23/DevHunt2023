@@ -11,7 +11,7 @@ class TopicUseCase {
     List<TopicEntity> allTopics = [];
 
     for (var e in topics) {
-      allTopics.add(e);
+      allTopics.add(TopicEntity.fromJson(e));
     }
 
     return allTopics;

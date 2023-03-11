@@ -1,3 +1,6 @@
+import 'package:ampio/core/domain/entity/topic_entity.dart';
+import 'package:ampio/features/topics/presentation/bloc/topic_bloc.dart';
+import 'package:ampio/features/topics/presentation/widget/topic_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,8 +19,8 @@ class TopicsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, LoadPostState>(
-      bloc: context.read<PostBloc>()..add(LoadPostEvent()),
+    return BlocBuilder<TopicBloc, TopicState>(
+      bloc: context.read<TopicBloc>()..add(const TopicGetsEvent()),
       builder: (context, state) => Scaffold(
         body: Container(
           color: AppColors.greyThirdly,
@@ -64,23 +67,16 @@ class TopicsScreen extends StatelessWidget {
                       ],
                     ),
                     Expanded(
-                      child: ListView.separated(
-                        primary: true,
-                        itemCount: state.posts?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          final PostEntity post = state.posts![index];
-                          return PostCard(
-                            profileImage: 'assets/images/avatar.png',
-                            name: post.user.username,
-                            content: '${post.title}\n${post.content}',
-                            topic: 'python',
-                          );
-                        },
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
-                        ),
-                      ),
-                    )
+                        child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                            ),
+                            itemCount: state.topics.length,
+                            itemBuilder: (context, index) {
+                              final TopicEntity topic = state.topics[index];
+                              return TopicItem(titleTopic: topic.topic,);
+                            }))
                   ],
                 ),
               ),

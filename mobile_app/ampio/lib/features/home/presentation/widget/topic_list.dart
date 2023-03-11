@@ -1,4 +1,6 @@
+import 'package:ampio/features/topics/presentation/bloc/topic_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/presentation/widgets/avatar.dart';
@@ -8,38 +10,21 @@ class TopicList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      primary: false,
-      scrollDirection: Axis.horizontal,
-      children: [
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/JS.png',
-          ),
+    return BlocBuilder<TopicBloc, TopicState>(builder: (context, state) {
+      return ListView.separated(
+        primary: false,
+        scrollDirection: Axis.horizontal,
+        itemCount: state.topics.length,
+        itemBuilder: (context, state) {
+          return Avatar(
+            borderRadius: 35,
+            imageProvider: AssetImage('assets/images/JS.png'),
+          );
+        },
+        separatorBuilder: (_, incex) => const SizedBox(
+          width: 5,
         ),
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/c#.jpg',
-
-          ),
-        ),
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/JAVA.jpg',
-          ),
-        ),
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/uml.jpg',
-          ),
-        ),
-      ],
-    );
+      );
+    });
   }
-
-
 }

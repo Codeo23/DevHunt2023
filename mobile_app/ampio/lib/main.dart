@@ -1,3 +1,5 @@
+import 'package:ampio/core/domain/data/remote/repository/topic_repository.dart';
+import 'package:ampio/features/topics/presentation/bloc/topic_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +33,10 @@ void main() async {
     showSimpleNotification(
         Text(
           event.notification?.body ?? "Nouvelle publication disponible",
-          style: GoogleFonts.poppins(
-            fontSize: 16.sp,
-            color: Colors.white
-          ),
+          style: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.white),
         ),
         elevation: 1.0,
-        background: AppColors.greenAccentPrimary
-    );
+        background: AppColors.greenAccentPrimary);
   });
   print('Subscribed to topic ${Topic.postAdded}');
   runApp(const AmpioApp());
@@ -55,21 +53,22 @@ class AmpioApp extends StatelessWidget {
           BlocProvider(create: (context) => UserBloc(AuthRepository())),
           BlocProvider(create: (context) => PostBloc(PostRepository())),
           BlocProvider(create: (context) => ResponseBloc(ResponseRepository())),
+          BlocProvider(create: (context) => TopicBloc(TopicRepository())),
         ],
         child: ScreenUtilInit(
-          builder: (context,child) {
+          builder: (context, child) {
             return MaterialApp.router(
               title: 'Ampio',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-              bottomSheetTheme: const BottomSheetThemeData(
-                backgroundColor: Colors.transparent,
+                bottomSheetTheme: const BottomSheetThemeData(
+                  backgroundColor: Colors.transparent,
+                ),
               ),
-            ),
               routerConfig: AppRouter.configurations,
             );
           },
-          designSize: const Size(428,926),
+          designSize: const Size(428, 926),
         ),
       ),
     );

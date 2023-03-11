@@ -1,21 +1,26 @@
 import 'dart:async';
 
+import 'package:ampio/core/config/network_config.dart';
+import 'package:ampio/core/domain/entity/user_entity.dart';
+import 'package:ampio/core/utils/colors/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart' as ap;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AudioPlayer extends StatefulWidget {
   /// Path from where to play recorded audio
   final String source;
+  final UserEntity user;
 
   /// Callback when audio file should be removed
   /// Setting this to null hides the delete button
-  final VoidCallback onDelete;
 
   const AudioPlayer({
     Key? key,
     required this.source,
-    required this.onDelete,
+    required this.user
   }) : super(key: key);
 
   @override
@@ -37,16 +42,16 @@ class AudioPlayerState extends State<AudioPlayer> {
   void initState() {
     _playerStateChangedSubscription =
         _audioPlayer.onPlayerComplete.listen((state) async {
-          await stop();
-          setState(() {});
-        });
+      await stop();
+      setState(() {});
+    });
     _positionChangedSubscription = _audioPlayer.onPositionChanged.listen(
-          (position) => setState(() {
+      (position) => setState(() {
         _position = position;
       }),
     );
     _durationChangedSubscription = _audioPlayer.onDurationChanged.listen(
-          (duration) => setState(() {
+      (duration) => setState(() {
         _duration = duration;
       }),
     );
@@ -65,24 +70,58 @@ class AudioPlayerState extends State<AudioPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            _buildControl(),
-            _buildSlider(constraints.maxWidth),
-            IconButton(
-              icon: const Icon(Icons.delete,
-                  color: Color(0xFF73748D), size: _deleteBtnSize),
-              onPressed: () {
-                stop().then((value) => widget.onDelete());
-              },
-            ),
-          ],
-        );
-      },
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+          color: AppColors.greyPrimary,
+          borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.5),
+                child: Image.network(
+                  '${NetworkConfig.baseUrl}/users/${widget.user.avatar!}',
+                  height: 25,
+                  width: 25,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.user.username,
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w600, fontSize: 12.sp),
+                  ),
+                  Text(
+                    '2h',
+                    style: GoogleFonts.poppins(
+                      color: Colors.grey,
+                      fontSize: 12.sp,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              _buildControl(),
+              _buildSlider(350),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -91,30 +130,23 @@ class AudioPlayerState extends State<AudioPlayer> {
     Color color;
 
     if (_audioPlayer.state == ap.PlayerState.playing) {
-      icon = const Icon(Icons.pause, color: Colors.red, size: 30);
+      icon = Icon(Icons.pause, color: AppColors.greenAccentSecondary, size: 25);
       color = Colors.red.withOpacity(0.1);
     } else {
       final theme = Theme.of(context);
-      icon = Icon(Icons.play_arrow, color: theme.primaryColor, size: 30);
+      icon = Icon(Icons.play_arrow, color: Colors.grey, size: 25);
       color = theme.primaryColor.withOpacity(0.1);
     }
 
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child:
-          SizedBox(width: _controlSize, height: _controlSize, child: icon),
-          onTap: () {
-            if (_audioPlayer.state == ap.PlayerState.playing) {
-              pause();
-            } else {
-              play();
-            }
-          },
-        ),
-      ),
-    );
+    return IconButton(
+        onPressed: () {
+          if (_audioPlayer.state == ap.PlayerState.playing) {
+            pause();
+          } else {
+            play();
+          }
+        },
+        icon: icon);
   }
 
   Widget _buildSlider(double widgetWidth) {
@@ -133,8 +165,8 @@ class AudioPlayerState extends State<AudioPlayer> {
     return SizedBox(
       width: width,
       child: Slider(
-        activeColor: Theme.of(context).primaryColor,
-        inactiveColor: Theme.of(context).colorScheme.secondary,
+        activeColor: AppColors.greenAccentSecondary,
+        inactiveColor: Colors.grey,
         onChanged: (v) {
           if (duration != null) {
             final position = v * duration.inMilliseconds;
@@ -149,9 +181,8 @@ class AudioPlayerState extends State<AudioPlayer> {
   }
 
   Future<void> play() {
-    return _audioPlayer.play(
-      kIsWeb ? ap.UrlSource(widget.source) : ap.DeviceFileSource(widget.source),
-    );
+    return _audioPlayer.play(ap.UrlSource(
+        "https://ampio.iteam-s.mg/api/comments/${widget.source}"));
   }
 
   Future<void> pause() => _audioPlayer.pause();

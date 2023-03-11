@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:ampio/core/domain/data/remote/repository/response_repository.dart';
+import 'package:ampio/core/domain/entity/user_entity.dart';
 import 'package:ampio/core/utils/Enums/loading_status.dart';
 import 'package:ampio/features/response/presentation/bloc/response_bloc.dart';
+import 'package:ampio/features/response/presentation/widget/audio_player.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
   @override
   void initState() {
     _textCommentController = TextEditingController();
+    print(widget.postId);
     super.initState();
   }
 
@@ -178,12 +181,14 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                 final content = state.responses[index].content;
                                 final String? filePath =
                                     state.responses[index].filePath;
+                                final UserEntity user = state.responses[index].user;
 
                                 if (filePath!.contains('.mp4') ||
                                     filePath.contains('.m4a')) {
-                                  return SizedBox();
+                                  return AudioPlayer(source: filePath,user: user);
                                 }
                                 return ResponseItem(
+                                  user : user,
                                   content: content,
                                   filePath: filePath,
                                 );

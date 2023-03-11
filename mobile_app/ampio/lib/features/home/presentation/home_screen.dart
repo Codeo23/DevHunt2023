@@ -1,4 +1,6 @@
+import 'package:ampio/core/presentation/bloc/post/post_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -105,13 +107,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 45.h, child: _buildChipList()),
                   SizedBox(height: 5.h),
-                  const PostCard(
-                    profileImage: 'assets/images/person1.jpg',
-                    name: 'Jane Doe',
-                    createdAt: '1 min',
-                    content: 'Group Array by Object key where key is an object',
-                    topic: 'JavaScript',
-                  ),
+                  BlocBuilder<PostBloc, LoadPostState>(
+                      builder: (context, state) {
+                        return PostCard(
+                          profileImage: "/assets/images/avatar.jpg",
+                          name: 'Jane Doe',
+                          createdAt: '1 min',
+                          content: 'Group Array by Object key where key is an object',
+                          topic: 'JavaScript',
+                        );
+                      }),
                   SizedBox(height: 22.h),
                   Text(
                     'PARTAGE',

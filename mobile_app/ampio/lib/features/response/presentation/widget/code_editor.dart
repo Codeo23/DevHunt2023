@@ -36,6 +36,7 @@ class _CodeEditorState extends State<CodeEditor> {
 
   @override
   void initState() {
+    print(widget.postId);
     super.initState();
   }
 
@@ -108,13 +109,15 @@ class _CodeEditorState extends State<CodeEditor> {
             print(path);
             final result = await screenshotController.captureAndSave(path,
                 fileName: fileName);
-            context.read<ResponseBloc>().add(
-                  ResponseAddEvent(
-                    content: '',
-                    filePath: result,
-                    postId: widget.postId,
-                  ),
-                );
+            context.read<ResponseBloc>()
+              ..add(
+                ResponseAddEvent(
+                  content: '',
+                  filePath: result,
+                  postId: '18',
+                ),
+              )
+              ..add(ResponseGetsEvent(postId: '18'));
             context.pop();
           },
           child: const Icon(
