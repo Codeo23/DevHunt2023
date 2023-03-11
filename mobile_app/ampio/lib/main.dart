@@ -53,7 +53,7 @@ class AmpioApp extends StatelessWidget {
           BlocProvider(create: (context) => UserBloc(AuthRepository())),
           BlocProvider(create: (context) => PostBloc(PostRepository())),
           BlocProvider(create: (context) => ResponseBloc(ResponseRepository())),
-          BlocProvider(create: (context) => TopicBloc(TopicRepository())),
+          BlocProvider(create: (context) => TopicBloc(TopicRepository())..add(const TopicGetsEvent())),
         ],
         child: ScreenUtilInit(
           builder: (context, child) {

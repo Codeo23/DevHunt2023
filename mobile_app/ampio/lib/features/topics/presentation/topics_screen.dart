@@ -20,7 +20,6 @@ class TopicsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TopicBloc, TopicState>(
-      bloc: context.read<TopicBloc>()..add(const TopicGetsEvent()),
       builder: (context, state) => Scaffold(
         body: Container(
           color: AppColors.greyThirdly,

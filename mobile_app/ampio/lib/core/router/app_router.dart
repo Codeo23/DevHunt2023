@@ -13,7 +13,7 @@ import '../../features/settings/presentation/settings_screen.dart';
 
 abstract class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.loginPath,
+    initialLocation: RoutePath.welcomePath,
     routes: [
       GoRoute(
         path: RoutePath.welcomePath,

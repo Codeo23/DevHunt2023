@@ -166,6 +166,9 @@ class _ResponseScreenState extends State<ResponseScreen> {
                   BlocBuilder<ResponseBloc, ResponseState>(
                       bloc: ResponseBloc(ResponseRepository())
                         ..add(ResponseGetsEvent(postId: widget.postId)),
+                      buildWhen: (context,state) {
+                        return false;
+                      },
                       builder: (context, state) {
                         if (state.status == LoadingStatus.loading) {
                           return Center(

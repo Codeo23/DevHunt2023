@@ -16,12 +16,12 @@ class TopicList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: state.topics.length,
         itemBuilder: (context, state) {
-          return Avatar(
+          return  Avatar(
             borderRadius: 35,
             imageProvider: AssetImage('assets/images/JS.png'),
           );
         },
-        separatorBuilder: (_, incex) => const SizedBox(
+        separatorBuilder: (_, index) => const SizedBox(
           width: 5,
         ),
       );
