@@ -1,5 +1,8 @@
+import 'dart:math';
+
+import 'package:ampio/features/topics/presentation/bloc/topic_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/presentation/widgets/avatar.dart';
 
@@ -8,38 +11,26 @@ class TopicList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      primary: false,
-      scrollDirection: Axis.horizontal,
-      children: [
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/JS.png',
-          ),
-        ),
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/c#.jpg',
+    return BlocBuilder<TopicBloc, TopicState>(builder: (context, state) {
+      return ListView.separated(
+        primary: false,
+        scrollDirection: Axis.horizontal,
+        itemCount: state.topics.length,
+        itemBuilder: (context, state) {
+          final random = Random();
+          final options = ['C#.jpg', 'JAVA.jpg', 'JS.png', 'uml.jpg'];
+          final randomIndex = random.nextInt(options.length);
+          final randomOption = options[randomIndex];
 
-          ),
+          return Avatar(
+            borderRadius: 35,
+            imageProvider: AssetImage('assets/images/$randomOption'),
+          );
+        },
+        separatorBuilder: (_, incex) => const SizedBox(
+          width: 5,
         ),
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/JAVA.jpg',
-          ),
-        ),
-        Avatar(
-          borderRadius: 45.r,
-          imageProvider: const AssetImage(
-            'assets/images/uml.jpg',
-          ),
-        ),
-      ],
-    );
+      );
+    });
   }
-
-
 }

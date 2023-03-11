@@ -33,7 +33,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return GestureDetector(
-      onTap: () => context.push(RoutePath.responsePath),
+      onTap: () => context.push('/response/18'),
       child: Container(
         margin: const EdgeInsets.only(top: 10),
         padding: EdgeInsets.symmetric(
