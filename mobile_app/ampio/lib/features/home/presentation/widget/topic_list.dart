@@ -21,13 +21,12 @@ class TopicList extends StatelessWidget {
           final options = ['C#.jpg', 'JAVA.jpg', 'JS.png', 'uml.jpg'];
           final randomIndex = random.nextInt(options.length);
           final randomOption = options[randomIndex];
-
           return Avatar(
             borderRadius: 35,
             imageProvider: AssetImage('assets/images/$randomOption'),
           );
         },
-        separatorBuilder: (_, incex) => const SizedBox(
+        separatorBuilder: (_, index) => const SizedBox(
           width: 5,
         ),
       );

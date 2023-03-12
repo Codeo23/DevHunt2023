@@ -1,3 +1,4 @@
+import 'package:ampio/core/config/network_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -63,10 +64,10 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'assets/images/avatar.jpg',
-                    height: 150.h,
-                    width: 150.h,
+                  child: Image.network(
+                    '${NetworkConfig.baseUrl}/users/avatar/1234Pdp.jpg',
+                    height: 40,
+                    width: 40,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -74,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  'Mialy Rak.',
+                  'John Doe.',
                   style: GoogleFonts.poppins(
                     fontSize: 20.sp,
                     color: Colors.white,

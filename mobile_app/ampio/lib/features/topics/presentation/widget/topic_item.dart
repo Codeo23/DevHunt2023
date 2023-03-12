@@ -7,9 +7,11 @@ class TopicItem extends StatelessWidget {
   const TopicItem({
     Key? key,
     required this.titleTopic,
+    required this.randomOption,
   }) : super(key: key);
 
   final String titleTopic;
+  final String randomOption;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +21,7 @@ class TopicItem extends StatelessWidget {
         // TODO : change image from server
         Avatar(
           borderRadius: 35,
-          imageProvider: const AssetImage(
-            'assets/images/JS.png',
-          ),
+          imageProvider: AssetImage('assets/images/$randomOption'),
         ),
         Text(
           titleTopic,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ampio/core/config/network_config.dart';
 import 'package:ampio/core/domain/data/remote/repository/response_repository.dart';
 import 'package:ampio/core/domain/entity/user_entity.dart';
 import 'package:ampio/core/utils/Enums/loading_status.dart';
@@ -111,8 +112,8 @@ class _ResponseScreenState extends State<ResponseScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12.5),
-                        child: Image.asset(
-                          'assets/images/avatar.jpg',
+                        child: Image.network(
+                          '${NetworkConfig.baseUrl}/users/avatar/1351avatar-gab76d344f_640.png',
                           height: 25,
                           width: 25,
                           fit: BoxFit.cover,
@@ -122,7 +123,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                         width: 5,
                       ),
                       Text(
-                        'Hasina BG',
+                        'janedoe',
                         style: GoogleFonts.poppins(
                             fontWeight: FontWeight.w600, fontSize: 12.sp),
                       ),
@@ -130,7 +131,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                         width: 8,
                       ),
                       Text(
-                        '1 min',
+                        '2023-03-11',
                         style: GoogleFonts.poppins(
                           fontSize: 12.sp,
                           color: Colors.grey,
@@ -142,7 +143,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                     height: 5,
                   ),
                   Text(
-                    'Parsing JSON array and object in Android Studio',
+                    'FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints.',
                     style: GoogleFonts.poppins(fontSize: 16.sp),
                   ),
                   const SizedBox(
@@ -181,14 +182,16 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                 final content = state.responses[index].content;
                                 final String? filePath =
                                     state.responses[index].filePath;
-                                final UserEntity user = state.responses[index].user;
+                                final UserEntity user =
+                                    state.responses[index].user;
 
                                 if (filePath!.contains('.mp4') ||
                                     filePath.contains('.m4a')) {
-                                  return AudioPlayer(source: filePath,user: user);
+                                  return AudioPlayer(
+                                      source: filePath, user: user);
                                 }
                                 return ResponseItem(
-                                  user : user,
+                                  user: user,
                                   content: content,
                                   filePath: filePath,
                                 );
@@ -244,8 +247,8 @@ class _ResponseScreenState extends State<ResponseScreen> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            'assets/images/avatar.jpg',
+                          child: Image.network(
+                            '${NetworkConfig.baseUrl}/users/avatar/1234Pdp.jpg',
                             height: 40,
                             width: 40,
                             fit: BoxFit.cover,
@@ -292,7 +295,8 @@ class _ResponseScreenState extends State<ResponseScreen> {
                                   IconButton(
                                     padding: EdgeInsets.all(0),
                                     onPressed: () => {
-                                      context.push('${RoutePath.codeEditor}/${widget.postId}'),
+                                      context.push(
+                                          '${RoutePath.codeEditor}/${widget.postId}'),
                                     },
                                     icon: const Icon(
                                       Icons.code,
